@@ -97,20 +97,17 @@ export function TailorShirtIcon({ className = "w-7 h-7 sm:w-8 sm:h-8 text-[#5438
       className={className}
       aria-hidden="true"
     >
-      {/* Crewneck collar line */}
-      <path d="M10.2 6.5 C12.2 9 17.2 9 19.2 6.5" />
-      {/* T-shirt silhouette */}
-      <path d="M10.2 6.5 L4.5 10.8 L7.8 15.2 L10.5 14 V28.5 H21 V14 L23.6 15.2 L26.8 10.8 L21 6.5" />
-      {/* Tailor ruler / measuring tape along right side */}
-      <rect x="22.5" y="11.5" width="6" height="17" rx="0.8" strokeWidth="1.7" />
-      {/* Ruler inch tick markings */}
-      <line x1="22.5" y1="14.8" x2="25" y2="14.8" strokeWidth="1.3" />
-      <line x1="22.5" y1="17.8" x2="26.5" y2="17.8" strokeWidth="1.4" />
-      <line x1="22.5" y1="20.8" x2="25" y2="20.8" strokeWidth="1.3" />
-      <line x1="22.5" y1="23.8" x2="26.5" y2="23.8" strokeWidth="1.4" />
-      <line x1="22.5" y1="26.8" x2="25" y2="26.8" strokeWidth="1.3" />
-      {/* Vertical tailor stitch seam dots */}
-      <line x1="18" y1="14.5" x2="18" y2="25" strokeDasharray="1 2.5" strokeWidth="1.3" />
+      {/* Crewneck collar curve */}
+      <path d="M10 6 C12 8.2 16 8.2 18 6" />
+      {/* Clean, uncluttered T-shirt silhouette */}
+      <path d="M10 6 L4.8 9.6 L7.5 13.8 L10.5 12.8 V27 H20.5 V8.5 L18 6" />
+      {/* Crisp vertical measuring tape / tailor scale */}
+      <rect x="22.5" y="8.5" width="5.5" height="18.5" rx="0.8" />
+      {/* Clear, well-spaced scale tick markings */}
+      <line x1="22.5" y1="12" x2="25" y2="12" strokeWidth="1.3" />
+      <line x1="22.5" y1="15.5" x2="26.2" y2="15.5" strokeWidth="1.4" />
+      <line x1="22.5" y1="19" x2="25" y2="19" strokeWidth="1.3" />
+      <line x1="22.5" y1="22.5" x2="26.2" y2="22.5" strokeWidth="1.4" />
     </svg>
   );
 }
