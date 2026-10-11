@@ -46,9 +46,9 @@ export function AnimatedLogo({
       gsap.set(dotEl, { strokeDasharray: dotLen + 5, strokeDashoffset: dotLen + 5, opacity: 0 });
       gsap.set(fullVeil, { opacity: 0 });
 
-      // Natural, deliberate cursive calligraphy timeline (F -> i -> tt -> ee flow)
+      // Balanced, moderate cursive calligraphy timeline (F -> i -> tt -> ee flow)
       const tl = gsap.timeline({
-        delay: 0.2, // graceful entrance breath
+        delay: 0.12, // subtle natural entrance breath
       });
 
       // 1. Capital 'F' crown flourish (left to right, stays cleanly within F)
@@ -58,7 +58,7 @@ export function AnimatedLogo({
       })
         .to(fTopEl, {
           strokeDashoffset: 0,
-          duration: 0.32,
+          duration: 0.25,
           ease: "power2.out",
         }, "<")
 
@@ -66,10 +66,10 @@ export function AnimatedLogo({
         .to(fStemEl, {
           opacity: 1,
           duration: 0.04,
-        }, "-=0.12")
+        }, "-=0.06")
         .to(fStemEl, {
           strokeDashoffset: 0,
-          duration: 0.42,
+          duration: 0.35,
           ease: "power1.inOut",
         }, "<")
 
@@ -77,21 +77,21 @@ export function AnimatedLogo({
         .to(bodyEl, {
           opacity: 1,
           duration: 0.04,
-        }, "-=0.08")
+        }, "-=0.05")
         .to(bodyEl, {
           strokeDashoffset: 0,
-          duration: 1.75,
+          duration: 1.35,
           ease: "power1.inOut",
         }, "<")
 
-        // 4. Swift signature crossbar flourish across the double t's (drawn only after letters)
+        // 4. Swift signature crossbar flourish across the double t's (drawn after word body completes)
         .to(barEl, {
           opacity: 1,
           duration: 0.04,
-        }, "-=0.15")
+        }, "+=0.04")
         .to(barEl, {
           strokeDashoffset: 0,
-          duration: 0.32,
+          duration: 0.24,
           ease: "power2.out",
         }, "<")
 
@@ -99,19 +99,19 @@ export function AnimatedLogo({
         .to(dotEl, {
           opacity: 1,
           duration: 0.04,
-        }, "-=0.08")
+        }, "+=0.03")
         .to(dotEl, {
           strokeDashoffset: 0,
-          duration: 0.12,
-          ease: "none",
+          duration: 0.10,
+          ease: "power2.out",
         }, "<")
 
         // 6. Seamless veil brings 100% vector shape to crisp perfection
         .to(fullVeil, {
           opacity: 1,
-          duration: 0.22,
-          ease: "power1.in",
-        }, "+=0.04");
+          duration: 0.20,
+          ease: "power1.inOut",
+        }, "+=0.03");
 
     }, container);
 
@@ -121,7 +121,7 @@ export function AnimatedLogo({
   return (
     <div
       ref={containerRef}
-      className={`relative inline-flex items-center select-none cursor-pointer transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98] ${className}`}
+      className={`relative inline-flex items-center select-none cursor-pointer ${className}`}
     >
       <svg
         viewBox="9 7 325 194"
@@ -137,10 +137,9 @@ export function AnimatedLogo({
             <stop offset="100%" stopColor="#B87515" />
           </linearGradient>
 
-          {/* Luxury Drop Glow */}
+          {/* Crisp Black Drop Shadow (No Color Glow) */}
           <filter id={glowId} x="-20%" y="-20%" width="140%" height="140%">
             <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#000000" floodOpacity="0.65" />
-            <feDropShadow dx="0" dy="0" stdDeviation="1.5" floodColor="#EDB34A" floodOpacity="0.3" />
           </filter>
 
           {/* Clean Cursive Write-on Mask - Natural Calligraphy Anatomy */}

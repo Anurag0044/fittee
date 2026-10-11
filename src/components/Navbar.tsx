@@ -21,12 +21,12 @@ export function Navbar() {
   return (
     <header className="relative z-50 w-full select-none">
       {/* Container across full width - perfectly centered horizontal axis */}
-      <div className="w-full flex items-center justify-between h-14 sm:h-16 lg:h-[58px]">
+      <div className="w-full flex items-center justify-between h-14 sm:h-16 lg:h-[62px]">
         {/* Brand Logo - commanding presence, luxury proportions, animated on fresh */}
-        <div className="h-full flex items-center pl-6 sm:pl-10 lg:pl-14 shrink-0 z-20">
+        <div className="h-full flex items-center pl-6 sm:pl-10 lg:pl-12 shrink-0 z-20">
           <Link
             href="/"
-            className="group flex items-center focus:outline-none"
+            className="flex items-center focus:outline-none translate-y-[4px] lg:translate-y-[5px]"
             aria-label="Fittee Home"
           >
             <AnimatedLogo className="h-11 sm:h-12 lg:h-[48px] xl:h-[52px] w-auto" />
@@ -34,7 +34,7 @@ export function Navbar() {
         </div>
 
         {/* Desktop Asymmetric Scooped Ivory Header Bar */}
-        <div className="hidden lg:block relative flex-1 max-w-[82%] xl:max-w-[78%] 2xl:max-w-[75%] h-full">
+        <div className="hidden lg:block relative flex-1 h-full min-w-0">
           {/* SVG Background with organic curved scoop on left */}
           <svg
             className="absolute inset-0 w-full h-full drop-shadow-[0_4px_24px_rgba(0,0,0,0.18)] pointer-events-none"
@@ -49,9 +49,9 @@ export function Navbar() {
           </svg>
 
           {/* Navigation Content inside the ivory container */}
-          <div className="relative z-10 w-full h-full pl-16 xl:pl-20 pr-6 xl:pr-8 flex items-center justify-between text-[#1E1C1A]">
-            {/* Primary Nav Links */}
-            <nav className="flex items-center gap-5 xl:gap-7 text-[13px] xl:text-[13.5px] font-medium tracking-normal">
+          <div className="relative z-10 w-full h-full pl-20 xl:pl-24 pr-6 xl:pr-8 flex items-center justify-between text-[#1E1C1A]">
+            {/* Primary Nav Links in Editorial Serif */}
+            <nav className="flex items-center gap-6 xl:gap-8 font-editorial text-[15.5px] xl:text-[16px] font-medium tracking-normal text-[#1A1816]">
               {/* Shop with dropdown */}
               <div
                 className="relative"
@@ -60,14 +60,14 @@ export function Navbar() {
               >
                 <button
                   type="button"
-                  className="flex items-center gap-1 hover:text-[#9B6A1A] transition-colors py-1 cursor-pointer focus:outline-none"
+                  className="flex items-center gap-1.5 hover:text-[#9B6A1A] transition-colors py-1 cursor-pointer focus:outline-none"
                 >
                   <span>Shop</span>
-                  <ChevronDown className="w-3 h-3 text-[#1E1C1A]/80 transition-transform duration-200" />
+                  <ChevronDown className="w-4 h-4 text-[#1E1C1A]/70 transition-transform duration-200" />
                 </button>
 
                 {shopOpen && (
-                  <div className="absolute top-full left-0 mt-1 w-56 bg-[#FAF7F2] rounded-xl shadow-xl border border-[#DFD7CA] p-3 text-[#1E1B17] z-50">
+                  <div className="absolute top-full left-0 mt-1 w-56 bg-[#FAF7F2] rounded-xl shadow-xl border border-[#DFD7CA] p-3 text-[#1E1B17] z-50 font-sans">
                     <Link
                       href="#oversized"
                       className="block px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-[#EAE3D6] transition-colors"
@@ -117,47 +117,47 @@ export function Navbar() {
             </nav>
 
             {/* Right cluster: Search input + Actions */}
-            <div className="flex items-center gap-4 xl:gap-5">
-              {/* Search Pill Input */}
+            <div className="flex items-center gap-4 xl:gap-6">
+              {/* Search Pill Input - enlarged, comfortable, clear */}
               <div className="relative flex items-center">
                 <input
                   type="text"
                   value={searchVal}
                   onChange={(e) => setSearchVal(e.target.value)}
                   placeholder="Search for designs, collections..."
-                  className="w-44 xl:w-56 pl-3.5 pr-8 py-1.5 text-[11.5px] rounded-full bg-[#E0D9CF]/75 placeholder:text-[#827A6E] text-[#1E1C1A] border-none focus:outline-none focus:ring-1 focus:ring-[#9B6A1A]"
+                  className="w-56 xl:w-64 2xl:w-72 h-[38px] pl-4 pr-10 text-[13px] xl:text-[13.5px] rounded-full bg-[#DFD8CE]/80 hover:bg-[#DFD8CE] focus:bg-[#E5DFD4] placeholder:text-[#7A7266] text-[#1E1C1A] border border-black/5 focus:outline-none focus:ring-1.5 focus:ring-[#9B6A1A]/60 transition-all"
                 />
-                <Search className="w-3.5 h-3.5 text-[#5C5348] absolute right-2.5 pointer-events-none" />
+                <Search className="w-4 h-4 text-[#554C40] absolute right-3.5 pointer-events-none" />
               </div>
 
-              {/* Utility Icons */}
-              <div className="flex items-center gap-3 xl:gap-3.5 text-[#1E1C1A]">
+              {/* Utility Icons - enlarged for luxury visibility and easy tapping */}
+              <div className="flex items-center gap-3 xl:gap-4 text-[#1E1C1A]">
                 {/* User Account */}
                 <button
                   type="button"
-                  className="hover:text-[#9B6A1A] transition-colors focus:outline-none cursor-pointer p-0.5"
+                  className="hover:text-[#9B6A1A] hover:bg-black/5 rounded-full p-1.5 transition-colors focus:outline-none cursor-pointer"
                   aria-label="Account"
                 >
-                  <User className="w-[17px] h-[17px] stroke-[1.6]" />
+                  <User className="w-[21px] h-[21px] xl:w-[22px] xl:h-[22px] stroke-[1.75]" />
                 </button>
 
                 {/* Wishlist */}
                 <button
                   type="button"
-                  className="hover:text-[#9B6A1A] transition-colors focus:outline-none cursor-pointer p-0.5"
+                  className="hover:text-[#9B6A1A] hover:bg-black/5 rounded-full p-1.5 transition-colors focus:outline-none cursor-pointer"
                   aria-label="Wishlist"
                 >
-                  <Heart className="w-[17px] h-[17px] stroke-[1.6]" />
+                  <Heart className="w-[21px] h-[21px] xl:w-[22px] xl:h-[22px] stroke-[1.75]" />
                 </button>
 
                 {/* Cart with Orange Badge */}
                 <button
                   type="button"
-                  className="relative hover:text-[#9B6A1A] transition-colors focus:outline-none cursor-pointer p-0.5"
+                  className="relative hover:text-[#9B6A1A] hover:bg-black/5 rounded-full p-1.5 transition-colors focus:outline-none cursor-pointer"
                   aria-label="Cart"
                 >
-                  <ShoppingCart className="w-[18px] h-[18px] stroke-[1.6]" />
-                  <span className="absolute -top-1.5 -right-2 bg-[#E5A93C] text-[#1A1612] text-[9.5px] font-bold w-4 h-4 rounded-full flex items-center justify-center leading-none shadow-sm">
+                  <ShoppingCart className="w-[22px] h-[22px] xl:w-[23px] xl:h-[23px] stroke-[1.75]" />
+                  <span className="absolute -top-1 -right-1 bg-[#E5A93C] text-[#1A1612] text-[10px] font-bold w-[18px] h-[18px] rounded-full flex items-center justify-center leading-none shadow-sm">
                     0
                   </span>
                 </button>
@@ -166,10 +166,10 @@ export function Navbar() {
                 <button
                   type="button"
                   onClick={() => setMobileMenuOpen(true)}
-                  className="hover:text-[#9B6A1A] transition-colors focus:outline-none cursor-pointer p-0.5 ml-0.5"
+                  className="hover:text-[#9B6A1A] hover:bg-black/5 rounded-full p-1.5 transition-colors focus:outline-none cursor-pointer ml-0.5"
                   aria-label="Menu"
                 >
-                  <Menu className="w-[19px] h-[19px] stroke-[1.8]" />
+                  <Menu className="w-[22px] h-[22px] xl:w-[23px] xl:h-[23px] stroke-[2]" />
                 </button>
               </div>
             </div>
