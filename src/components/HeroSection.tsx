@@ -371,15 +371,15 @@ export function HeroSection() {
               opacity="0.6"
             />
 
-            {/* Layer 2: Front Floating Ivory Parchment Wave Canvas (revealing the green card behind crests & in bottom corners) */}
+            {/* Layer 2: Front Ivory Parchment Wave Canvas transitioning into Cream Collection */}
             <path
-              d="M 0 42 C 90 40, 165 18, 250 18 C 380 18, 560 74, 740 74 C 860 74, 960 34, 1060 34 C 1200 34, 1340 72, 1440 74 L 1440 110 C 1340 110, 1220 145, 1120 145 L 250 145 C 150 145, 50 112, 0 110 Z"
+              d="M 0 42 C 90 40, 165 18, 250 18 C 380 18, 560 74, 740 74 C 860 74, 960 34, 1060 34 C 1200 34, 1340 72, 1440 74 L 1440 145 L 0 145 Z"
               fill="url(#ivoryLinenCanvas)"
               filter="url(#waveShadow)"
             />
             {/* Canvas Weave Overlay */}
             <path
-              d="M 0 42 C 90 40, 165 18, 250 18 C 380 18, 560 74, 740 74 C 860 74, 960 34, 1060 34 C 1200 34, 1340 72, 1440 74 L 1440 110 C 1340 110, 1220 145, 1120 145 L 250 145 C 150 145, 50 112, 0 110 Z"
+              d="M 0 42 C 90 40, 165 18, 250 18 C 380 18, 560 74, 740 74 C 860 74, 960 34, 1060 34 C 1200 34, 1340 72, 1440 74 L 1440 145 L 0 145 Z"
               fill="url(#linenTexturePattern)"
             />
 
@@ -389,22 +389,6 @@ export function HeroSection() {
               fill="none"
               stroke="url(#waveGoldRim)"
               strokeWidth="2.2"
-            />
-
-            {/* Bottom-Left Curved Gold Rim (framing the exposed dark linen corner) */}
-            <path
-              d="M 0 110 C 50 112, 150 145, 250 145"
-              fill="none"
-              stroke="url(#waveGoldRim)"
-              strokeWidth="1.8"
-            />
-
-            {/* Bottom-Right Curved Gold Rim (framing the exposed dark linen corner) */}
-            <path
-              d="M 1120 145 C 1220 145, 1340 110, 1440 110"
-              fill="none"
-              stroke="url(#waveGoldRim)"
-              strokeWidth="1.8"
             />
           </svg>
         </div>
