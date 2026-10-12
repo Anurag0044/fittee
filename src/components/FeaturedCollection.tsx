@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check, ShoppingCart } from "lucide-react";
+import { TribalTreeWatermark } from "./TribalTreeWatermark";
 
 interface Product {
   id: number;
@@ -189,51 +190,170 @@ export function FeaturedCollection() {
             <feComposite in="blended" in2="SourceGraphic" operator="in" />
           </filter>
 
-          {/* Leaf gradients — Left corner leaves (top-left side, lower cluster) */}
-          <linearGradient id="leafGr1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#1A2E1A" />
-            <stop offset="45%" stopColor="#223C22" />
-            <stop offset="100%" stopColor="#0F1E10" />
-          </linearGradient>
-          <linearGradient id="leafGr2" x1="100%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#162A16" />
-            <stop offset="50%" stopColor="#1E3820" />
-            <stop offset="100%" stopColor="#0B1A0C" />
-          </linearGradient>
-          <linearGradient id="leafGr3" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#0E2010" />
-            <stop offset="55%" stopColor="#1B3620" />
-            <stop offset="100%" stopColor="#253E24" />
-          </linearGradient>
+          {/* ── Premium Botanical Leaf Textures ── */}
+          {/* 1. Cellular Cuticle Matrix — Microscopic organic cell texture */}
+          <pattern id="leafCellularPattern" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(25)">
+            <path d="M 0 4 L 8 4 M 4 0 L 4 8" stroke="#3E7544" strokeWidth="0.45" strokeOpacity="0.38" />
+            <circle cx="4" cy="4" r="0.75" fill="#EBD287" fillOpacity="0.25" />
+            <circle cx="0" cy="0" r="0.5" fill="#589B5F" fillOpacity="0.2" />
+            <circle cx="8" cy="8" r="0.5" fill="#589B5F" fillOpacity="0.2" />
+          </pattern>
 
-          {/* Right corner leaf gradients */}
+          {/* 2. Micro-Rib Venation Striations — Natural angled capillaries across the leaf blade */}
+          <pattern id="leafMicroRibPattern" width="6" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(36)">
+            <line x1="0" y1="0" x2="6" y2="4.5" stroke="#4C8C53" strokeWidth="0.55" strokeOpacity="0.42" />
+            <line x1="0" y1="7" x2="6" y2="11.5" stroke="#4C8C53" strokeWidth="0.55" strokeOpacity="0.42" />
+            <line x1="0" y1="3.5" x2="6" y2="8" stroke="#0E2812" strokeWidth="0.45" strokeOpacity="0.5" />
+            <line x1="0" y1="10.5" x2="6" y2="15" stroke="#0E2812" strokeWidth="0.45" strokeOpacity="0.5" />
+          </pattern>
+
+          {/* 3. Royal Gold Mica Shimmer Stippling — Artisanal gold dusting reminiscent of Sohrai minerals */}
+          <pattern id="leafGoldFleckPattern" width="22" height="22" patternUnits="userSpaceOnUse">
+            <circle cx="4" cy="5" r="0.8" fill="#F8E19B" fillOpacity="0.5" />
+            <circle cx="15" cy="8" r="0.95" fill="#DCAB47" fillOpacity="0.55" />
+            <circle cx="8" cy="16" r="0.65" fill="#FCE9B2" fillOpacity="0.42" />
+            <circle cx="18" cy="18" r="0.75" fill="#C9943B" fillOpacity="0.48" />
+            <path d="M 3 13 Q 5 15 4 17" stroke="#F8E19B" strokeWidth="0.35" strokeOpacity="0.4" fill="none" />
+            <path d="M 12 3 Q 15 4 14 6" stroke="#DCAB47" strokeWidth="0.35" strokeOpacity="0.4" fill="none" />
+          </pattern>
+
+          {/* 4. Fine Longitudinal Fibers — Drooping willow/foliage striations */}
+          <pattern id="leafFineFiberPattern" width="4" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(8)">
+            <line x1="1" y1="0" x2="1" y2="20" stroke="#3D7543" strokeWidth="0.4" strokeOpacity="0.35" />
+            <line x1="3" y1="0" x2="3" y2="20" stroke="#122A14" strokeWidth="0.35" strokeOpacity="0.4" />
+          </pattern>
+
+          {/* ── Upgraded High-Depth Botanical Gradients — Top-Right Cluster ── */}
           <linearGradient id="leafGrR1" x1="100%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#1A2E1A" />
-            <stop offset="45%" stopColor="#223C22" />
-            <stop offset="100%" stopColor="#0F1E10" />
+            <stop offset="0%" stopColor="#08180A" />
+            <stop offset="25%" stopColor="#122B14" />
+            <stop offset="55%" stopColor="#1C4220" />
+            <stop offset="85%" stopColor="#2A5C2E" />
+            <stop offset="100%" stopColor="#0D1E0F" />
           </linearGradient>
           <linearGradient id="leafGrR2" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#152615" />
-            <stop offset="50%" stopColor="#1D361E" />
-            <stop offset="100%" stopColor="#0C1B0D" />
+            <stop offset="0%" stopColor="#0B1C0E" />
+            <stop offset="35%" stopColor="#173619" />
+            <stop offset="70%" stopColor="#2B562D" />
+            <stop offset="100%" stopColor="#102512" />
           </linearGradient>
           <linearGradient id="leafGrR3" x1="50%" y1="0%" x2="50%" y2="100%">
-            <stop offset="0%" stopColor="#243E23" />
-            <stop offset="60%" stopColor="#1B3020" />
-            <stop offset="100%" stopColor="#0F200F" />
+            <stop offset="0%" stopColor="#1E3A1C" />
+            <stop offset="40%" stopColor="#325A2A" />
+            <stop offset="75%" stopColor="#606F2B" />
+            <stop offset="100%" stopColor="#8A671F" />
+          </linearGradient>
+          <linearGradient id="leafGrR4" x1="100%" y1="20%" x2="0%" y2="80%">
+            <stop offset="0%" stopColor="#0E2310" />
+            <stop offset="45%" stopColor="#1B3B1E" />
+            <stop offset="80%" stopColor="#27522A" />
+            <stop offset="100%" stopColor="#0A180C" />
           </linearGradient>
 
-          {/* Sohrai sun mandala gradient */}
-          <radialGradient id="suryaGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#B87A22" stopOpacity="0.45" />
-            <stop offset="40%" stopColor="#A0691C" stopOpacity="0.28" />
+          {/* Specular Wax Sheens & Gold Spine Gradients (Right) */}
+          <linearGradient id="leafSheenR" x1="85%" y1="0%" x2="15%" y2="100%">
+            <stop offset="0%" stopColor="#87DB93" stopOpacity="0.5" />
+            <stop offset="40%" stopColor="#5EBD6B" stopOpacity="0.28" />
+            <stop offset="80%" stopColor="#2F6E37" stopOpacity="0.08" />
+            <stop offset="100%" stopColor="#122E15" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="leafGoldRachisR" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#F9E2A0" />
+            <stop offset="35%" stopColor="#DCAB47" />
+            <stop offset="70%" stopColor="#F3D37F" />
+            <stop offset="100%" stopColor="#8C5E1A" />
+          </linearGradient>
+          <linearGradient id="leafVeinGoldR" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#EAD087" stopOpacity="0.8" />
+            <stop offset="50%" stopColor="#A8D28F" stopOpacity="0.58" />
+            <stop offset="100%" stopColor="#3C7040" stopOpacity="0.32" />
+          </linearGradient>
+
+          {/* ── Upgraded High-Depth Botanical Gradients — Bottom-Left Cluster ── */}
+          <linearGradient id="leafGr1" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#071609" />
+            <stop offset="30%" stopColor="#132D16" />
+            <stop offset="65%" stopColor="#224A26" />
+            <stop offset="90%" stopColor="#306435" />
+            <stop offset="100%" stopColor="#112713" />
+          </linearGradient>
+          <linearGradient id="leafGr2" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#0B1C0E" />
+            <stop offset="40%" stopColor="#18381C" />
+            <stop offset="80%" stopColor="#2D5C30" />
+            <stop offset="100%" stopColor="#122814" />
+          </linearGradient>
+          <linearGradient id="leafGr3" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#0F2412" />
+            <stop offset="40%" stopColor="#254823" />
+            <stop offset="75%" stopColor="#4D6228" />
+            <stop offset="100%" stopColor="#7E651E" />
+          </linearGradient>
+
+          {/* Specular Wax Sheens & Gold Spine Gradients (Left) */}
+          <linearGradient id="leafSheenL" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#153218" stopOpacity="0" />
+            <stop offset="30%" stopColor="#3E7D46" stopOpacity="0.12" />
+            <stop offset="70%" stopColor="#78CE83" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="#A4ECAD" stopOpacity="0.52" />
+          </linearGradient>
+          <linearGradient id="leafGoldRachisL" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#8C5E1A" />
+            <stop offset="30%" stopColor="#DCAB47" />
+            <stop offset="70%" stopColor="#F9E2A0" />
+            <stop offset="100%" stopColor="#E6BA58" />
+          </linearGradient>
+          <linearGradient id="leafVeinGoldL" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#4A824E" stopOpacity="0.3" />
+            <stop offset="50%" stopColor="#A5D18D" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#EBD287" stopOpacity="0.82" />
+          </linearGradient>
+
+          {/* ── Botanical Leaf & Earth Master Shading Gradients ── */}
+          <linearGradient id="leafBladeLit" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#0B1A0E" />
+            <stop offset="25%" stopColor="#1B381F" />
+            <stop offset="65%" stopColor="#2E5A33" />
+            <stop offset="100%" stopColor="#437748" />
+          </linearGradient>
+          <linearGradient id="leafBladeShadow" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#061008" />
+            <stop offset="40%" stopColor="#0E2211" />
+            <stop offset="80%" stopColor="#18361C" />
+            <stop offset="100%" stopColor="#0A160C" />
+          </linearGradient>
+          <linearGradient id="leafMidribGold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FAF0C5" />
+            <stop offset="35%" stopColor="#DFBF6A" />
+            <stop offset="70%" stopColor="#A4BE72" />
+            <stop offset="100%" stopColor="#466E3A" />
+          </linearGradient>
+          <linearGradient id="leafVeinLine" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#E0D28E" stopOpacity="0.75" />
+            <stop offset="50%" stopColor="#96BC75" stopOpacity="0.55" />
+            <stop offset="100%" stopColor="#305E35" stopOpacity="0.25" />
+          </linearGradient>
+          <linearGradient id="leafSheenGloss" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#A6F0AE" stopOpacity="0.45" />
+            <stop offset="40%" stopColor="#68BF72" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#1C4020" stopOpacity="0" />
+          </linearGradient>
+          <radialGradient id="sohraiSunOchre" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#F5DF9E" stopOpacity="0.5" />
+            <stop offset="30%" stopColor="#D9A842" stopOpacity="0.3" />
+            <stop offset="65%" stopColor="#B37822" stopOpacity="0.1" />
             <stop offset="100%" stopColor="#8A5515" stopOpacity="0" />
           </radialGradient>
+          <linearGradient id="earthMoundGrad" x1="30%" y1="0%" x2="70%" y2="100%">
+            <stop offset="0%" stopColor="#7E451E" />
+            <stop offset="35%" stopColor="#5E3113" />
+            <stop offset="70%" stopColor="#43210C" />
+            <stop offset="100%" stopColor="#251206" />
+          </linearGradient>
         </defs>
       </svg>
 
       {/* ─── 1. Base Warm Parchment Canvas ────────────────────────────── */}
-      {/* Layered warm gradient so top feels lighter (from the hero wave) and edges are richer */}
       <div className="absolute inset-0 z-0 pointer-events-none"
         style={{ background: "radial-gradient(ellipse 130% 90% at 50% -5%, #F5EFE2 0%, #EAE0CA 40%, #E2D5BB 100%)" }}
       />
@@ -243,192 +363,226 @@ export function FeaturedCollection() {
         style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundSize: "300px 300px" }}
       />
 
-      {/* ─── 3. Sohrai Sun Mandala — Top-Right (behind corner leaves) ── */}
-      <div className="absolute -top-8 -right-4 w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80 pointer-events-none z-[1] opacity-70">
-        <svg viewBox="0 0 300 300" className="w-full h-full" fill="none">
-          {/* Outer glow ring */}
-          <circle cx="150" cy="150" r="140" fill="url(#suryaGrad)" />
-          {/* Radiating spokes */}
+      {/* ─── 3. Top-Left Botanical Leaves Sprig (Lush Realistic Foliage) ─── */}
+      {/* Pinned to top-left corner, pointing down & inward over the title */}
+      <div className="absolute -top-3 -left-4 sm:-left-3 lg:-left-2 w-56 sm:w-72 lg:w-[380px] h-64 sm:h-84 lg:h-[430px] pointer-events-none z-[3]">
+        <svg viewBox="0 0 380 430" fill="none" className="w-full h-full drop-shadow-[0_16px_30px_rgba(0,0,0,0.55)]">
+          {/* Main Woody Branch Stem */}
+          <path
+            d="M -10 -10 C 35 35, 80 85, 130 175 C 150 215, 165 265, 175 320"
+            stroke="#261A10"
+            strokeWidth="4"
+            strokeLinecap="round"
+          />
+          <path
+            d="M -10 -10 C 35 35, 80 85, 130 175"
+            stroke="#4A3420"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            opacity="0.8"
+          />
+
+          {/* Leaf 1: Top-most leaf (sweeping right along the top) */}
+          <g>
+            {/* Shadow Half */}
+            <path d="M 65 65 C 105 32, 175 22, 235 50 C 180 65, 120 70, 65 65 Z" fill="url(#leafBladeShadow)" />
+            {/* Lit Half */}
+            <path d="M 65 65 C 115 65, 180 80, 235 50 C 180 40, 115 32, 65 65 Z" fill="url(#leafBladeLit)" />
+            {/* Texture Overlays */}
+            <path d="M 65 65 C 105 32, 175 22, 235 50 C 180 80, 120 75, 65 65 Z" fill="url(#leafMicroRibPattern)" opacity="0.35" />
+            <path d="M 65 65 C 105 32, 175 22, 235 50 C 180 80, 120 75, 65 65 Z" fill="url(#leafCellularPattern)" opacity="0.3" />
+            {/* Wax Sheen Highlight */}
+            <path d="M 65 65 C 110 38, 175 28, 235 50 C 175 42, 115 45, 65 65 Z" fill="url(#leafSheenGloss)" opacity="0.65" />
+            {/* Golden Midrib */}
+            <path d="M 65 65 C 120 52, 180 48, 235 50" stroke="url(#leafMidribGold)" strokeWidth="1.4" strokeLinecap="round" />
+            {/* Branching Veins */}
+            <path d="M 110 56 C 130 44, 155 38, 180 40 M 145 52 C 165 42, 190 38, 210 42 M 105 58 C 125 68, 150 72, 175 68 M 140 54 C 160 64, 185 68, 205 62"
+              stroke="url(#leafVeinLine)" strokeWidth="0.7" strokeLinecap="round" />
+          </g>
+
+          {/* Leaf 2: Outer-left drooping leaf (running down the left edge) */}
+          <g>
+            <path d="M 55 55 C 20 95, 5 155, 28 225 C 50 165, 68 110, 55 55 Z" fill="url(#leafBladeShadow)" />
+            <path d="M 55 55 C 45 110, 48 165, 28 225 C 15 155, 30 95, 55 55 Z" fill="url(#leafBladeLit)" />
+            <path d="M 55 55 C 20 95, 5 155, 28 225 C 50 165, 68 110, 55 55 Z" fill="url(#leafMicroRibPattern)" opacity="0.35" />
+            <path d="M 55 55 C 38 105, 35 160, 28 225" stroke="url(#leafMidribGold)" strokeWidth="1.3" strokeLinecap="round" />
+            <path d="M 45 105 C 32 118, 22 135, 18 155 M 40 145 C 30 160, 24 178, 22 195"
+              stroke="url(#leafVeinLine)" strokeWidth="0.65" strokeLinecap="round" />
+          </g>
+
+          {/* Leaf 3: Grand Hero Center Leaf (sweeping down-right towards the title) */}
+          <g>
+            {/* Shadow Half */}
+            <path d="M 105 125 C 160 135, 240 185, 300 270 C 230 280, 155 230, 105 125 Z" fill="url(#leafBladeShadow)" />
+            {/* Lit Half */}
+            <path d="M 105 125 C 165 145, 245 200, 300 270 C 235 240, 160 175, 105 125 Z" fill="url(#leafBladeLit)" />
+            {/* Textures */}
+            <path d="M 105 125 C 160 135, 240 185, 300 270 C 230 280, 155 230, 105 125 Z" fill="url(#leafMicroRibPattern)" opacity="0.4" />
+            <path d="M 105 125 C 160 135, 240 185, 300 270 C 230 280, 155 230, 105 125 Z" fill="url(#leafCellularPattern)" opacity="0.32" />
+            {/* Specular Sheen */}
+            <path d="M 105 125 C 160 140, 235 190, 300 270 C 240 220, 175 160, 105 125 Z" fill="url(#leafSheenGloss)" opacity="0.75" />
+            {/* Crisp Rim Hairline */}
+            <path d="M 105 125 C 160 135, 240 185, 300 270" stroke="#F5E4B2" strokeWidth="0.75" strokeOpacity="0.5" fill="none" />
+            {/* Golden Midrib */}
+            <path d="M 105 125 C 170 165, 235 215, 300 270" stroke="url(#leafMidribGold)" strokeWidth="1.6" strokeLinecap="round" />
+            {/* Intricate Branching Veins */}
+            <path d="M 140 148 C 170 140, 205 142, 235 152
+                     M 175 174 C 210 170, 245 178, 275 195
+                     M 215 205 C 245 208, 275 220, 292 238
+                     M 135 154 C 150 175, 175 195, 195 210
+                     M 170 182 C 190 205, 215 228, 238 245
+                     M 210 215 C 230 240, 252 258, 275 268"
+              stroke="url(#leafVeinLine)" strokeWidth="0.75" strokeLinecap="round" />
+          </g>
+
+          {/* Leaf 4: Lower drooping leaf (hanging downward) */}
+          <g>
+            <path d="M 125 165 C 115 215, 120 280, 155 340 C 178 285, 172 215, 125 165 Z" fill="url(#leafBladeShadow)" />
+            <path d="M 125 165 C 145 215, 150 280, 155 340 C 130 285, 125 215, 125 165 Z" fill="url(#leafBladeLit)" />
+            <path d="M 125 165 C 115 215, 120 280, 155 340 C 178 285, 172 215, 125 165 Z" fill="url(#leafMicroRibPattern)" opacity="0.35" />
+            <path d="M 125 165 C 135 220, 142 280, 155 340" stroke="url(#leafMidribGold)" strokeWidth="1.3" strokeLinecap="round" />
+            <path d="M 132 210 C 122 230, 118 252, 120 275 M 138 260 C 130 280, 128 302, 134 322"
+              stroke="url(#leafVeinLine)" strokeWidth="0.65" strokeLinecap="round" />
+          </g>
+
+          {/* Leaf 5: Terminal tip leaf */}
+          <g>
+            <path d="M 165 245 C 170 295, 195 335, 225 375 C 215 335, 195 285, 165 245 Z" fill="url(#leafBladeLit)" />
+            <path d="M 165 245 C 170 295, 195 335, 225 375" stroke="url(#leafMidribGold)" strokeWidth="1.1" strokeLinecap="round" />
+          </g>
+        </svg>
+      </div>
+
+      {/* ─── 4. Bottom-Left Botanical Leaves & Raw Earth Mound ─────────── */}
+      {/* Pinned to bottom-left corner with organic soil mound and curving leaves */}
+      <div className="absolute -left-6 -bottom-6 sm:-left-4 sm:-bottom-4 w-56 sm:w-72 lg:w-[340px] h-56 sm:h-72 lg:h-[340px] pointer-events-none z-[3]">
+        <svg viewBox="0 0 340 340" fill="none" className="w-full h-full drop-shadow-[0_-12px_24px_rgba(0,0,0,0.45)]">
+          {/* Organic Red Earth & Rock Mound Texture */}
+          <path
+            d="M 0 230 C 45 225, 80 240, 110 270 C 135 295, 155 315, 170 340 L 0 340 Z"
+            fill="url(#earthMoundGrad)"
+          />
+          <path
+            d="M 0 230 C 45 225, 80 240, 110 270 C 135 295, 155 315, 170 340"
+            stroke="#8F5022"
+            strokeWidth="1.5"
+            strokeOpacity="0.6"
+            fill="none"
+          />
+          {/* Earth Texture Noise Stippling */}
+          <path d="M 20 280 Q 40 282 60 280 M 35 305 Q 65 308 95 302 M 50 325 Q 85 328 120 322"
+            stroke="#361B0A" strokeWidth="1.2" strokeOpacity="0.4" strokeDasharray="3 5" fill="none" />
+
+          {/* Woody Branch emerging from soil */}
+          <path d="M 50 290 C 75 250, 110 190, 170 120" stroke="#261A10" strokeWidth="3.2" strokeLinecap="round" />
+
+          {/* Leaf A: Large sweeping leaf arching up-right */}
+          <g>
+            <path d="M 75 260 C 110 220, 165 170, 220 130 C 170 170, 115 235, 75 260 Z" fill="url(#leafBladeShadow)" />
+            <path d="M 75 260 C 120 235, 175 185, 220 130 C 160 160, 105 210, 75 260 Z" fill="url(#leafBladeLit)" />
+            <path d="M 75 260 C 110 220, 165 170, 220 130 C 170 170, 115 235, 75 260 Z" fill="url(#leafMicroRibPattern)" opacity="0.38" />
+            <path d="M 75 260 C 125 215, 175 170, 220 130" stroke="url(#leafMidribGold)" strokeWidth="1.4" strokeLinecap="round" />
+            <path d="M 110 220 C 130 205, 155 190, 178 180 M 145 190 C 165 178, 190 162, 210 152"
+              stroke="url(#leafVeinLine)" strokeWidth="0.7" strokeLinecap="round" />
+          </g>
+
+          {/* Leaf B: Curving up-left */}
+          <g>
+            <path d="M 60 270 C 50 220, 65 175, 95 130 C 85 180, 75 230, 60 270 Z" fill="url(#leafBladeLit)" />
+            <path d="M 60 270 C 65 220, 78 175, 95 130" stroke="url(#leafMidribGold)" strokeWidth="1.2" strokeLinecap="round" />
+          </g>
+
+          {/* Leaf C: Lower accent leaf */}
+          <g>
+            <path d="M 90 240 C 120 220, 150 200, 175 180 C 145 205, 115 225, 90 240 Z" fill="url(#leafBladeLit)" opacity="0.85" />
+            <path d="M 90 240 C 120 220, 150 200, 175 180" stroke="url(#leafMidribGold)" strokeWidth="1" strokeLinecap="round" />
+          </g>
+        </svg>
+      </div>
+
+      {/* ─── 5. Top-Right Corner Sohrai Sun Mandala ────────────────────── */}
+      {/* Pinned to top-right corner, in authentic warm etched ochre linework */}
+      <div className="absolute -top-6 -right-6 sm:-top-4 sm:-right-4 w-60 h-60 sm:w-76 sm:h-76 lg:w-[380px] lg:h-[380px] pointer-events-none z-[1] opacity-75">
+        <svg viewBox="0 0 360 360" className="w-full h-full" fill="none">
+          {/* Soft atmospheric ochre aura glow */}
+          <circle cx="200" cy="160" r="150" fill="url(#sohraiSunOchre)" />
+
+          {/* 24 Radiating Spokes with Petal Tips */}
           {Array.from({ length: 24 }).map((_, i) => {
             const angle = (i * 360) / 24;
             const rad = (angle * Math.PI) / 180;
-            const x1 = 150 + 42 * Math.cos(rad);
-            const y1 = 150 + 42 * Math.sin(rad);
-            const x2 = 150 + 130 * Math.cos(rad);
-            const y2 = 150 + 130 * Math.sin(rad);
+            const innerR = 46;
+            const outerR = 135;
+            const x1 = 200 + innerR * Math.cos(rad);
+            const y1 = 160 + innerR * Math.sin(rad);
+            const x2 = 200 + outerR * Math.cos(rad);
+            const y2 = 160 + outerR * Math.sin(rad);
             return (
-              <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
-                stroke="#B87A22" strokeWidth={i % 3 === 0 ? "1.8" : "0.9"} strokeOpacity="0.55" />
+              <g key={i}>
+                <line
+                  x1={x1}
+                  y1={y1}
+                  x2={x2}
+                  y2={y2}
+                  stroke="#A86F28"
+                  strokeWidth={i % 3 === 0 ? "1.8" : "0.95"}
+                  strokeOpacity="0.6"
+                />
+                {/* Petal Tips on Primary Spokes */}
+                {i % 2 === 0 && (
+                  <circle cx={x2} cy={y2} r="3.5" fill="#C9943B" fillOpacity="0.75" />
+                )}
+              </g>
             );
           })}
-          {/* Central rings */}
-          <circle cx="150" cy="150" r="42" stroke="#B87A22" strokeWidth="1.4" strokeOpacity="0.5" fill="none" />
-          <circle cx="150" cy="150" r="28" stroke="#B87A22" strokeWidth="1.1" strokeOpacity="0.45" fill="none" />
-          <circle cx="150" cy="150" r="14" stroke="#B87A22" strokeWidth="1.1" strokeOpacity="0.4" fill="none" />
-          <circle cx="150" cy="150" r="6" fill="#B87A22" fillOpacity="0.4" />
-          {/* Outer decorative ring */}
-          <circle cx="150" cy="150" r="120" stroke="#A06A1A" strokeWidth="1" strokeOpacity="0.3" strokeDasharray="3 6" fill="none" />
-          {/* Petal tips on 8 primary spokes */}
-          {Array.from({ length: 8 }).map((_, i) => {
-            const angle = (i * 360) / 8;
-            const rad = (angle * Math.PI) / 180;
-            const px = 150 + 130 * Math.cos(rad);
-            const py = 150 + 130 * Math.sin(rad);
-            return (
-              <circle key={i} cx={px} cy={py} r="4" fill="#B87A22" fillOpacity="0.45" />
-            );
-          })}
+
+          {/* Concentric Geometric Sacred Rings */}
+          <circle cx="200" cy="160" r="142" stroke="#A86F28" strokeWidth="0.8" strokeOpacity="0.35" fill="none" />
+          <circle cx="200" cy="160" r="126" stroke="#BD8232" strokeWidth="1.2" strokeOpacity="0.45" strokeDasharray="3 5" fill="none" />
+          <circle cx="200" cy="160" r="74" stroke="#A86F28" strokeWidth="1" strokeOpacity="0.5" fill="none" />
+          <circle cx="200" cy="160" r="46" stroke="#A86F28" strokeWidth="1.5" strokeOpacity="0.65" fill="none" />
+          <circle cx="200" cy="160" r="32" stroke="#BD8232" strokeWidth="1.1" strokeOpacity="0.5" strokeDasharray="2 3" fill="none" />
+          <circle cx="200" cy="160" r="18" stroke="#A86F28" strokeWidth="1.2" strokeOpacity="0.6" fill="none" />
+          <circle cx="200" cy="160" r="6" fill="#C9943B" fillOpacity="0.6" />
         </svg>
       </div>
 
-      {/* ─── 4. Top-Right Corner Botanical Leaves ─────────────────────── */}
-      {/* Large realistic tropical foliage, pinned to top-right, partially cropped */}
-      <div className="absolute -right-10 -top-8 w-64 sm:w-80 lg:w-[400px] h-72 sm:h-96 lg:h-[480px] pointer-events-none z-[2]">
-        <svg viewBox="0 0 380 440" fill="none" className="w-full h-full drop-shadow-[0_12px_28px_rgba(0,0,0,0.55)]">
-          {/* Leaf A — largest, sweeping from top-right down-left */}
-          <path d="M 370 20
-            C 320 45, 250 80, 180 160
-            C 135 215, 100 260, 85 300
-            C 130 245, 200 180, 280 120
-            C 330 82, 360 50, 370 20 Z"
-            fill="url(#leafGrR1)" />
-          {/* Leaf A midrib */}
-          <path d="M 370 20 C 300 80, 200 180, 85 300"
-            stroke="#0A1A0B" strokeWidth="1.2" strokeOpacity="0.5" fill="none" />
-          {/* Leaf A veins */}
-          <path d="M 280 120 C 240 155, 195 190, 160 230 M 330 82 C 290 115, 250 155, 220 195 M 240 140 C 210 170, 185 205, 165 240"
-            stroke="#0A1A0B" strokeWidth="0.6" strokeOpacity="0.35" fill="none" />
 
-          {/* Leaf B — medium, drooping right */}
-          <path d="M 380 85
-            C 355 110, 310 155, 275 220
-            C 250 265, 235 310, 240 345
-            C 255 305, 285 255, 320 200
-            C 350 155, 375 115, 380 85 Z"
-            fill="url(#leafGrR2)" />
-          {/* Leaf B midrib */}
-          <path d="M 380 85 C 340 160, 280 260, 240 345"
-            stroke="#0A1A0B" strokeWidth="1" strokeOpacity="0.45" fill="none" />
+      {/* ─── 7. Central Background Sacred Kalpavriksha (Tree of Life) & Karam Dancers Watermark ── */}
+      <TribalTreeWatermark className="absolute top-2 sm:top-4 lg:top-5 left-1/2 -translate-x-1/2 w-[520px] sm:w-[680px] lg:w-[840px] xl:w-[940px] h-[220px] sm:h-[270px] lg:h-[320px] z-[0]" opacity={0.34} />
 
-          {/* Leaf C — smaller, upper-right cluster */}
-          <path d="M 360 0
-            C 330 18, 290 40, 255 80
-            C 225 115, 205 150, 200 185
-            C 225 145, 265 105, 305 68
-            C 338 38, 358 14, 360 0 Z"
-            fill="url(#leafGrR3)" />
-
-          {/* Leaf D — long narrow drooping leaf, far right */}
-          <path d="M 380 140
-            C 375 180, 365 240, 360 310
-            C 358 350, 360 390, 365 440
-            C 362 390, 368 330, 370 270
-            C 375 210, 380 165, 380 140 Z"
-            fill="url(#leafGrR1)" opacity="0.7" />
-        </svg>
-      </div>
-
-      {/* ─── 5. Bottom-Left Corner Botanical Leaves ───────────────────── */}
-      <div className="absolute -left-8 -bottom-8 w-56 sm:w-72 lg:w-[340px] h-56 sm:h-72 lg:h-[340px] pointer-events-none z-[2]">
-        <svg viewBox="0 0 320 320" fill="none" className="w-full h-full drop-shadow-[0_-8px_20px_rgba(0,0,0,0.45)]">
-          {/* Leaf A — sweeping bottom-left, curling upward */}
-          <path d="M 20 310
-            C 60 255, 130 185, 215 130
-            C 160 180, 90 255, 20 310 Z"
-            fill="url(#leafGr1)" />
-          <path d="M 20 310 C 90 225, 170 165, 215 130"
-            stroke="#071408" strokeWidth="1.1" strokeOpacity="0.5" fill="none" />
-          <path d="M 120 215 C 150 195, 185 170, 215 145 M 75 255 C 105 235, 140 210, 170 185"
-            stroke="#071408" strokeWidth="0.6" strokeOpacity="0.3" fill="none" />
-
-          {/* Leaf B — sweeping from bottom, tilting right */}
-          <path d="M 0 295
-            C 40 230, 100 165, 170 110
-            C 120 165, 60 235, 0 295 Z"
-            fill="url(#leafGr2)" opacity="0.9" />
-
-          {/* Leaf C — curled corner leaf */}
-          <path d="M 30 320
-            C 80 275, 150 220, 230 175
-            C 175 220, 105 278, 30 320 Z"
-            fill="url(#leafGr3)" opacity="0.75" />
-        </svg>
-      </div>
-
-      {/* ─── 6. Left Sidebar Thin Sohrai Bark Art Strip ───────────────── */}
-      {/* Vertical strip of Warli/Sohrai-style minimal tribal people & tree art */}
-      <div className="absolute top-0 left-0 w-[60px] sm:w-[72px] h-full pointer-events-none z-[1] opacity-[0.16]"
-        style={{ color: "#7A5528" }}>
-        <svg viewBox="0 0 60 700" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" className="w-full h-full">
-          {/* Sacred tree trunk */}
-          <line x1="30" y1="680" x2="30" y2="80" />
-          {/* Branches */}
-          <path d="M30 150 Q15 130 8 108 M30 150 Q45 130 52 108" />
-          <path d="M30 210 Q12 188 4 164 M30 210 Q48 188 56 164" />
-          <path d="M30 280 Q15 260 8 238 M30 280 Q45 260 52 238" />
-          <path d="M30 350 Q14 328 6 304 M30 350 Q46 328 54 304" />
-          <path d="M30 420 Q16 400 9 378 M30 420 Q44 400 51 378" />
-          <path d="M30 490 Q15 470 8 448 M30 490 Q45 470 52 448" />
-          <path d="M30 560 Q16 542 9 520 M30 560 Q44 542 51 520" />
-          {/* Leaf tufts at branch ends */}
-          <circle cx="8" cy="108" r="5" fill="currentColor" fillOpacity="0.5" />
-          <circle cx="52" cy="108" r="5" fill="currentColor" fillOpacity="0.5" />
-          <circle cx="4" cy="164" r="6" fill="currentColor" fillOpacity="0.45" />
-          <circle cx="56" cy="164" r="6" fill="currentColor" fillOpacity="0.45" />
-          <circle cx="6" cy="304" r="5" fill="currentColor" fillOpacity="0.4" />
-          <circle cx="54" cy="304" r="5" fill="currentColor" fillOpacity="0.4" />
-          {/* Sun at top */}
-          <circle cx="30" cy="68" r="14" strokeWidth="1.4" />
-          <circle cx="30" cy="68" r="6" fill="currentColor" fillOpacity="0.45" />
-          {Array.from({ length: 8 }).map((_, i) => {
-            const a = (i * 45 * Math.PI) / 180;
-            return <line key={i} x1={30 + 16 * Math.cos(a)} y1={68 + 16 * Math.sin(a)} x2={30 + 22 * Math.cos(a)} y2={68 + 22 * Math.sin(a)} strokeWidth="1" />;
-          })}
-          {/* Tribal figure near bottom of strip */}
-          <circle cx="30" cy="615" r="5" />
-          <line x1="30" y1="620" x2="30" y2="642" />
-          <line x1="18" y1="630" x2="42" y2="630" />
-          <line x1="30" y1="642" x2="22" y2="658" />
-          <line x1="30" y1="642" x2="38" y2="658" />
-        </svg>
-      </div>
-
-      {/* ─── 7. Left Editorial Tagline ────────────────────────────────── */}
+      {/* ─── 8. Left Editorial Tagline & Lower Watermark Dancers ────────── */}
       <div className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 pointer-events-none z-[3] hidden lg:flex flex-col gap-0.5">
         <p className="font-serif italic text-[10px] tracking-wide text-[#7A5528]/50 leading-loose">
           People<br />Roots<br />Stories<br />On Fabric
         </p>
-        <span className="block w-4 h-[1px] bg-[#7A5528]/35 mt-1" />
+        <span className="block w-4 h-[1px] bg-[#7A5528]/35 mt-1 mb-2" />
+        <div className="w-4 h-4 text-[#B87A22] opacity-60">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <circle cx="12" cy="12" r="3" />
+            <circle cx="12" cy="12" r="6" strokeDasharray="2 3" />
+            <line x1="12" y1="2" x2="12" y2="4" />
+            <line x1="12" y1="20" x2="12" y2="22" />
+            <line x1="2" y1="12" x2="4" y2="12" />
+            <line x1="20" y1="12" x2="22" y2="12" />
+          </svg>
+        </div>
       </div>
 
-      {/* ─── 8. Right Editorial Tagline ───────────────────────────────── */}
-      <div className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 pointer-events-none z-[3] hidden lg:flex flex-col items-center">
-        <p className="font-sans text-[8px] sm:text-[9px] font-semibold tracking-[0.28em] text-[#7A5528]/45 uppercase"
-          style={{ writingMode: "vertical-rl", letterSpacing: "0.35em" }}>
-          Tribal Art Modern Wear
-        </p>
-      </div>
-
-      {/* ─── 9. Faint Floral Sohrai Pattern — Bottom Center ──────────── */}
-      {/* Subtle repeating folk motifs behind the lower card row */}
-      <div className="absolute bottom-0 inset-x-0 h-40 pointer-events-none z-[1] opacity-[0.07]"
-        style={{ color: "#9A6A30" }}>
-        <svg viewBox="0 0 1200 160" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="1.1">
-          {/* Repeating leaf-flower motifs */}
-          {[80, 240, 400, 560, 720, 880, 1040, 1200].map((x, i) => (
-            <g key={i} transform={`translate(${x}, 80)`}>
-              <circle cx="0" cy="0" r="12" strokeWidth="1" />
-              <circle cx="0" cy="0" r="5" fill="currentColor" fillOpacity="0.5" />
-              {[0, 45, 90, 135, 180, 225, 270, 315].map((a, j) => {
-                const r = (a * Math.PI) / 180;
-                return <line key={j} x1={0} y1={0} x2={20 * Math.cos(r)} y2={20 * Math.sin(r)} strokeWidth="0.8" />;
-              })}
-            </g>
-          ))}
+      {/* Faint Tribal Dancers Watermark Lower-Left */}
+      <div className="absolute bottom-8 left-2 sm:left-4 w-28 sm:w-36 h-28 pointer-events-none z-[1] opacity-[0.14]" style={{ color: "#8A5A24" }}>
+        <svg viewBox="0 0 120 100" fill="none" stroke="currentColor" strokeWidth="1.2" className="w-full h-full">
+          <circle cx="40" cy="20" r="4" fill="currentColor" fillOpacity="0.4" />
+          <path d="M 35 28 L 45 28 L 40 38 Z" fill="currentColor" fillOpacity="0.35" />
+          <path d="M 40 38 L 34 48 L 46 48 Z" fill="currentColor" fillOpacity="0.35" />
+          <line x1="37" y1="48" x2="32" y2="62" />
+          <line x1="43" y1="48" x2="48" y2="62" />
+          <line x1="40" y1="32" x2="20" y2="26" />
+          <line x1="40" y1="32" x2="60" y2="26" />
         </svg>
       </div>
 
-      {/* ─── 10. Delicate Gold Top Hairline (Hero → Section seam) ─────── */}
+      {/* ─── 9. Delicate Gold Top Hairline (Hero → Section seam) ─────── */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C89B4C]/35 to-transparent pointer-events-none z-10" />
 
 
@@ -619,8 +773,8 @@ export function FeaturedCollection() {
                               }}
                               style={{ backgroundColor: color }}
                               className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all cursor-pointer ${isSelected
-                                  ? "ring-1.5 ring-[#1C1610] scale-110 shadow-2xs"
-                                  : "border border-black/15 opacity-80 hover:opacity-100"
+                                ? "ring-1.5 ring-[#1C1610] scale-110 shadow-2xs"
+                                : "border border-black/15 opacity-80 hover:opacity-100"
                                 }`}
                               title={`Colorway ${colorIdx + 1}`}
                             />
