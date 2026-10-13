@@ -1,8 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, X, Check, Sparkles, Palette, Shirt, Send } from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 interface StyleOption {
   id: string;
@@ -65,6 +71,91 @@ export function CustomDesignSection() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [customerEmail, setCustomerEmail] = useState("");
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const photoRef = useRef<HTMLDivElement>(null);
+  const noiseLayerRef = useRef<HTMLDivElement>(null);
+  const sunRef = useRef<HTMLDivElement>(null);
+
+  // ─── Seamless Natural Gradient Noise Removal & Sacred Sun 360° Motion ───
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const ctx = gsap.context(() => {
+      const photoEl = photoRef.current;
+      const noiseEl = noiseLayerRef.current;
+      const sunEl = sunRef.current;
+
+      // ─── 1. Sacred Sohrai Sun 360° Clean Perpetual Motion ───
+      if (sunEl) {
+        gsap.set(sunEl, {
+          transformOrigin: "50% 50%",
+          force3D: true,
+          rotation: 0,
+        });
+
+        // Silky-smooth, perpetual 360-degree rotation with zero wobbling
+        gsap.to(sunEl, {
+          rotation: 360,
+          duration: 38,
+          ease: "none",
+          repeat: -1,
+        });
+      }
+
+      if (!photoEl || !noiseEl) return;
+
+      // Initial state: Artwork rests under natural matte gradient noise
+      gsap.set(photoEl, {
+        opacity: 0.88,
+        filter: "contrast(0.94)",
+      });
+      gsap.set(noiseEl, {
+        autoAlpha: 0.92,
+        filter: "blur(0px)",
+        display: "block",
+      });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top 80%",
+          once: true,
+        },
+        delay: 0.15,
+      });
+
+      // Natural gradient noise dissolves and lifts away without ANY moving lines or seams
+      tl.to(
+        noiseEl,
+        {
+          autoAlpha: 0,
+          filter: "blur(16px)",
+          duration: 1.45,
+          ease: "power2.out",
+          onComplete: () => {
+            gsap.set(noiseEl, { display: "none" });
+          },
+        },
+        0
+      );
+
+      // Authentic handcrafted artwork clarifies into 100% rich contrast
+      tl.to(
+        photoEl,
+        {
+          opacity: 1,
+          filter: "contrast(1)",
+          duration: 1.3,
+          ease: "power2.out",
+        },
+        0.05
+      );
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
+
   // Lock background scroll when modal is active
   useEffect(() => {
     if (isModalOpen) {
@@ -97,6 +188,7 @@ export function CustomDesignSection() {
 
   return (
     <section
+      ref={sectionRef}
       id="custom-design"
       className="relative w-full bg-[#EAE2D5] min-h-[500px] sm:min-h-[540px] lg:min-h-[580px] flex flex-col justify-between overflow-hidden select-none isolate"
     >
@@ -122,29 +214,108 @@ export function CustomDesignSection() {
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C89B4C]/45 to-transparent pointer-events-none z-10" />
 
       {/* 
-        ─── 4. Authentic Sohrai Tree of Life, Sun & Deer Linework ───
-        Anchored cleanly along the far left edge with organic ink absorption into parchment
+        ─── 4. Authentic Sohrai Tree of Life & Sacred 360° Rotating Sun Linework ───
+        Anchored cleanly to the top-left with organic ink absorption into parchment
       */}
-      <div className="absolute left-0 sm:left-2 lg:left-4 xl:left-8 top-0 bottom-16 sm:bottom-20 lg:bottom-24 w-[240px] sm:w-[300px] lg:w-[370px] xl:w-[410px] pointer-events-none select-none z-1 opacity-25 sm:opacity-90 transition-opacity">
-        <picture>
-          <source srcSet="/images/tribal-art-perfect.webp" type="image/webp" />
-          <img
-            src="/images/tribal-art-perfect.png"
-            alt="Authentic Jharkhand Sohrai Sacred Kalpavriksha Tree, Sun and Folk Deer"
-            className="w-full h-full object-contain object-left-bottom mix-blend-multiply"
-            loading="lazy"
-          />
-        </picture>
+      <div className="absolute left-0 sm:left-2 lg:left-4 xl:left-8 top-0 bottom-16 sm:bottom-20 lg:bottom-24 w-[240px] sm:w-[300px] lg:w-[370px] xl:w-[410px] pointer-events-none select-none z-1 opacity-25 sm:opacity-90 transition-opacity flex items-start justify-start">
+        <div
+          className="relative h-full max-w-full"
+          style={{ aspectRatio: "364 / 840" }}
+        >
+          {/* Base Tree of Life, Maiden & Folk Deer Linework (Cleaned sky backdrop) */}
+          <picture>
+            <source srcSet="/images/tribal-art-base.webp" type="image/webp" />
+            <img
+              src="/images/tribal-art-base.png"
+              alt="Authentic Jharkhand Sohrai Sacred Kalpavriksha Tree, Maiden and Folk Deer"
+              className="w-full h-full object-contain object-left-top mix-blend-multiply"
+              loading="lazy"
+            />
+          </picture>
+
+          {/* 
+            ─── Sacred Sohrai Concentric Sun Mandala (360° Clean Motion, Restricted in Place) ───
+            Restricted on top at exact geometric center coordinates (74.73%, 14.64%).
+            Two-tier structure cleanly decouples fixed positioning from GSAP rotation.
+          */}
+          <div className="absolute left-[74.73%] top-[14.64%] w-[70.33%] aspect-square -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+            <div
+              ref={sunRef}
+              className="w-full h-full will-change-transform"
+              style={{ transformOrigin: "50% 50%" }}
+            >
+              <picture>
+                <source srcSet="/images/tribal-sun.webp" type="image/webp" />
+                <img
+                  src="/images/tribal-sun.png"
+                  alt="Sacred Sohrai Sun Mandala rotating in clean 360 degree motion"
+                  className="w-full h-full object-contain mix-blend-multiply select-none"
+                  loading="eager"
+                />
+              </picture>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* ─── 5. Main Editorial Typography & Action Area ─── */}
+      {/* 
+        ─── 5. Authentic Artisan Studio & Hand-Painted Craft Flat Lay (Full HD 1024x1024) ───
+        Crisp, fully visible HD showcase cleanly inset from the top hairline and bottom chevron border.
+        Reveals as natural gradient noise dissolves smoothly away without any moving lines or seams.
+      */}
+      <div
+        className="absolute right-0 top-5 sm:top-6 lg:top-7 bottom-12 sm:bottom-14 lg:bottom-16 w-full sm:w-[62%] md:w-[56%] lg:w-[54%] xl:w-[52%] pointer-events-none select-none z-2 overflow-hidden"
+        style={{
+          maskImage:
+            "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.12) 3%, rgba(0,0,0,0.8) 14%, black 22%, black 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.12) 3%, rgba(0,0,0,0.8) 14%, black 22%, black 100%)",
+        }}
+      >
+        {/* The Stationary HD Photo (100% full rich matte contrast, zero milky wash) */}
+        <div
+          ref={photoRef}
+          className="w-full h-full will-change-transform"
+        >
+          <picture>
+            <source
+              srcSet="/images/artisan-clean-hd.webp"
+              type="image/webp"
+            />
+            <img
+              src="/images/artisan-clean-hd.jpg"
+              alt="Indigenous Jharkhand artisan hand-painting tribal Sohrai motifs on canvas tote and apparel"
+              className="w-full h-full object-cover object-center sm:object-left"
+              loading="eager"
+            />
+          </picture>
+        </div>
+
+        {/* 
+          ─── Natural Gradient Noise Veil (Zero hard lines, pure organic dissolution) ───
+          Softly dissolves in place on refresh/scroll, revealing the artwork seamlessly.
+        */}
+        <div
+          ref={noiseLayerRef}
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, #EAE0CA 0%, rgba(234, 224, 202, 0.85) 30%, rgba(234, 224, 202, 0.45) 60%, transparent 100%),
+              url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E")
+            `,
+            backgroundSize: "cover, 140px 140px",
+          }}
+          className="absolute inset-0 z-10 pointer-events-none will-change-transform"
+        />
+      </div>
+
+      {/* ─── 6. Main Editorial Typography & Action Area ─── */}
       <div className="relative z-10 w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 my-auto flex items-center">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full pl-0 sm:pl-[100px] md:pl-[130px] lg:pl-[160px] xl:pl-[190px] max-w-[800px]"
+          className="w-full pl-0 sm:pl-[70px] md:pl-[100px] lg:pl-[130px] xl:pl-[160px] max-w-[540px] lg:max-w-[580px]"
         >
           {/* Eyebrow: MADE FOR YOU — */}
           <div className="flex items-center gap-2.5 sm:gap-3 mb-2.5 sm:mb-3">
@@ -184,8 +355,8 @@ export function CustomDesignSection() {
         </motion.div>
       </div>
 
-      {/* ─── 6. Authentic Jharkhand Tribal Geometric Bottom Border (Edge-to-Edge) ─── */}
-      <div className="relative w-full overflow-hidden pointer-events-none select-none z-1 shrink-0 mt-6 sm:mt-8 pb-1 sm:pb-2">
+      {/* ─── 7. Authentic Jharkhand Tribal Geometric Bottom Border (Edge-to-Edge) ─── */}
+      <div className="relative w-full overflow-hidden pointer-events-none select-none z-10 shrink-0 mt-6 sm:mt-8 pb-1 sm:pb-2">
         <svg
           className="w-full h-5 sm:h-5.5 opacity-85 mix-blend-multiply"
           aria-hidden="true"
@@ -317,11 +488,10 @@ export function CustomDesignSection() {
                           <div
                             key={style.id}
                             onClick={() => setSelectedStyle(style.id)}
-                            className={`p-3 rounded-xl border transition-all duration-200 cursor-pointer ${
-                              selectedStyle === style.id
-                                ? "bg-[#EDE2D1] border-[#B87A38] shadow-sm ring-1 ring-[#B87A38]"
-                                : "bg-[#FAF7F2] border-[#E2D5C0] hover:border-[#C4B298]"
-                            }`}
+                            className={`p-3 rounded-xl border transition-all duration-200 cursor-pointer ${selectedStyle === style.id
+                              ? "bg-[#EDE2D1] border-[#B87A38] shadow-sm ring-1 ring-[#B87A38]"
+                              : "bg-[#FAF7F2] border-[#E2D5C0] hover:border-[#C4B298]"
+                              }`}
                           >
                             <div className="flex items-center justify-between mb-1">
                               <h4 className="font-editorial font-bold text-sm text-[#1C1610]">
@@ -354,11 +524,10 @@ export function CustomDesignSection() {
                             key={garment.id}
                             type="button"
                             onClick={() => setSelectedGarment(garment.id)}
-                            className={`p-2.5 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                              selectedGarment === garment.id
-                                ? "bg-[#192917] text-[#FAF7F2] border-[#192917] shadow-sm"
-                                : "bg-[#FAF7F2] text-[#1C1610] border-[#E2D5C0] hover:border-[#C4B298]"
-                            }`}
+                            className={`p-2.5 rounded-xl border text-left transition-all duration-200 cursor-pointer ${selectedGarment === garment.id
+                              ? "bg-[#192917] text-[#FAF7F2] border-[#192917] shadow-sm"
+                              : "bg-[#FAF7F2] text-[#1C1610] border-[#E2D5C0] hover:border-[#C4B298]"
+                              }`}
                           >
                             <p className="text-[11px] font-bold leading-tight truncate">
                               {garment.name}
@@ -384,11 +553,10 @@ export function CustomDesignSection() {
                             key={place.id}
                             type="button"
                             onClick={() => setSelectedPlacement(place.id)}
-                            className={`p-2 rounded-lg border text-center text-xs transition-all cursor-pointer ${
-                              selectedPlacement === place.id
-                                ? "bg-[#EDE2D1] border-[#B87A38] font-bold text-[#1C1610]"
-                                : "bg-[#FAF7F2] border-[#E2D5C0] text-[#6E5D49] hover:border-[#C4B298]"
-                            }`}
+                            className={`p-2 rounded-lg border text-center text-xs transition-all cursor-pointer ${selectedPlacement === place.id
+                              ? "bg-[#EDE2D1] border-[#B87A38] font-bold text-[#1C1610]"
+                              : "bg-[#FAF7F2] border-[#E2D5C0] text-[#6E5D49] hover:border-[#C4B298]"
+                              }`}
                           >
                             {place.name}
                           </button>
