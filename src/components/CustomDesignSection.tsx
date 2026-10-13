@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useAnimation, type Variants } from "framer-motion";
 import { ArrowRight, X, Check, Sparkles, Palette, Shirt, Send } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,6 +9,31 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
+
+const luxuryEase = [0.16, 1, 0.3, 1] as const;
+
+const textBlockVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.12,
+    },
+  },
+};
+
+const textItemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.75,
+      ease: luxuryEase,
+    },
+  },
+};
 
 interface StyleOption {
   id: string;
@@ -76,6 +101,8 @@ export function CustomDesignSection() {
   const noiseLayerRef = useRef<HTMLDivElement>(null);
   const sunRef = useRef<HTMLDivElement>(null);
 
+  const textControls = useAnimation();
+
   // ─── Seamless Natural Gradient Noise Removal & Sacred Sun 360° Motion ───
   useEffect(() => {
     const section = sectionRef.current;
@@ -116,13 +143,18 @@ export function CustomDesignSection() {
         display: "block",
       });
 
+      const triggerFramerAnimations = () => {
+        textControls.start("visible");
+      };
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: "top 80%",
+          start: "top 85%",
           once: true,
+          onEnter: triggerFramerAnimations,
         },
-        delay: 0.15,
+        delay: 0.1,
       });
 
       // Natural gradient noise dissolves and lifts away without ANY moving lines or seams
@@ -151,10 +183,17 @@ export function CustomDesignSection() {
         },
         0.05
       );
+
+      // Check on immediate refresh if the section is already in or near viewport
+      ScrollTrigger.refresh();
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
+        triggerFramerAnimations();
+      }
     }, section);
 
     return () => ctx.revert();
-  }, []);
+  }, [textControls]);
 
   // Lock background scroll when modal is active
   useEffect(() => {
@@ -311,37 +350,38 @@ export function CustomDesignSection() {
       {/* ─── 6. Main Editorial Typography & Action Area ─── */}
       <div className="relative z-10 w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 my-auto flex items-center">
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          initial="hidden"
+          animate={textControls}
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={textBlockVariants}
           className="w-full pl-0 sm:pl-[70px] md:pl-[100px] lg:pl-[130px] xl:pl-[160px] max-w-[540px] lg:max-w-[580px]"
         >
           {/* Eyebrow: MADE FOR YOU — */}
-          <div className="flex items-center gap-2.5 sm:gap-3 mb-2.5 sm:mb-3">
+          <motion.div variants={textItemVariants} className="flex items-center gap-2.5 sm:gap-3 mb-2.5 sm:mb-3">
             <span className="font-sans text-[10.5px] sm:text-[11.5px] font-semibold tracking-[0.24em] text-[#8D4E13] uppercase">
               MADE FOR YOU
             </span>
             <span className="inline-block w-8 sm:w-12 h-[1.5px] bg-[#8D4E13]/70" />
-          </div>
+          </motion.div>
 
           {/* Main Headline Stack: Custom / Handmade / Designs */}
-          <h2 className="font-editorial text-4xl sm:text-5xl lg:text-[56px] xl:text-[60px] font-bold text-[#081A0B] tracking-[-0.02em] leading-[1.02]">
+          <motion.h2 variants={textItemVariants} className="font-editorial text-4xl sm:text-5xl lg:text-[56px] xl:text-[60px] font-bold text-[#081A0B] tracking-[-0.02em] leading-[1.02]">
             <span className="block">Custom</span>
             <span className="block font-normal italic text-[#B87A38] my-0.5 sm:my-1 pr-2">
               Handmade
             </span>
             <span className="block">Designs</span>
-          </h2>
+          </motion.h2>
 
           {/* Subtitle Description */}
-          <p className="mt-4 sm:mt-5 text-[#213326]/85 text-[13.5px] sm:text-[14.5px] lg:text-[15.5px] font-normal leading-[1.65] max-w-sm sm:max-w-md">
+          <motion.p variants={textItemVariants} className="mt-4 sm:mt-5 text-[#213326]/85 text-[13.5px] sm:text-[14.5px] lg:text-[15.5px] font-normal leading-[1.65] max-w-sm sm:max-w-md">
             Your idea, brought to life through art inspired by the people, patterns and
             spirit of Jharkhand.
-          </p>
+          </motion.p>
 
           {/* CTA Action Button */}
-          <div className="mt-6 sm:mt-8">
+          <motion.div variants={textItemVariants} className="mt-6 sm:mt-8">
             <button
               type="button"
               onClick={() => setIsModalOpen(true)}
@@ -351,7 +391,7 @@ export function CustomDesignSection() {
               <span>Create Your Design</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
             </button>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
 

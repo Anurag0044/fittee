@@ -1,9 +1,76 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useAnimation, type Variants } from "framer-motion";
 import { Check, ShoppingCart, ChevronLeft, ChevronRight } from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { TribalTreeWatermark } from "./TribalTreeWatermark";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+const luxuryEase = [0.16, 1, 0.3, 1] as const;
+
+const headerContainerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const headerItemVariants: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.75,
+      ease: luxuryEase,
+    },
+  },
+};
+
+const productsContainerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+      delayChildren: 0.22,
+    },
+  },
+};
+
+const productItemVariants: Variants = {
+  hidden: { opacity: 0, y: 24, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.7,
+      ease: luxuryEase,
+    },
+  },
+};
+
+const carouselShelfVariants: Variants = {
+  hidden: { opacity: 0, y: 26 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: luxuryEase,
+    },
+  },
+};
 
 interface Product {
   id: number;
@@ -155,6 +222,12 @@ export function FeaturedCollection() {
   const [addedId, setAddedId] = useState<number | null>(null);
   const [phraseIndex, setPhraseIndex] = useState(0);
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const carouselSectionRef = useRef<HTMLDivElement>(null);
+  const headerControls = useAnimation();
+  const productsControls = useAnimation();
+  const carouselControls = useAnimation();
+
   // Centered Focus Coverflow Carousel State
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(1200);
@@ -162,6 +235,62 @@ export function FeaturedCollection() {
   const [activeIndex, setActiveIndex] = useState(NEW_ARRIVALS.length); // Middle set (index 8)
   const [isPaused, setIsPaused] = useState(false);
   const [isNormalizing, setIsNormalizing] = useState(false);
+
+  // ─── Synchronized GSAP ScrollTrigger & Refresh Entrance Trigger ───
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const ctx = gsap.context(() => {
+      // 1. Main Grid Entrance
+      const triggerMainGrid = () => {
+        headerControls.start("visible");
+        productsControls.start("visible");
+      };
+
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top 85%",
+          once: true,
+          onEnter: triggerMainGrid,
+        },
+        delay: 0.1,
+      });
+
+      // Immediate refresh detection for main grid
+      ScrollTrigger.refresh();
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
+        triggerMainGrid();
+      }
+
+      // 2. Carousel Shelf Entrance
+      const carouselEl = carouselSectionRef.current;
+      if (carouselEl) {
+        const triggerCarousel = () => {
+          carouselControls.start("visible");
+        };
+
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: carouselEl,
+            start: "top 85%",
+            once: true,
+            onEnter: triggerCarousel,
+          },
+          delay: 0.1,
+        });
+
+        const cRect = carouselEl.getBoundingClientRect();
+        if (cRect.top < window.innerHeight * 0.9 && cRect.bottom > 0) {
+          triggerCarousel();
+        }
+      }
+    }, section);
+
+    return () => ctx.revert();
+  }, [headerControls, productsControls, carouselControls]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -238,6 +367,7 @@ export function FeaturedCollection() {
 
   return (
     <section
+      ref={sectionRef}
       id="shop"
       className="relative w-full bg-[#EAE2D5] pt-14 sm:pt-16 lg:pt-20 pb-8 sm:pb-10 lg:pb-12 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 overflow-hidden select-none isolate"
     >
@@ -461,14 +591,15 @@ export function FeaturedCollection() {
       <div className="relative z-10 max-w-[1220px] mx-auto">
         {/* Editorial Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          initial="hidden"
+          animate={headerControls}
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={headerContainerVariants}
           className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 sm:mb-9"
         >
           {/* Typographic Title Block */}
-          <div>
+          <motion.div variants={headerItemVariants}>
             <div className="flex items-center gap-2.5 mb-1.5">
               <span className="text-[10.5px] font-semibold tracking-[0.22em] text-[#786957] uppercase">
                 FEATURED COLLECTION
@@ -489,10 +620,10 @@ export function FeaturedCollection() {
             <p className="mt-1.5 text-[#635543] text-[13px] sm:text-sm font-normal max-w-md leading-relaxed">
               Contemporary silhouettes inspired by the tribal art and spirit of Jharkhand.
             </p>
-          </div>
+          </motion.div>
 
           {/* Right Side: Premium Animated Classy Editorial Text */}
-          <div className="flex items-center sm:items-end justify-start sm:justify-end gap-3.5 self-start sm:self-end">
+          <motion.div variants={headerItemVariants} className="flex items-center sm:items-end justify-start sm:justify-end gap-3.5 self-start sm:self-end">
             {/* Subtle Vertical Gold Divider */}
             <div className="hidden sm:block w-[1px] h-12 bg-gradient-to-b from-transparent via-[#B37E26]/50 to-transparent" />
 
@@ -527,16 +658,24 @@ export function FeaturedCollection() {
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* Compact, High-End Luxury Editorial Product Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-3.5 lg:gap-4">
+        <motion.div
+          initial="hidden"
+          animate={productsControls}
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.05 }}
+          variants={productsContainerVariants}
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-3.5 lg:gap-4"
+        >
           {PRODUCTS.map((product) => (
-              <div
-                key={product.id}
-                className="group relative flex flex-col rounded-xl overflow-hidden bg-[#F7F3EB] border border-[#DDD3C2] hover:border-[#B8853B]/70 transition-all duration-300 shadow-[0_2px_8px_rgba(40,28,14,0.04)] hover:shadow-[0_8px_20px_rgba(40,28,14,0.08)] cursor-pointer"
-              >
+            <motion.div
+              key={product.id}
+              variants={productItemVariants}
+              className="group relative flex flex-col rounded-xl overflow-hidden bg-[#F7F3EB] border border-[#DDD3C2] hover:border-[#B8853B]/70 transition-all duration-300 shadow-[0_2px_8px_rgba(40,28,14,0.04)] hover:shadow-[0_8px_20px_rgba(40,28,14,0.08)] cursor-pointer"
+            >
                 {/* 1. Compact Portrait Photography Window (Natural, Unobstructed) */}
                 <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#E2D8C7]">
                   <img
@@ -650,12 +789,20 @@ export function FeaturedCollection() {
                     </button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-        </div>
+        </motion.div>
 
         {/* ─── Premium Horizontal Autoplay Carousel / Slider: New Arrivals ─── */}
-        <div className="mt-14 sm:mt-18 lg:mt-20 pt-10 sm:pt-14 border-t border-[#D9CEBC]">
+        <motion.div
+          ref={carouselSectionRef}
+          initial="hidden"
+          animate={carouselControls}
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={carouselShelfVariants}
+          className="mt-14 sm:mt-18 lg:mt-20 pt-10 sm:pt-14 border-t border-[#D9CEBC]"
+        >
           {/* Section Header: Minimal, Tasteful Editorial Header */}
           <div className="mb-6 sm:mb-8">
             <h3 className="font-editorial text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#1C1610] tracking-tight leading-[1.15] flex items-baseline gap-2">
@@ -881,7 +1028,7 @@ export function FeaturedCollection() {
               </div>
             );
           })()}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
