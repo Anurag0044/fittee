@@ -239,7 +239,7 @@ export function FeaturedCollection() {
   return (
     <section
       id="shop"
-      className="relative w-full bg-[#EAE2D5] py-14 sm:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 overflow-hidden select-none isolate"
+      className="relative w-full bg-[#EAE2D5] pt-14 sm:pt-16 lg:pt-20 pb-8 sm:pb-10 lg:pb-12 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 overflow-hidden select-none isolate"
     >
       {/* ─── Hidden SVG Pattern Defs ──────────────────────────────────── */}
       <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
@@ -453,18 +453,6 @@ export function FeaturedCollection() {
         </div>
       </div>
 
-      {/* Faint Tribal Dancers Watermark Lower-Left */}
-      <div className="absolute bottom-8 left-2 sm:left-4 w-28 sm:w-36 h-28 pointer-events-none z-[1] opacity-[0.14]" style={{ color: "#8A5A24" }}>
-        <svg viewBox="0 0 120 100" fill="none" stroke="currentColor" strokeWidth="1.2" className="w-full h-full">
-          <circle cx="40" cy="20" r="4" fill="currentColor" fillOpacity="0.4" />
-          <path d="M 35 28 L 45 28 L 40 38 Z" fill="currentColor" fillOpacity="0.35" />
-          <path d="M 40 38 L 34 48 L 46 48 Z" fill="currentColor" fillOpacity="0.35" />
-          <line x1="37" y1="48" x2="32" y2="62" />
-          <line x1="43" y1="48" x2="48" y2="62" />
-          <line x1="40" y1="32" x2="20" y2="26" />
-          <line x1="40" y1="32" x2="60" y2="26" />
-        </svg>
-      </div>
 
       {/* ─── 9. Delicate Gold Top Hairline (Hero → Section seam) ─────── */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C89B4C]/35 to-transparent pointer-events-none z-10" />
@@ -727,10 +715,10 @@ export function FeaturedCollection() {
                         style={{ width: `${cardDim.width}px` }}
                         className={`shrink-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer rounded-2xl overflow-hidden bg-[#F7F3EB] border ${
                           isActive
-                            ? "scale-[1.06] z-20 shadow-[0_24px_50px_rgba(40,28,14,0.18)] border-[#B8853B]/70"
+                            ? "scale-[1.06] z-20 border-[#B8853B]/70"
                             : isDirectNeighbor
-                            ? "scale-[0.91] z-10 opacity-90 hover:opacity-100 shadow-[0_6px_20px_rgba(40,28,14,0.06)] border-[#DDD3C2]"
-                            : "scale-[0.86] z-0 opacity-75 hover:opacity-90 shadow-[0_4px_14px_rgba(40,28,14,0.04)] border-[#DDD3C2]"
+                            ? "scale-[0.91] z-10 opacity-90 hover:opacity-100 border-[#DDD3C2]"
+                            : "scale-[0.86] z-0 opacity-75 hover:opacity-90 border-[#DDD3C2]"
                         }`}
                       >
                         {/* Portrait Photography Window */}
