@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight, Check, ShoppingCart } from "lucide-react";
+import { Check, ShoppingCart, ChevronLeft, ChevronRight } from "lucide-react";
 import { TribalTreeWatermark } from "./TribalTreeWatermark";
 
 interface Product {
@@ -130,44 +130,111 @@ const PRODUCTS: Product[] = [
   },
 ];
 
-type FilterType = "all" | "regular" | "oversized" | "new";
-
-const FILTER_OPTIONS: { id: FilterType; label: string }[] = [
-  { id: "all", label: "All" },
-  { id: "regular", label: "Regular Fit" },
-  { id: "oversized", label: "Oversized Fit" },
-  { id: "new", label: "New Arrivals" },
+const ANIMATED_PHRASES = [
+  "Popular Styles",
+  "Most loved",
+  "People's picks",
+  "Get one now",
 ];
 
+const NEW_ARRIVALS = [
+  PRODUCTS[0], // Sohrai Spirit (New)
+  PRODUCTS[6], // Sarna Bloom (New)
+  PRODUCTS[3], // Forest Tales
+  PRODUCTS[1], // Karma Lines
+  PRODUCTS[2], // Rising Roots
+  PRODUCTS[8], // Palash Stories
+  PRODUCTS[4], // Tribal Horizon
+  PRODUCTS[9], // Adivasi Roots
+];
+
+const CAROUSEL_PRODUCTS = [...NEW_ARRIVALS, ...NEW_ARRIVALS, ...NEW_ARRIVALS];
+
 export function FeaturedCollection() {
-  const [activeFilter, setActiveFilter] = useState<FilterType>("all");
   const [selectedColor, setSelectedColor] = useState<Record<number, number>>({});
   const [addedId, setAddedId] = useState<number | null>(null);
+  const [phraseIndex, setPhraseIndex] = useState(0);
+
+  // Centered Focus Coverflow Carousel State
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(1200);
+  const [cardDim, setCardDim] = useState({ width: 360, gap: 24 });
+  const [activeIndex, setActiveIndex] = useState(NEW_ARRIVALS.length); // Middle set (index 8)
+  const [isPaused, setIsPaused] = useState(false);
+  const [isNormalizing, setIsNormalizing] = useState(false);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setPhraseIndex((prev) => (prev + 1) % ANIMATED_PHRASES.length);
+    }, 2400);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Responsive dimensions for precise viewport centering
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth);
+      }
+      if (typeof window !== "undefined") {
+        if (window.innerWidth < 640) {
+          setCardDim({ width: 275, gap: 16 });
+        } else if (window.innerWidth < 1024) {
+          setCardDim({ width: 320, gap: 20 });
+        } else {
+          setCardDim({ width: 360, gap: 24 });
+        }
+      }
+    };
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
+
+  const handleNext = () => {
+    if (isNormalizing) return;
+    const next = activeIndex + 1;
+    setActiveIndex(next);
+
+    // If reaching the 3rd set, silently normalize back to the 2nd set
+    if (next >= NEW_ARRIVALS.length * 2) {
+      setTimeout(() => {
+        setIsNormalizing(true);
+        setActiveIndex(next - NEW_ARRIVALS.length);
+        setTimeout(() => setIsNormalizing(false), 50);
+      }, 880);
+    }
+  };
+
+  const handlePrev = () => {
+    if (isNormalizing) return;
+    const prev = activeIndex - 1;
+    setActiveIndex(prev);
+
+    // If reaching the 1st set, silently normalize back to the 2nd set
+    if (prev < NEW_ARRIVALS.length) {
+      setTimeout(() => {
+        setIsNormalizing(true);
+        setActiveIndex(prev + NEW_ARRIVALS.length);
+        setTimeout(() => setIsNormalizing(false), 50);
+      }, 880);
+    }
+  };
+
+  // Autoplay timer: 3.8s cadence with automatic pause on hover
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      handleNext();
+    }, 3800);
+    return () => clearInterval(timer);
+  }, [isPaused, activeIndex, isNormalizing]);
 
   const handleAddToCart = (e: React.MouseEvent, id: number) => {
     e.stopPropagation();
     setAddedId(id);
     setTimeout(() => setAddedId(null), 1400);
   };
-
-  const cycleFilter = (direction: "next" | "prev") => {
-    const currentIndex = FILTER_OPTIONS.findIndex((f) => f.id === activeFilter);
-    if (direction === "next") {
-      const nextIndex = (currentIndex + 1) % FILTER_OPTIONS.length;
-      setActiveFilter(FILTER_OPTIONS[nextIndex].id);
-    } else {
-      const prevIndex = (currentIndex - 1 + FILTER_OPTIONS.length) % FILTER_OPTIONS.length;
-      setActiveFilter(FILTER_OPTIONS[prevIndex].id);
-    }
-  };
-
-  const filteredProducts = PRODUCTS.filter((p) => {
-    if (activeFilter === "all") return true;
-    if (activeFilter === "regular") return p.category === "regular";
-    if (activeFilter === "oversized") return p.category === "oversized";
-    if (activeFilter === "new") return p.badge === "New";
-    return true;
-  });
 
   return (
     <section
@@ -365,54 +432,6 @@ export function FeaturedCollection() {
 
 
 
-      {/* ─── 5. Top-Right Corner Sohrai Sun Mandala ────────────────────── */}
-      {/* Pinned to top-right corner, in authentic warm etched ochre linework */}
-      <div className="absolute -top-6 -right-6 sm:-top-4 sm:-right-4 w-60 h-60 sm:w-76 sm:h-76 lg:w-[380px] lg:h-[380px] pointer-events-none z-[1] opacity-75">
-        <svg viewBox="0 0 360 360" className="w-full h-full" fill="none">
-          {/* Soft atmospheric ochre aura glow */}
-          <circle cx="200" cy="160" r="150" fill="url(#sohraiSunOchre)" />
-
-          {/* 24 Radiating Spokes with Petal Tips */}
-          {Array.from({ length: 24 }).map((_, i) => {
-            const angle = (i * 360) / 24;
-            const rad = (angle * Math.PI) / 180;
-            const innerR = 46;
-            const outerR = 135;
-            const x1 = 200 + innerR * Math.cos(rad);
-            const y1 = 160 + innerR * Math.sin(rad);
-            const x2 = 200 + outerR * Math.cos(rad);
-            const y2 = 160 + outerR * Math.sin(rad);
-            return (
-              <g key={i}>
-                <line
-                  x1={x1}
-                  y1={y1}
-                  x2={x2}
-                  y2={y2}
-                  stroke="#A86F28"
-                  strokeWidth={i % 3 === 0 ? "1.8" : "0.95"}
-                  strokeOpacity="0.6"
-                />
-                {/* Petal Tips on Primary Spokes */}
-                {i % 2 === 0 && (
-                  <circle cx={x2} cy={y2} r="3.5" fill="#C9943B" fillOpacity="0.75" />
-                )}
-              </g>
-            );
-          })}
-
-          {/* Concentric Geometric Sacred Rings */}
-          <circle cx="200" cy="160" r="142" stroke="#A86F28" strokeWidth="0.8" strokeOpacity="0.35" fill="none" />
-          <circle cx="200" cy="160" r="126" stroke="#BD8232" strokeWidth="1.2" strokeOpacity="0.45" strokeDasharray="3 5" fill="none" />
-          <circle cx="200" cy="160" r="74" stroke="#A86F28" strokeWidth="1" strokeOpacity="0.5" fill="none" />
-          <circle cx="200" cy="160" r="46" stroke="#A86F28" strokeWidth="1.5" strokeOpacity="0.65" fill="none" />
-          <circle cx="200" cy="160" r="32" stroke="#BD8232" strokeWidth="1.1" strokeOpacity="0.5" strokeDasharray="2 3" fill="none" />
-          <circle cx="200" cy="160" r="18" stroke="#A86F28" strokeWidth="1.2" strokeOpacity="0.6" fill="none" />
-          <circle cx="200" cy="160" r="6" fill="#C9943B" fillOpacity="0.6" />
-        </svg>
-      </div>
-
-
       {/* ─── 7. Central Background Sacred Kalpavriksha (Tree of Life) & Karam Dancers Watermark ── */}
       <TribalTreeWatermark className="absolute top-2 sm:top-4 lg:top-5 left-1/2 -translate-x-1/2 w-[520px] sm:w-[680px] lg:w-[840px] xl:w-[940px] h-[220px] sm:h-[270px] lg:h-[320px] z-[0]" opacity={0.34} />
 
@@ -484,68 +503,48 @@ export function FeaturedCollection() {
             </p>
           </div>
 
-          {/* Minimal Apple-Style Segmented Navigation Pills on Cream */}
-          <div className="flex items-center gap-2 flex-wrap">
-            <div className="inline-flex items-center p-1 rounded-full bg-[#D8CEBD]/70 border border-[#C7BBA8]/80">
-              {FILTER_OPTIONS.map((tab) => {
-                const isActive = activeFilter === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => setActiveFilter(tab.id)}
-                    className={`relative px-3.5 sm:px-4 py-1.5 rounded-full text-[11.5px] sm:text-xs font-medium tracking-wide transition-colors duration-200 cursor-pointer select-none focus:outline-none ${isActive ? "text-[#FAF7F2]" : "text-[#4A3D2D] hover:text-[#1C1610]"
-                      }`}
-                  >
-                    {isActive && (
-                      <motion.div
-                        layoutId="creamActiveFilterTab"
-                        className="absolute inset-0 rounded-full bg-[#1C1610] shadow-xs"
-                        transition={{ type: "spring", stiffness: 450, damping: 36 }}
-                      />
-                    )}
-                    <span className="relative z-10 font-semibold">{tab.label}</span>
-                  </button>
-                );
-              })}
-            </div>
+          {/* Right Side: Premium Animated Classy Editorial Text */}
+          <div className="flex items-center sm:items-end justify-start sm:justify-end gap-3.5 self-start sm:self-end">
+            {/* Subtle Vertical Gold Divider */}
+            <div className="hidden sm:block w-[1px] h-12 bg-gradient-to-b from-transparent via-[#B37E26]/50 to-transparent" />
 
-            {/* Circular Step Arrows */}
-            <div className="flex items-center gap-1.5 ml-1">
-              <button
-                type="button"
-                onClick={() => cycleFilter("prev")}
-                aria-label="Previous category"
-                className="w-8 h-8 rounded-full bg-[#D8CEBD]/70 hover:bg-[#1C1610] text-[#3D3122] hover:text-[#FAF7F2] border border-[#C7BBA8]/80 flex items-center justify-center transition-colors duration-150 cursor-pointer shadow-2xs"
-              >
-                <ArrowLeft className="w-3.5 h-3.5 stroke-[2]" />
-              </button>
-              <button
-                type="button"
-                onClick={() => cycleFilter("next")}
-                aria-label="Next category"
-                className="w-8 h-8 rounded-full bg-[#D8CEBD]/70 hover:bg-[#1C1610] text-[#3D3122] hover:text-[#FAF7F2] border border-[#C7BBA8]/80 flex items-center justify-center transition-colors duration-150 cursor-pointer shadow-2xs"
-              >
-                <ArrowRight className="w-3.5 h-3.5 stroke-[2]" />
-              </button>
+            <div className="text-left sm:text-right">
+              {/* Classy Animated Rotating Text - Expanded width & right padding to prevent italic clipping */}
+              <div className="h-11 sm:h-12 relative overflow-hidden flex items-center sm:justify-end min-w-[220px] sm:min-w-[260px] px-2 py-1">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={phraseIndex}
+                    initial={{ y: 16, opacity: 0, filter: "blur(4px)" }}
+                    animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                    exit={{ y: -16, opacity: 0, filter: "blur(4px)" }}
+                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                    className="font-editorial italic text-2xl sm:text-[28px] font-medium text-[#1C1610] tracking-tight whitespace-nowrap leading-normal py-0.5 pr-4 pl-1"
+                  >
+                    {ANIMATED_PHRASES[phraseIndex]}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* 4 Minimal Indicator Bars */}
+              <div className="flex items-center sm:justify-end gap-1.5 mt-1.5 pr-3">
+                {ANIMATED_PHRASES.map((_, i) => (
+                  <span
+                    key={i}
+                    className={`h-0.5 rounded-full transition-all duration-300 ${
+                      i === phraseIndex
+                        ? "w-4 bg-[#B87A22]"
+                        : "w-1.5 bg-[#C7BBA8]/70"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </motion.div>
 
-        {/* Compact, High-End Luxury Editorial Product Grid with Silky Fluid Transition */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeFilter}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{
-              duration: 0.25,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-3.5 lg:gap-4"
-          >
-            {filteredProducts.map((product) => (
+        {/* Compact, High-End Luxury Editorial Product Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-3.5 lg:gap-4">
+          {PRODUCTS.map((product) => (
               <div
                 key={product.id}
                 className="group relative flex flex-col rounded-xl overflow-hidden bg-[#F7F3EB] border border-[#DDD3C2] hover:border-[#B8853B]/70 transition-all duration-300 shadow-[0_2px_8px_rgba(40,28,14,0.04)] hover:shadow-[0_8px_20px_rgba(40,28,14,0.08)] cursor-pointer"
@@ -665,8 +664,236 @@ export function FeaturedCollection() {
                 </div>
               </div>
             ))}
-          </motion.div>
-        </AnimatePresence>
+        </div>
+
+        {/* ─── Premium Horizontal Autoplay Carousel / Slider: New Arrivals ─── */}
+        <div className="mt-14 sm:mt-18 lg:mt-20 pt-10 sm:pt-14 border-t border-[#D9CEBC]">
+          {/* Section Header: Minimal, Tasteful Editorial Header */}
+          <div className="mb-6 sm:mb-8">
+            <h3 className="font-editorial text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#1C1610] tracking-tight leading-[1.15] flex items-baseline gap-2">
+              <span>New</span>
+              <span className="italic font-normal text-[#B87A22] animate-subtle-sheen inline-block pr-1">
+                Arrivals
+              </span>
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#B87A22]/75" />
+            </h3>
+
+            <p className="mt-1 text-[#6B5E4C] text-[12.5px] sm:text-[13px] font-normal leading-relaxed">
+              Curated silhouettes inspired by regional tribal folklore.
+            </p>
+          </div>
+
+          {/* Centered Focus Coverflow Carousel with Auto-Play & Navigation */}
+          {(() => {
+            const step = cardDim.width + cardDim.gap;
+            const targetTranslateX =
+              containerWidth > 0
+                ? containerWidth / 2 - (activeIndex * step + cardDim.width / 2)
+                : 0;
+
+            return (
+              <div
+                ref={containerRef}
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+                onTouchStart={() => setIsPaused(true)}
+                onTouchEnd={() => setIsPaused(false)}
+                className="relative -mx-4 sm:-mx-6 md:-mx-8 lg:-mx-10 xl:-mx-12 py-8 overflow-hidden select-none isolate"
+              >
+                {/* Smooth Centered Gliding Track */}
+                <motion.div
+                  animate={{ x: targetTranslateX }}
+                  transition={
+                    isNormalizing
+                      ? { duration: 0 }
+                      : { duration: 0.85, ease: [0.16, 1, 0.3, 1] }
+                  }
+                  className="flex items-center"
+                  style={{ gap: `${cardDim.gap}px` }}
+                >
+                  {CAROUSEL_PRODUCTS.map((product, idx) => {
+                    const isActive = idx === activeIndex;
+                    const isDirectNeighbor = Math.abs(idx - activeIndex) === 1;
+
+                    return (
+                      <div
+                        key={`${product.id}-${idx}`}
+                        onClick={() => {
+                          if (!isActive) {
+                            setIsNormalizing(false);
+                            setActiveIndex(idx);
+                          }
+                        }}
+                        style={{ width: `${cardDim.width}px` }}
+                        className={`shrink-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer rounded-2xl overflow-hidden bg-[#F7F3EB] border ${
+                          isActive
+                            ? "scale-[1.06] z-20 shadow-[0_24px_50px_rgba(40,28,14,0.18)] border-[#B8853B]/70"
+                            : isDirectNeighbor
+                            ? "scale-[0.91] z-10 opacity-90 hover:opacity-100 shadow-[0_6px_20px_rgba(40,28,14,0.06)] border-[#DDD3C2]"
+                            : "scale-[0.86] z-0 opacity-75 hover:opacity-90 shadow-[0_4px_14px_rgba(40,28,14,0.04)] border-[#DDD3C2]"
+                        }`}
+                      >
+                        {/* Portrait Photography Window */}
+                        <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#E2D8C7]">
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className={`w-full h-full object-cover ${product.objectPosition || "object-top"} transition-transform duration-700 ease-out ${
+                              isActive ? "hover:scale-105" : ""
+                            }`}
+                            loading="lazy"
+                          />
+
+                          {/* Subtle Photographic Vignette */}
+                          <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/20 via-transparent to-transparent opacity-60" />
+
+                          {/* Top-Right Gold NEW Badge */}
+                          {product.badge && (
+                            <span className="absolute top-3 right-3 z-10 px-2.5 py-0.5 rounded-full text-[9px] font-sans font-bold tracking-wider uppercase text-[#1C1610] bg-[#E5A93C] shadow-2xs">
+                              {product.badge}
+                            </span>
+                          )}
+
+                          {/* Quick Add Pill */}
+                          <div className="absolute inset-x-2 bottom-2 z-20 pointer-events-none group-hover:pointer-events-auto opacity-0 translate-y-1.5 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 ease-out">
+                            <button
+                              type="button"
+                              onClick={(e) => handleAddToCart(e, product.id)}
+                              className="w-full py-1.5 px-2.5 rounded-lg bg-[#1C1610]/95 hover:bg-[#1C1610] text-[#FAF7F2] text-[10.5px] font-semibold tracking-wide uppercase flex items-center justify-center gap-1 transition-colors duration-150 shadow-md cursor-pointer backdrop-blur-xs"
+                            >
+                              {addedId === product.id ? (
+                                <>
+                                  <Check className="w-3 h-3 stroke-[2.5]" />
+                                  <span>Added</span>
+                                </>
+                              ) : (
+                                <span>Quick Add</span>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Organic Wave Transition into Cloth Panel */}
+                        <div className="relative w-full h-3 -mt-3 z-10 pointer-events-none overflow-hidden">
+                          <svg viewBox="0 0 100 10" preserveAspectRatio="none" className="w-full h-full block">
+                            <path d="M 0 10 C 35 2, 65 10, 100 4 L 100 10 L 0 10 Z" fill="#F7F3EB" />
+                          </svg>
+                        </div>
+
+                        {/* Compact Minimalist Information Panel */}
+                        <div className="relative p-3.5 sm:p-4 flex flex-col justify-between flex-1 bg-[#F7F3EB] overflow-hidden">
+                          {/* Cloth Weave Texture Overlay */}
+                          <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-multiply">
+                            <svg className="w-full h-full block">
+                              <rect width="100%" height="100%" fill="url(#cardClothWeavePattern)" />
+                            </svg>
+                          </div>
+
+                          <div className="relative z-10">
+                            {/* Fit Taxonomy */}
+                            <p className="font-sans text-[9.5px] uppercase tracking-[0.16em] text-[#857461] font-semibold leading-none">
+                              {product.fit}
+                            </p>
+
+                            {/* Product Name */}
+                            <h4 className="font-editorial text-[15px] sm:text-[16.5px] font-bold text-[#1C1610] group-hover:text-[#9E6C21] transition-colors duration-200 mt-1 leading-snug truncate">
+                              {product.name}
+                            </h4>
+                          </div>
+
+                          {/* Price, Colorways & Action */}
+                          <div className="relative z-10 flex items-end justify-between mt-3 pt-2 border-t border-[#E6DDD0]">
+                            <div>
+                              <span className="font-sans text-[14px] sm:text-[15px] font-bold text-[#1C1610] tracking-tight block">
+                                ₹{product.price}
+                              </span>
+
+                              {/* Minimalist Colorway Circles */}
+                              <div className="flex items-center gap-1.5 mt-1.5">
+                                {product.colors.map((color, colorIdx) => {
+                                  const isSelected = (selectedColor[product.id] ?? 0) === colorIdx;
+                                  return (
+                                    <button
+                                      key={colorIdx}
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setSelectedColor((prev) => ({ ...prev, [product.id]: colorIdx }));
+                                      }}
+                                      style={{ backgroundColor: color }}
+                                      className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
+                                        isSelected
+                                          ? "ring-1.5 ring-[#1C1610] scale-110 shadow-2xs"
+                                          : "border border-black/15 opacity-80 hover:opacity-100"
+                                      }`}
+                                      title={`Colorway ${colorIdx + 1}`}
+                                    />
+                                  );
+                                })}
+                              </div>
+                            </div>
+
+                            {/* Circular Cart Action Button */}
+                            <button
+                              type="button"
+                              onClick={(e) => handleAddToCart(e, product.id)}
+                              aria-label={`Add ${product.name} to cart`}
+                              className="w-8 h-8 rounded-full bg-[#EAE2D5] hover:bg-[#1C1610] text-[#3D3122] hover:text-[#FAF7F2] border border-[#DDD3C2] flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs shrink-0 group/cart"
+                            >
+                              {addedId === product.id ? (
+                                <Check className="w-3.5 h-3.5 stroke-[2.5] text-emerald-600" />
+                              ) : (
+                                <ShoppingCart className="w-3.5 h-3.5 stroke-[1.8] group-hover/cart:scale-105 transition-transform" />
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </motion.div>
+
+                {/* Floating Left and Right Navigation Buttons matching the user reference screenshot */}
+                <button
+                  type="button"
+                  onClick={handlePrev}
+                  aria-label="Previous slide"
+                  className="absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#FAF7F2]/95 hover:bg-[#FAF7F2] text-[#1C1610] border border-[#D9CEBC] shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-105 z-30 cursor-pointer backdrop-blur-xs"
+                >
+                  <ChevronLeft className="w-5 h-5 stroke-[2]" />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  aria-label="Next slide"
+                  className="absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#FAF7F2]/95 hover:bg-[#FAF7F2] text-[#1C1610] border border-[#D9CEBC] shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-105 z-30 cursor-pointer backdrop-blur-xs"
+                >
+                  <ChevronRight className="w-5 h-5 stroke-[2]" />
+                </button>
+
+                {/* Centered Minimal Pill Indicators matching the user reference screenshot */}
+                <div className="flex items-center justify-center gap-2 mt-8">
+                  {NEW_ARRIVALS.map((_, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => {
+                        setIsNormalizing(false);
+                        setActiveIndex(NEW_ARRIVALS.length + i);
+                      }}
+                      aria-label={`Go to slide ${i + 1}`}
+                      className={`h-1 rounded-full transition-all duration-500 cursor-pointer ${
+                        i === (activeIndex % NEW_ARRIVALS.length)
+                          ? "w-8 bg-[#B87A22]"
+                          : "w-3.5 bg-[#CBBFB0]/70 hover:bg-[#A89882]"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
+        </div>
       </div>
     </section>
   );

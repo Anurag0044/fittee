@@ -44,3 +44,41 @@ body {
   background: #e5a93c;
 }
 
+/* Horizontal Continuous Loop Marquee */
+/* Infinite Marquee Gliding Track */
+@keyframes marquee {
+  0% {
+    transform: translate3d(0%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 50s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Minimal Tasteful Luxury Editorial Sheen */
+@keyframes subtle-sheen {
+  0%, 100% {
+    color: #A36B20;
+    text-shadow: 0 0 0px rgba(163, 107, 32, 0);
+  }
+  50% {
+    color: #CF923A;
+    text-shadow: 0 0 16px rgba(207, 146, 58, 0.28);
+  }
+}
+
+.animate-subtle-sheen {
+  animation: subtle-sheen 6s ease-in-out infinite;
+}
+
