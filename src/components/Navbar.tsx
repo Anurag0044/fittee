@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import {
   Search,
   User,
@@ -24,6 +24,48 @@ const SEARCH_SUGGESTIONS = [
   'Search "Traditional Folk Motifs"...',
 ];
 
+const drawerMotionVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: -18,
+    transition: {
+      duration: 0.22,
+      ease: [0.32, 0, 0.67, 0] as const,
+    },
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.38,
+      ease: [0.16, 1, 0.3, 1] as const,
+      when: "beforeChildren",
+      staggerChildren: 0.05,
+      delayChildren: 0.04,
+    },
+  },
+};
+
+const drawerItemVariants: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.32,
+      ease: [0.16, 1, 0.3, 1] as const,
+    },
+  },
+};
+
+const MOBILE_NAV_LINKS = [
+  { label: "Shop", href: "#shop" },
+  { label: "Collections", href: "#collections" },
+  { label: "Customization", href: "#customization" },
+  { label: "Our Story", href: "#our-story" },
+  { label: "Journal", href: "#journal" },
+];
+
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
@@ -38,12 +80,27 @@ export function Navbar() {
     return () => clearInterval(interval);
   }, []);
 
+  // Prevent background scrolling when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <motion.header
       initial={{ opacity: 0, y: -24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      className="relative z-50 w-full select-none"
+      className="relative z-50 w-full select-none pt-2 sm:pt-0"
     >
       {/* Container across full width - perfectly centered horizontal axis */}
       <div className="w-full flex items-center justify-between h-14 sm:h-16 lg:h-[62px]">
@@ -246,127 +303,120 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 bg-[#EDE6DE] text-[#1E1C1A] rounded-full shadow-md"
+            className="p-2 bg-[#EDE6DE] text-[#1E1C1A] rounded-full shadow-md active:scale-95 transition-transform"
             aria-label="Menu"
           >
-            {mobileMenuOpen ? (
-              <X className="w-4 h-4 stroke-[2]" />
-            ) : (
-              <Menu className="w-4 h-4 stroke-[2]" />
-            )}
+            <AnimatePresence mode="wait" initial={false}>
+              {mobileMenuOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.18, ease: "easeOut" }}
+                >
+                  <X className="w-4 h-4 stroke-[2]" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="menu"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.18, ease: "easeOut" }}
+                >
+                  <Menu className="w-4 h-4 stroke-[2]" />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden bg-black/85 backdrop-blur-md flex flex-col justify-between p-6 animate-in fade-in duration-200">
-          <div className="flex items-center justify-between border-b border-white/15 pb-4">
-            <AnimatedLogo className="h-9 w-auto" />
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-2 text-white/80 hover:text-white rounded-full bg-white/10"
-              aria-label="Close"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
+      {/* Mobile Drawer with unique & premium orchestrated entrance animation */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            variants={drawerMotionVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            className="fixed inset-0 z-50 lg:hidden bg-black/85 backdrop-blur-md flex flex-col justify-between p-6 overflow-y-auto overscroll-contain"
+          >
+            <motion.div variants={drawerItemVariants} className="flex items-center justify-between border-b border-white/15 pb-4 shrink-0">
+              <AnimatedLogo className="h-9 w-auto" />
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-2 text-white/80 hover:text-white rounded-full bg-white/10 active:scale-95 transition-transform"
+                aria-label="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </motion.div>
 
-          <div className="py-6 space-y-5">
-            {/* Mobile Search Input with dynamic rotating suggestions */}
-            <div className="relative mb-6 flex items-center">
-              <input
-                type="text"
-                value={searchVal}
-                onChange={(e) => setSearchVal(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-full bg-white/10 border border-white/20 text-white text-sm focus:outline-none focus:border-[#E5A93C]"
-                aria-label="Search designs and collections"
-              />
-              {!searchVal && (
-                <div className="absolute left-4 right-10 pointer-events-none overflow-hidden h-[20px] flex items-center">
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={searchSuggestionIdx}
-                      initial={{ y: 8, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: -8, opacity: 0 }}
-                      transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-                      className="text-white/60 text-sm truncate block select-none"
+            <div className="flex-1 flex flex-col pt-5 pb-6 min-h-0">
+              {/* Mobile Search Input positioned cleanly below header */}
+              <motion.div variants={drawerItemVariants} className="relative mb-8 flex items-center shrink-0">
+                <input
+                  type="text"
+                  value={searchVal}
+                  onChange={(e) => setSearchVal(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-full bg-white/10 border border-white/20 text-white text-sm focus:outline-none focus:border-[#E5A93C]"
+                  aria-label="Search designs and collections"
+                />
+                {!searchVal && (
+                  <div className="absolute left-4 right-10 pointer-events-none overflow-hidden h-[20px] flex items-center">
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={searchSuggestionIdx}
+                        initial={{ y: 8, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: -8, opacity: 0 }}
+                        transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] as const }}
+                        className="text-white/60 text-sm truncate block select-none"
+                      >
+                        {SEARCH_SUGGESTIONS[searchSuggestionIdx]}
+                      </motion.span>
+                    </AnimatePresence>
+                  </div>
+                )}
+                <Search className="w-4 h-4 text-white/60 absolute right-4 pointer-events-none" />
+              </motion.div>
+
+              {/* Navigation Links positioned in the center with balanced spacing */}
+              <ul className="space-y-6 text-lg font-medium text-white/90 my-auto">
+                {MOBILE_NAV_LINKS.map((item) => (
+                  <motion.li key={item.label} variants={drawerItemVariants}>
+                    <Link
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block hover:text-[#E5A93C] transition-colors"
                     >
-                      {SEARCH_SUGGESTIONS[searchSuggestionIdx]}
-                    </motion.span>
-                  </AnimatePresence>
-                </div>
-              )}
-              <Search className="w-4 h-4 text-white/60 absolute right-4 pointer-events-none" />
+                      {item.label}
+                    </Link>
+                  </motion.li>
+                ))}
+              </ul>
             </div>
 
-            <ul className="space-y-4 text-lg font-medium text-white/90">
-              <li>
-                <Link
-                  href="#shop"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block hover:text-[#E5A93C]"
-                >
-                  Shop
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#collections"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block hover:text-[#E5A93C]"
-                >
-                  Collections
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#customization"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block hover:text-[#E5A93C]"
-                >
-                  Customization
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#our-story"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block hover:text-[#E5A93C]"
-                >
-                  Our Story
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#journal"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block hover:text-[#E5A93C]"
-                >
-                  Journal
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div className="border-t border-white/15 pt-4 flex items-center justify-around text-white/80">
-            <div className="flex flex-col items-center text-xs gap-1">
-              <User className="w-5 h-5" />
-              <span>Account</span>
-            </div>
-            <div className="flex flex-col items-center text-xs gap-1">
-              <Heart className="w-5 h-5" />
-              <span>Wishlist</span>
-            </div>
-            <div className="flex flex-col items-center text-xs gap-1">
-              <ShoppingCart className="w-5 h-5" />
-              <span>Cart (0)</span>
-            </div>
-          </div>
-        </div>
-      )}
+            <motion.div variants={drawerItemVariants} className="border-t border-white/15 pt-4 flex items-center justify-around text-white/80 shrink-0">
+              <div className="flex flex-col items-center text-xs gap-1">
+                <User className="w-5 h-5" />
+                <span>Account</span>
+              </div>
+              <div className="flex flex-col items-center text-xs gap-1">
+                <Heart className="w-5 h-5" />
+                <span>Wishlist</span>
+              </div>
+              <div className="flex flex-col items-center text-xs gap-1">
+                <ShoppingCart className="w-5 h-5" />
+                <span>Cart (0)</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }

@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
 
+import tribalTreeClean from "../../public/images/tribal-tree-clean.png";
+
 interface TribalTreeWatermarkProps {
   className?: string;
   opacity?: number;
@@ -24,7 +26,7 @@ export function TribalTreeWatermark({
     >
       <div className="relative w-full h-full">
         <Image
-          src="/images/tribal-tree-artwork.png"
+          src={tribalTreeClean}
           alt="Sacred Karam Tree of Life and Tribal Dancers"
           fill
           priority
