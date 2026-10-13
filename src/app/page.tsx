@@ -3,6 +3,7 @@ import { FeaturedCollection } from "@/components/FeaturedCollection";
 import { CustomDesignSection } from "@/components/CustomDesignSection";
 import { PremiumFabricsSection } from "@/components/PremiumFabricsSection";
 import { FollowSection } from "@/components/FollowSection";
+import { Footer } from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <CustomDesignSection />
       <PremiumFabricsSection />
       <FollowSection />
+      <Footer />
     </main>
   );
 }
