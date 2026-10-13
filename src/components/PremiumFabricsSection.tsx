@@ -346,7 +346,7 @@ export function PremiumFabricsSection() {
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, #DFCFAA 0%, #E6DCBF 15%, #EAE0CA 45%, #E2D5BB 80%, #DFCFAA 100%)",
+            "linear-gradient(180deg, #E2D5BB 0%, #EAE0CA 35%, #EAE2D5 75%, #EAE2D5 100%)",
         }}
       />
 
