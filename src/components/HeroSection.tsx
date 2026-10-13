@@ -99,9 +99,6 @@ export function HeroSection() {
     return () => clearInterval(timer);
   }, [totalSlides]);
 
-  const handlePrev = () => {
-    setSlide((prev) => (prev === 1 ? totalSlides : prev - 1));
-  };
 
   const handleNext = () => {
     setSlide((prev) => (prev === totalSlides ? 1 : prev + 1));
@@ -128,7 +125,8 @@ export function HeroSection() {
         />
 
         {/* Cinematic Vignette Layers */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 sm:via-black/25 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/92 via-black/75 to-black/40 sm:from-black/85 sm:via-black/25 sm:to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 sm:hidden pointer-events-none" />
         <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/95 via-black/55 to-transparent pointer-events-none" />
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent pointer-events-none" />
       </motion.div>
@@ -137,7 +135,7 @@ export function HeroSection() {
       <Navbar />
 
       {/* Main Hero Content Area */}
-      <div className="relative z-10 w-full flex-1 flex items-center justify-between px-6 sm:px-10 lg:px-14 my-auto">
+      <div className="relative z-20 w-full flex-1 flex items-center justify-between px-6 sm:px-10 lg:px-14 my-auto">
         {/* Left Typographic Showcase */}
         <div className="max-w-md sm:max-w-xl lg:max-w-2xl text-left">
           {/* Eyebrow Tag */}
@@ -145,19 +143,19 @@ export function HeroSection() {
             initial={{ opacity: 0, y: -16, filter: "blur(4px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 0.75, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-3 mb-3.5 sm:mb-5"
+            className="flex items-center gap-2.5 sm:gap-3 mb-2.5 sm:mb-5"
           >
-            <span className="text-[11px] sm:text-[11.5px] font-semibold tracking-[0.24em] text-[#C9BAA7] uppercase">
+            <span className="text-[10.5px] sm:text-[11.5px] font-semibold tracking-[0.24em] text-[#E5D8C8] sm:text-[#C9BAA7] uppercase drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
               TRIBAL ROOTS
             </span>
-            <span className="w-8 sm:w-10 h-[1px] bg-[#D49B42] inline-block opacity-90" />
-            <span className="text-[11px] sm:text-[11.5px] font-semibold tracking-[0.24em] text-[#C9BAA7] uppercase">
+            <span className="w-7 sm:w-10 h-[1px] bg-[#D49B42] inline-block opacity-90" />
+            <span className="text-[10.5px] sm:text-[11.5px] font-semibold tracking-[0.24em] text-[#E5D8C8] sm:text-[#C9BAA7] uppercase drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
               MODERN WEAR
             </span>
           </motion.div>
 
           {/* Main Display Headline */}
-          <h1 className="font-editorial text-5xl sm:text-6xl md:text-7xl lg:text-[76px] xl:text-[80px] font-bold text-white tracking-tight leading-[1.04] drop-shadow-[0_3px_12px_rgba(0,0,0,0.6)]">
+          <h1 className="font-editorial text-[42px] sm:text-6xl md:text-7xl lg:text-[76px] xl:text-[80px] font-bold text-white tracking-tight leading-[1.04] drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]">
             <motion.span
               initial={{ opacity: 0, y: 36, filter: "blur(5px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -170,7 +168,7 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 36, filter: "blur(5px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 0.85, delay: 0.48, ease: [0.16, 1, 0.3, 1] }}
-              className="block text-[#DDA23E] italic font-normal tracking-tight my-0.5 sm:my-1"
+              className="block text-[#E2A642] italic font-normal tracking-tight my-0.5 sm:my-1 drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)]"
             >
               Culture
             </motion.span>
@@ -189,7 +187,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.72, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-4 sm:mt-5 text-[#DDD5C7] text-sm sm:text-base lg:text-[16px] max-w-sm sm:max-w-md font-normal leading-relaxed drop-shadow-sm"
+            className="mt-3 sm:mt-5 text-[#F0EAE1] sm:text-[#DDD5C7] text-xs sm:text-base lg:text-[16px] max-w-[210px] sm:max-w-md font-normal leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
           >
             Contemporary apparel inspired by the tribal art and spirit of Jharkhand.
           </motion.p>
@@ -199,13 +197,13 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.82, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-6 sm:mt-8 flex items-center gap-3 sm:gap-4"
+            className="mt-4 sm:mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4"
           >
             {/* Primary Mustard Button */}
             <motion.div whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.96 }}>
               <Link
                 href="#shop"
-                className="inline-flex items-center gap-2 bg-[#E2A33C] hover:bg-[#D49533] text-[#1A1612] font-semibold text-xs sm:text-sm px-6 sm:px-7 py-2.5 sm:py-3 rounded-full shadow-[0_4px_16px_rgba(226,163,60,0.3)] transition-colors duration-150"
+                className="inline-flex items-center justify-center gap-2 bg-[#E2A33C] hover:bg-[#D49533] text-[#1A1612] font-semibold text-xs sm:text-sm w-[150px] sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-full shadow-[0_4px_16px_rgba(226,163,60,0.3)] transition-colors duration-150"
               >
                 <span>Shop Collection</span>
                 <span className="text-sm font-bold">→</span>
@@ -216,10 +214,10 @@ export function HeroSection() {
             <motion.div whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.96 }}>
               <Link
                 href="#customize"
-                className="inline-flex items-center gap-2 bg-black/35 hover:bg-white/10 text-white font-medium text-xs sm:text-sm px-6 sm:px-7 py-2.5 sm:py-3 rounded-full border border-white/50 hover:border-white/80 backdrop-blur-sm transition-colors duration-150"
+                className="inline-flex items-center justify-center gap-2 bg-black/60 sm:bg-black/35 hover:bg-white/10 text-white font-medium text-xs sm:text-sm w-[150px] sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-full border border-white/60 hover:border-white/80 backdrop-blur-md transition-colors duration-150 shadow-[0_4px_16px_rgba(0,0,0,0.4)]"
               >
                 <span>Customize Now</span>
-                <span className="text-sm font-bold opacity-80">→</span>
+                <span className="text-sm font-bold opacity-80 hidden sm:inline">→</span>
               </Link>
             </motion.div>
           </motion.div>
@@ -258,7 +256,7 @@ export function HeroSection() {
         initial={{ opacity: 0, y: 75, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 1.2, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
-        className="hidden md:flex absolute right-0 lg:right-4 xl:right-12 2xl:right-20 bottom-0 h-[76vh] max-h-[660px] lg:max-h-[720px] xl:max-h-[800px] 2xl:max-h-[880px] w-[50vw] max-w-[720px] pointer-events-none select-none z-10 items-end justify-center"
+        className="flex absolute right-[-5vw] sm:right-0 lg:right-4 xl:right-12 2xl:right-20 bottom-0 h-[52vh] max-h-[380px] sm:h-[60vh] sm:max-h-[480px] md:h-[76vh] md:max-h-[660px] lg:max-h-[720px] xl:max-h-[800px] 2xl:max-h-[880px] w-[75vw] max-w-[340px] sm:w-[60vw] md:w-[50vw] md:max-w-[720px] pointer-events-none select-none z-10 items-end justify-center"
       >
         {/* Inner Motion Rig */}
         <div
@@ -399,7 +397,7 @@ export function HeroSection() {
           animate={{ opacity: 1, scale: 1, x: 0, y: 0, rotate: 0 }}
           transition={{ duration: 1.1, delay: 0.72, ease: [0.16, 1, 0.3, 1] }}
           style={{ transformOrigin: "bottom left" }}
-          className="absolute left-0 bottom-0 pointer-events-none z-30 w-[124px] sm:w-[138px] lg:w-[155px] xl:w-[170px] h-auto select-none will-change-transform"
+          className="absolute -left-2 sm:left-0 bottom-0 pointer-events-none z-20 w-[124px] sm:w-[138px] lg:w-[155px] xl:w-[170px] h-auto select-none will-change-transform"
         >
           <svg viewBox="0 0 190 145" fill="none" className="w-full h-auto drop-shadow-[0_8px_22px_rgba(0,0,0,0.65)]">
             <defs>
@@ -444,7 +442,7 @@ export function HeroSection() {
                 <path d="M 0 30 C 35 18, 80 12, 142 16 C 88 34, 42 42, 0 38 Z" />
               </clipPath>
               <clipPath id="leftLowerLeafClip">
-                <path d="M 0 44 C 42 46, 90 64, 140 106 C 96 128, 44 116, 0 74 Z" />
+                <path d="M 0 44 C 42 46, 84 68, 116 120 C 82 134, 40 120, 0 74 Z" />
               </clipPath>
             </defs>
 
@@ -501,25 +499,25 @@ export function HeroSection() {
             <g>
               {/* 1. Base Leaf Body Fill */}
               <path
-                d="M 0 44 C 42 46, 90 64, 140 106 C 96 128, 44 116, 0 74 Z"
+                d="M 0 44 C 42 46, 84 68, 116 120 C 82 134, 40 120, 0 74 Z"
                 fill="url(#leafLowerDeepGreen)"
               />
               {/* 2. Soft Upper Sheen Layer */}
               <path
-                d="M 0 44 C 42 46, 90 64, 140 106 C 90 76, 45 56, 0 58 Z"
+                d="M 0 44 C 42 46, 84 68, 116 120 C 78 86, 42 60, 0 58 Z"
                 fill="url(#leafLowerShine)"
                 opacity="0.65"
               />
               {/* 3. Soft Lower Shadow Layer */}
               <path
-                d="M 0 58 C 45 56, 90 76, 140 106 C 96 128, 44 116, 0 74 Z"
+                d="M 0 58 C 42 60, 78 86, 116 120 C 82 134, 40 120, 0 74 Z"
                 fill="url(#leafLowerShadow)"
                 opacity="0.5"
               />
               {/* 4. Strictly Clipped Interior: Curvier Organic Veins & Central Rachis */}
               <g clipPath="url(#leftLowerLeafClip)">
                 <path
-                  d="M -5 56 C 42 52, 86 74, 140 106"
+                  d="M -5 56 C 38 52, 76 82, 116 120"
                   stroke="url(#goldVeinL)"
                   strokeWidth="2.1"
                   strokeLinecap="round"
@@ -547,7 +545,7 @@ export function HeroSection() {
               </g>
               {/* 5. Gilded Leaf Perimeter Outline On Top (Flawless continuous gold rim) */}
               <path
-                d="M 0 44 C 42 46, 90 64, 140 106 C 96 128, 44 116, 0 74 Z"
+                d="M 0 44 C 42 46, 84 68, 116 120 C 82 134, 40 120, 0 74 Z"
                 fill="none"
                 stroke="url(#goldVeinL)"
                 strokeWidth="1.15"
@@ -564,7 +562,7 @@ export function HeroSection() {
           animate={{ opacity: 1, scale: 1, x: 0, y: 0, rotate: 0 }}
           transition={{ duration: 1.1, delay: 0.82, ease: [0.16, 1, 0.3, 1] }}
           style={{ transformOrigin: "bottom right" }}
-          className="absolute right-0 bottom-0 pointer-events-none z-30 w-[115px] sm:w-[130px] lg:w-[145px] xl:w-[160px] h-auto select-none will-change-transform"
+          className="absolute right-0 bottom-0 pointer-events-none z-20 w-[115px] sm:w-[130px] lg:w-[145px] xl:w-[160px] h-auto select-none will-change-transform"
         >
           <svg viewBox="0 0 180 145" fill="none" className="w-full h-auto drop-shadow-[0_8px_22px_rgba(0,0,0,0.65)]">
             <defs>
@@ -729,7 +727,7 @@ export function HeroSection() {
         </motion.div>
 
         {/* Content: 4 Columns & Controls inside Ivory Canvas Wave - Generous clearance & harmonious spacing */}
-        <div className="relative z-20 w-full h-full pl-12 sm:pl-16 md:pl-20 lg:pl-28 xl:pl-32 pr-6 sm:pr-8 md:pr-10 lg:pr-14 xl:pr-18 pt-[54px] sm:pt-[56px] lg:pt-[60px] xl:pt-[62px] pb-3 sm:pb-3.5 lg:pb-4 flex items-center">
+        <div className="relative z-30 w-full h-full pl-10 pr-4 sm:pl-16 sm:pr-8 md:pl-20 md:pr-10 lg:pl-28 xl:pl-32 lg:pr-14 xl:pr-18 pt-[70px] sm:pt-[56px] lg:pt-[60px] xl:pt-[62px] pb-2 sm:pb-3.5 lg:pb-4 flex items-center">
           {/* Desktop Single-Row Layout (lg and above) */}
           <div className="hidden lg:flex items-center justify-between w-full gap-2 xl:gap-4">
             {/* Col 1: Premium Fabrics */}
@@ -848,56 +846,56 @@ export function HeroSection() {
           </div>
 
           {/* Mobile & Tablet 2x2 Clean Responsive Grid (under lg) */}
-          <div className="flex lg:hidden flex-col gap-3 w-full">
-            <div className="grid grid-cols-2 gap-3 w-full">
+          <div className="flex lg:hidden flex-col gap-2.5 w-full">
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 w-full">
               {/* Item 1 */}
-              <div className="flex items-center gap-2.5">
-                <QuiltedFabricIcon className="w-7 h-7 text-[#543818] shrink-0" />
+              <div className="flex items-center gap-1.5 sm:gap-2.5 pl-1.5 sm:pl-0">
+                <QuiltedFabricIcon className="w-5 h-5 sm:w-7 sm:h-7 text-[#543818] shrink-0" />
                 <div className="text-left">
-                  <div className="font-editorial text-[#1E1914] text-[13px] font-medium leading-snug">
+                  <div className="font-editorial text-[#1E1914] text-[11px] sm:text-[13px] font-medium leading-tight">
                     Premium Fabrics
                   </div>
-                  <div className="text-[#736B5E] text-[8.5px] tracking-wider uppercase font-sans font-medium leading-none mt-0.5">
+                  <div className="text-[#736B5E] text-[7px] sm:text-[8.5px] tracking-wider uppercase font-sans font-medium leading-none mt-0.5">
                     FOR EVERYDAY WEAR
                   </div>
                 </div>
               </div>
 
               {/* Item 2 */}
-              <div className="flex items-center gap-2.5">
-                <ConcentricTribalSunIcon className="w-7 h-7 text-[#543818] shrink-0" />
+              <div className="flex items-center gap-1.5 sm:gap-2.5 pl-2 sm:pl-3 border-l border-[#D3C7B5]/80">
+                <ConcentricTribalSunIcon className="w-5 h-5 sm:w-7 sm:h-7 text-[#543818] shrink-0" />
                 <div className="text-left">
-                  <div className="font-editorial text-[#1E1914] text-[13px] font-medium leading-snug">
+                  <div className="font-editorial text-[#1E1914] text-[11px] sm:text-[13px] font-medium leading-tight">
                     Authentic Tribal Designs
                   </div>
-                  <div className="text-[#736B5E] text-[8.5px] tracking-wider uppercase font-sans font-medium leading-none mt-0.5">
+                  <div className="text-[#736B5E] text-[7px] sm:text-[8.5px] tracking-wider uppercase font-sans font-medium leading-none mt-0.5">
                     ROOTED IN CULTURE
                   </div>
                 </div>
               </div>
 
               {/* Item 3 */}
-              <div className="flex items-center gap-2.5">
-                <TailorShirtIcon className="w-7 h-7 text-[#543818] shrink-0" />
+              <div className="flex items-center gap-1.5 sm:gap-2.5 pl-1.5 sm:pl-0 pt-1.5 border-t border-[#D3C7B5]/80">
+                <TailorShirtIcon className="w-5 h-5 sm:w-7 sm:h-7 text-[#543818] shrink-0" />
                 <div className="text-left">
-                  <div className="font-editorial text-[#1E1914] text-[13px] font-medium leading-snug">
+                  <div className="font-editorial text-[#1E1914] text-[11px] sm:text-[13px] font-medium leading-tight">
                     Custom & Bulk Orders
                   </div>
-                  <div className="text-[#736B5E] text-[8.5px] tracking-wider uppercase font-sans font-medium leading-none mt-0.5">
+                  <div className="text-[#736B5E] text-[7px] sm:text-[8.5px] tracking-wider uppercase font-sans font-medium leading-none mt-0.5">
                     FOR TEAMS & BUSINESSES
                   </div>
                 </div>
               </div>
 
               {/* Item 4 + Button */}
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2.5">
-                  <JharkhandMapIcon className="w-7 h-7 text-[#543818] shrink-0" />
+              <div className="flex items-center justify-between gap-1.5 pl-2 sm:pl-3 pt-1.5 border-l border-t border-[#D3C7B5]/80">
+                <div className="flex items-center gap-1.5 sm:gap-2.5">
+                  <JharkhandMapIcon className="w-5 h-5 sm:w-7 sm:h-7 text-[#543818] shrink-0" />
                   <div className="text-left">
-                    <div className="font-editorial text-[#1E1914] text-[13px] font-medium leading-snug">
+                    <div className="font-editorial text-[#1E1914] text-[11px] sm:text-[13px] font-medium leading-tight">
                       Proudly from
                     </div>
-                    <div className="font-editorial text-[#1E1914] text-[13px] font-medium leading-snug">
+                    <div className="font-editorial text-[#1E1914] text-[11px] sm:text-[13px] font-medium leading-tight">
                       Jharkhand, India
                     </div>
                   </div>
@@ -907,7 +905,7 @@ export function HeroSection() {
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="w-7 h-7 rounded-full border border-[#8C6D3B] text-[#543818] flex items-center justify-center shrink-0 active:scale-90"
+                  className="w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full border border-[#8C6D3B] text-[#543818] flex items-center justify-center shrink-0 active:scale-90"
                   aria-label="Next Outfit"
                 >
                   <svg className="w-3 h-3 stroke-[2]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
