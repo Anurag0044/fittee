@@ -1,6 +1,7 @@
 import { HeroSection } from "@/components/HeroSection";
 import { FeaturedCollection } from "@/components/FeaturedCollection";
 import { CustomDesignSection } from "@/components/CustomDesignSection";
+import { PremiumFabricsSection } from "@/components/PremiumFabricsSection";
 
 export default function Home() {
   return (
@@ -8,6 +9,8 @@ export default function Home() {
       <HeroSection />
       <FeaturedCollection />
       <CustomDesignSection />
+      <PremiumFabricsSection />
     </main>
   );
 }
+
