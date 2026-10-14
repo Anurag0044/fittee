@@ -44,6 +44,17 @@ body {
   background: #e5a93c;
 }
 
+/* Prevent browser autofill from turning inputs white */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #0B100C inset !important;
+  -webkit-text-fill-color: #FAF4EA !important;
+  caret-color: #D4A13E !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 /* Horizontal Continuous Loop Marquee */
 /* Infinite Marquee Gliding Track */
 @keyframes marquee {
