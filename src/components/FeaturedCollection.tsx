@@ -251,13 +251,16 @@ const CAROUSEL_PRODUCTS = [...NEW_ARRIVALS, ...NEW_ARRIVALS, ...NEW_ARRIVALS];
 
 export function FeaturedCollection() {
   const [selectedColor, setSelectedColor] = useState<Record<number, number>>({});
-  const [addedId, setAddedId] = useState<number | null>(null);
+  const [cartItems, setCartItems] = useState<Record<number, boolean>>({});
   const [buyNowId, setBuyNowId] = useState<number | null>(null);
   const [favorites, setFavorites] = useState<Record<number, boolean>>({});
   const [favToast, setFavToast] = useState<{ id: number; text: string; isAdding: boolean } | null>(null);
   const favToastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [cartToast, setCartToast] = useState<{ id: number; text: string } | null>(null);
+  const [cartToast, setCartToast] = useState<{ id: number; text: string; isAdding?: boolean } | null>(null);
   const cartToastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const normalizeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const normalizeSubTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const buyNowTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [carouselWordIndex, setCarouselWordIndex] = useState(0);
 
@@ -295,6 +298,15 @@ export function FeaturedCollection() {
       if (cartToastTimeoutRef.current) {
         clearTimeout(cartToastTimeoutRef.current);
       }
+      if (normalizeTimeoutRef.current) {
+        clearTimeout(normalizeTimeoutRef.current);
+      }
+      if (normalizeSubTimeoutRef.current) {
+        clearTimeout(normalizeSubTimeoutRef.current);
+      }
+      if (buyNowTimeoutRef.current) {
+        clearTimeout(buyNowTimeoutRef.current);
+      }
     };
   }, []);
 
@@ -327,10 +339,12 @@ export function FeaturedCollection() {
 
     // If reaching the 3rd set, silently normalize back to the 2nd set
     if (next >= NEW_ARRIVALS.length * 2) {
-      setTimeout(() => {
+      if (normalizeTimeoutRef.current) clearTimeout(normalizeTimeoutRef.current);
+      normalizeTimeoutRef.current = setTimeout(() => {
         setIsNormalizing(true);
         setActiveIndex(next - NEW_ARRIVALS.length);
-        setTimeout(() => setIsNormalizing(false), 50);
+        if (normalizeSubTimeoutRef.current) clearTimeout(normalizeSubTimeoutRef.current);
+        normalizeSubTimeoutRef.current = setTimeout(() => setIsNormalizing(false), 50);
       }, 880);
     }
   };
@@ -342,10 +356,12 @@ export function FeaturedCollection() {
 
     // If reaching the 1st set, silently normalize back to the 2nd set
     if (prev < NEW_ARRIVALS.length) {
-      setTimeout(() => {
+      if (normalizeTimeoutRef.current) clearTimeout(normalizeTimeoutRef.current);
+      normalizeTimeoutRef.current = setTimeout(() => {
         setIsNormalizing(true);
         setActiveIndex(prev + NEW_ARRIVALS.length);
-        setTimeout(() => setIsNormalizing(false), 50);
+        if (normalizeSubTimeoutRef.current) clearTimeout(normalizeSubTimeoutRef.current);
+        normalizeSubTimeoutRef.current = setTimeout(() => setIsNormalizing(false), 50);
       }, 880);
     }
   };
@@ -361,7 +377,8 @@ export function FeaturedCollection() {
 
   const handleAddToCart = (e: React.MouseEvent, id: number) => {
     e.stopPropagation();
-    setAddedId(id);
+    const willBeInCart = !cartItems[id];
+    setCartItems((prev) => ({ ...prev, [id]: willBeInCart }));
 
     if (cartToastTimeoutRef.current) {
       clearTimeout(cartToastTimeoutRef.current);
@@ -371,13 +388,15 @@ export function FeaturedCollection() {
     }
     setFavToast(null);
 
-    setCartToast({ id, text: "Added to Cart" });
+    setCartToast({
+      id,
+      text: willBeInCart ? "Added to Cart" : "Removed from Cart",
+      isAdding: willBeInCart,
+    });
 
     cartToastTimeoutRef.current = setTimeout(() => {
       setCartToast(null);
     }, 2200);
-
-    setTimeout(() => setAddedId(null), 1400);
   };
 
   const toggleFavorite = (e: React.MouseEvent, id: number) => {
@@ -407,6 +426,7 @@ export function FeaturedCollection() {
   const handleBuyNow = (e: React.MouseEvent, id: number) => {
     e.stopPropagation();
     setBuyNowId(id);
+    setCartItems((prev) => ({ ...prev, [id]: true }));
 
     if (cartToastTimeoutRef.current) {
       clearTimeout(cartToastTimeoutRef.current);
@@ -416,13 +436,16 @@ export function FeaturedCollection() {
     }
     setFavToast(null);
 
-    setCartToast({ id, text: "Added to Cart" });
+    setCartToast({ id, text: "Added to Cart", isAdding: true });
 
     cartToastTimeoutRef.current = setTimeout(() => {
       setCartToast(null);
     }, 2200);
 
-    setTimeout(() => setBuyNowId(null), 1600);
+    if (buyNowTimeoutRef.current) {
+      clearTimeout(buyNowTimeoutRef.current);
+    }
+    buyNowTimeoutRef.current = setTimeout(() => setBuyNowId(null), 1600);
   };
 
   return (
@@ -434,11 +457,6 @@ export function FeaturedCollection() {
       {/* ─── Hidden SVG Pattern Defs ──────────────────────────────────── */}
       <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
         <defs>
-          {/* Card cloth weave texture */}
-          <pattern id="cardClothWeavePattern" width="4" height="4" patternUnits="userSpaceOnUse">
-            <path d="M 0 2 L 4 2 M 2 0 L 2 4" stroke="#C8BCAE" strokeWidth="0.5" opacity="0.35" />
-          </pattern>
-
           {/* Paper grain texture */}
           <filter id="paperGrain">
             <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise" />
@@ -796,22 +814,8 @@ export function FeaturedCollection() {
                 </button>
               </div>
 
-              {/* Organic Wave Transition into Cloth Panel */}
-              <div className="relative w-full h-2.5 -mt-2.5 z-10 pointer-events-none overflow-hidden">
-                <svg viewBox="0 0 100 10" preserveAspectRatio="none" className="w-full h-full block">
-                  <path d="M 0 10 C 35 2, 65 10, 100 4 L 100 10 L 0 10 Z" fill="#F7F3EB" />
-                </svg>
-              </div>
-
-              {/* 2. Compact Minimalist Information Panel with Tactile Cloth Weave */}
-              <div className="relative p-2.5 sm:p-3 flex flex-col justify-between flex-1 bg-[#F7F3EB] overflow-hidden">
-                {/* Subtle Tactile Cloth Weave Texture Overlay */}
-                <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-multiply">
-                  <svg className="w-full h-full block">
-                    <rect width="100%" height="100%" fill="url(#cardClothWeavePattern)" />
-                  </svg>
-                </div>
-
+              {/* 2. Compact Minimalist Information Panel */}
+              <div className="relative p-2.5 sm:p-3 flex flex-col justify-between flex-1 bg-[#F7F3EB]">
                 <div className="relative z-10">
                   {/* Fit Taxonomy & Star Rating Row - Minimal, clean, high-visibility */}
                   <div className="flex items-center justify-between gap-1.5 min-w-0">
@@ -883,12 +887,16 @@ export function FeaturedCollection() {
                     <button
                       type="button"
                       onClick={(e) => handleAddToCart(e, product.id)}
-                      aria-label={`Add ${product.name} to cart`}
-                      className="w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full bg-[#EDE5D6] hover:bg-[#1C1610] text-[#3D3122] hover:text-[#FAF7F2] border border-[#DDD3C2] flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs shrink-0 group/cart"
-                      title="Add to Cart"
+                      aria-label={cartItems[product.id] ? `Remove ${product.name} from cart` : `Add ${product.name} to cart`}
+                      className={`w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs shrink-0 group/cart ${
+                        cartItems[product.id]
+                          ? "bg-emerald-600 border border-emerald-600 text-white shadow-xs"
+                          : "bg-[#EDE5D6] hover:bg-[#1C1610] text-[#3D3122] hover:text-[#FAF7F2] border border-[#DDD3C2]"
+                      }`}
+                      title={cartItems[product.id] ? "In Cart (Click to uncheck)" : "Add to Cart"}
                     >
-                      {addedId === product.id ? (
-                        <Check className="w-3.5 h-3.5 stroke-[2.5] text-emerald-600" />
+                      {cartItems[product.id] ? (
+                        <Check className="w-3.5 h-3.5 stroke-[2.8] text-white" />
                       ) : (
                         <ShoppingCart className="w-3.5 h-3.5 stroke-[1.8] group-hover/cart:scale-105 transition-transform" />
                       )}
@@ -1065,22 +1073,8 @@ export function FeaturedCollection() {
                           </button>
                         </div>
 
-                        {/* Organic Wave Transition into Cloth Panel */}
-                        <div className="relative w-full h-3 -mt-3 z-10 pointer-events-none overflow-hidden">
-                          <svg viewBox="0 0 100 10" preserveAspectRatio="none" className="w-full h-full block">
-                            <path d="M 0 10 C 35 2, 65 10, 100 4 L 100 10 L 0 10 Z" fill="#F7F3EB" />
-                          </svg>
-                        </div>
-
                         {/* Compact Minimalist Information Panel */}
-                        <div className="relative p-3.5 sm:p-4 flex flex-col justify-between flex-1 bg-[#F7F3EB] overflow-hidden">
-                          {/* Cloth Weave Texture Overlay */}
-                          <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-multiply">
-                            <svg className="w-full h-full block">
-                              <rect width="100%" height="100%" fill="url(#cardClothWeavePattern)" />
-                            </svg>
-                          </div>
-
+                        <div className="relative p-3.5 sm:p-4 flex flex-col justify-between flex-1 bg-[#F7F3EB]">
                           <div className="relative z-10">
                             {/* Fit Taxonomy & Star Rating Row - Minimal, clean, high-visibility */}
                             <div className="flex items-center justify-between gap-1.5 min-w-0">
@@ -1152,12 +1146,16 @@ export function FeaturedCollection() {
                               <button
                                 type="button"
                                 onClick={(e) => handleAddToCart(e, product.id)}
-                                aria-label={`Add ${product.name} to cart`}
-                                className="w-7.5 h-7.5 sm:w-8 sm:h-8 rounded-full bg-[#EAE2D5] hover:bg-[#1C1610] text-[#3D3122] hover:text-[#FAF7F2] border border-[#DDD3C2] flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs shrink-0 group/cart"
-                                title="Add to Cart"
+                                aria-label={cartItems[product.id] ? `Remove ${product.name} from cart` : `Add ${product.name} to cart`}
+                                className={`w-7.5 h-7.5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs shrink-0 group/cart ${
+                                  cartItems[product.id]
+                                    ? "bg-emerald-600 border border-emerald-600 text-white shadow-xs"
+                                    : "bg-[#EAE2D5] hover:bg-[#1C1610] text-[#3D3122] hover:text-[#FAF7F2] border border-[#DDD3C2]"
+                                }`}
+                                title={cartItems[product.id] ? "In Cart (Click to uncheck)" : "Add to Cart"}
                               >
-                                {addedId === product.id ? (
-                                  <Check className="w-3.5 h-3.5 stroke-[2.5] text-emerald-600" />
+                                {cartItems[product.id] ? (
+                                  <Check className="w-3.5 h-3.5 stroke-[2.8] text-white" />
                                 ) : (
                                   <ShoppingCart className="w-3.5 h-3.5 stroke-[1.8] group-hover/cart:scale-105 transition-transform" />
                                 )}
@@ -1245,8 +1243,18 @@ export function FeaturedCollection() {
             transition={{ duration: 0.28, ease: luxuryEase }}
             className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-[#1C1610] text-[#FAF7F2] border border-[#3A2F22] shadow-[0_12px_32px_rgba(0,0,0,0.35)] flex items-center gap-2.5 pointer-events-none select-none max-w-[90vw]"
           >
-            <span className="w-6 h-6 rounded-full bg-[#2C2218] border border-emerald-500/30 flex items-center justify-center shrink-0">
-              <Check className="w-3.5 h-3.5 stroke-[2.5] text-emerald-400" />
+            <span
+              className={`w-6 h-6 rounded-full bg-[#2C2218] flex items-center justify-center shrink-0 border ${
+                cartToast.isAdding !== false
+                  ? "border-emerald-500/30 text-emerald-400"
+                  : "border-[#FAF7F2]/20 text-[#FAF7F2]/70"
+              }`}
+            >
+              {cartToast.isAdding !== false ? (
+                <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+              ) : (
+                <ShoppingCart className="w-3.5 h-3.5 stroke-[1.8]" />
+              )}
             </span>
             <span className="font-sans text-xs sm:text-[13px] font-medium tracking-wide text-[#FAF7F2]">
               {cartToast.text}

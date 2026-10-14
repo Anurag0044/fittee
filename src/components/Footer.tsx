@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, type Variants } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
 
@@ -146,12 +146,24 @@ const columnVariants: Variants = {
 export function Footer() {
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const subscribeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (subscribeTimeoutRef.current) {
+        clearTimeout(subscribeTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim() || !email.includes("@")) return;
     setIsSubscribed(true);
-    setTimeout(() => {
+    if (subscribeTimeoutRef.current) {
+      clearTimeout(subscribeTimeoutRef.current);
+    }
+    subscribeTimeoutRef.current = setTimeout(() => {
       setEmail("");
       setIsSubscribed(false);
     }, 4000);

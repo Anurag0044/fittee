@@ -28,8 +28,6 @@ export function HeroSection() {
   const prevSlideRef = useRef(1);
 
   const heroSectionRef = useRef<HTMLElement>(null);
-  const modelsEntranceRef = useRef<HTMLDivElement>(null);
-  const modelsRigRef = useRef<HTMLDivElement>(null);
   const outfitImagesRef = useRef<(HTMLImageElement | null)[]>([]);
 
   // 1. Figma-Style Circular Arc Transition between outfits
@@ -249,7 +247,6 @@ export function HeroSection() {
 
       {/* Center-Right: Multi-Outfit Showcase Anchored at Bottom Behind Wave Banner */}
       <motion.div
-        ref={modelsEntranceRef}
         initial={{ opacity: 0, y: 75, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 1.2, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
@@ -257,7 +254,6 @@ export function HeroSection() {
       >
         {/* Inner Motion Rig */}
         <div
-          ref={modelsRigRef}
           className="relative w-full h-full flex items-end justify-center will-change-transform"
         >
           {/* All 6 Outfits Preloaded for Instant Butter-Smooth Crossfading */}
