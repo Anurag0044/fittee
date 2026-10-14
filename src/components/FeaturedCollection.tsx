@@ -939,7 +939,7 @@ export function FeaturedCollection() {
           variants={carouselShelfVariants}
           className="mt-14 sm:mt-18 lg:mt-20 pt-10 sm:pt-14 border-t border-[#D9CEBC]"
         >
-          {/* Section Header: Minimal, Tasteful Editorial Header with Continuous Premium Motion & Durga Puja Offers */}
+          {/* Section Header: Minimal, Tasteful Editorial Header with Continuous Premium Motion & Durga Puja Sale */}
           <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div>
               <h3 className="font-editorial text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#1C1610] tracking-tight leading-none flex items-center gap-2 whitespace-nowrap">
@@ -971,7 +971,7 @@ export function FeaturedCollection() {
               <div className="text-left sm:text-right">
                 <h4 className="font-editorial text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#1C1610] tracking-tight leading-[1.25] pb-1 whitespace-nowrap select-none flex items-baseline sm:justify-end gap-2">
                   <span className="animate-durga-shine pr-1 pb-1">Durga Puja</span>
-                  <span className="italic font-normal text-[#B87A22]">Offers</span>
+                  <span className="italic font-normal text-[#B87A22]">Sale</span>
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#B87A22]/75 translate-y-[-2px]" />
                 </h4>
                 <p className="mt-1 text-[#8C765E] text-[11px] sm:text-[12px] font-medium tracking-wide uppercase sm:text-right">
