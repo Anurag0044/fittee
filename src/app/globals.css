@@ -100,44 +100,45 @@ input:-webkit-autofill:active {
   animation: subtle-sheen 6s ease-in-out infinite;
 }
 
-/* Minimal, Clean, Persistent Luxury Discount Highlighting Animation */
+/* Minimal, Clean, Persistent Luxury Discount Highlighting Animation - Hardware Accelerated */
 @keyframes discount-highlight {
-
   0%,
   100% {
     background-color: #FDF2E7;
     border-color: #EBB28E;
     color: #9C380A;
-    box-shadow: 0 1px 4px rgba(156, 56, 10, 0.10);
-    transform: scale(1);
+    box-shadow: 0 1px 3px rgba(156, 56, 10, 0.12);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 
   50% {
     background-color: #FCE1CC;
     border-color: #D96A27;
     color: #7D2804;
-    box-shadow: 0 0 12px rgba(217, 106, 39, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.7);
-    transform: scale(1.03);
+    box-shadow: 0 2px 6px rgba(217, 106, 39, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    transform: translate3d(0, 0, 0) scale(1.03);
   }
 }
 
 @keyframes discount-sweep {
   0% {
-    transform: translateX(-160%) skewX(-18deg);
+    transform: translate3d(-160%, 0, 0) skewX(-18deg);
   }
 
   30%,
   100% {
-    transform: translateX(180%) skewX(-18deg);
+    transform: translate3d(180%, 0, 0) skewX(-18deg);
   }
 }
 
 .animate-discount-highlight {
   animation: discount-highlight 2.6s ease-in-out infinite;
+  will-change: transform;
 }
 
 .animate-discount-sweep {
   animation: discount-sweep 2.6s ease-in-out infinite;
+  will-change: transform;
 }
 
 /* Prevent image dragging globally */
@@ -182,4 +183,22 @@ img {
   margin-bottom: -0.25em;
   padding-right: 0.1em;
   vertical-align: baseline;
+}
+
+/* Off-screen rendering optimization for silky-smooth 60fps scrolling on low-end devices */
+.section-optimize {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 800px;
+}
+
+/* Reduced motion preference fallback for battery saving and accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

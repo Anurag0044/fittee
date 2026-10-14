@@ -223,18 +223,18 @@ export function FollowSection() {
       ref={sectionRef}
       id="community"
       aria-label="Our Community — Our Culture. Your Story."
-      className="relative w-full overflow-hidden select-none isolate bg-[#EAE2D5] text-[#1C1610]"
+      className="relative w-full section-optimize overflow-hidden select-none isolate bg-[#EAE2D5] text-[#1C1610]"
     >
       {/* ─── 1. Continuous Unified Parchment Canvas (Exact match to other sections) ─── */}
       <div className="absolute inset-0 z-0 pointer-events-none bg-[#EAE2D5]" />
 
-      {/* ─── 2. Paper Noise Texture Overlay ─── */}
+      {/* ─── 2. Paper Noise Texture Overlay (Optimized 1-octave SVG noise) ─── */}
       <div
         className="absolute inset-0 z-0 pointer-events-none opacity-[0.05] mix-blend-overlay"
         style={{
           backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")",
-          backgroundSize: "300px 300px",
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")",
+          backgroundSize: "200px 200px",
         }}
       />
 

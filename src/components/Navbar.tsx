@@ -72,9 +72,10 @@ export function Navbar() {
   const [searchVal, setSearchVal] = useState("");
   const [searchSuggestionIdx, setSearchSuggestionIdx] = useState(0);
 
-  // Continuously cycle through search suggestion texts every 3.2 seconds
+  // Continuously cycle through search suggestion texts every 3.2 seconds (pauses when hidden)
   useEffect(() => {
     const interval = setInterval(() => {
+      if (typeof document !== "undefined" && document.hidden) return;
       setSearchSuggestionIdx((prev) => (prev + 1) % SEARCH_SUGGESTIONS.length);
     }, 3200);
     return () => clearInterval(interval);
@@ -271,16 +272,6 @@ export function Navbar() {
                   <span className="absolute -top-1 -right-1 bg-[#E5A93C] text-[#1A1612] text-[10px] font-bold w-[18px] h-[18px] rounded-full flex items-center justify-center leading-none shadow-sm">
                     0
                   </span>
-                </button>
-
-                {/* Hamburger Menu (3 horizontal lines) */}
-                <button
-                  type="button"
-                  onClick={() => setMobileMenuOpen(true)}
-                  className="hover:text-[#9B6A1A] hover:bg-black/5 rounded-full p-1.5 transition-colors focus:outline-none cursor-pointer ml-0.5"
-                  aria-label="Menu"
-                >
-                  <Menu className="w-[22px] h-[22px] xl:w-[23px] xl:h-[23px] stroke-[2]" />
                 </button>
               </div>
             </div>

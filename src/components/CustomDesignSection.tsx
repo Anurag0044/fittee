@@ -113,7 +113,7 @@ export function CustomDesignSection() {
       const noiseEl = noiseLayerRef.current;
       const sunEl = sunRef.current;
 
-      // ─── 1. Sacred Sohrai Sun 360° Clean Perpetual Motion ───
+      // ─── 1. Sacred Sohrai Sun 360° Clean Perpetual Motion (Paused when offscreen) ───
       if (sunEl) {
         gsap.set(sunEl, {
           transformOrigin: "50% 50%",
@@ -122,11 +122,22 @@ export function CustomDesignSection() {
         });
 
         // Silky-smooth, perpetual 360-degree rotation with zero wobbling
-        gsap.to(sunEl, {
+        const sunTween = gsap.to(sunEl, {
           rotation: 360,
           duration: 38,
           ease: "none",
           repeat: -1,
+          paused: true,
+        });
+
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top bottom",
+          end: "bottom top",
+          onEnter: () => sunTween.play(),
+          onLeave: () => sunTween.pause(),
+          onEnterBack: () => sunTween.play(),
+          onLeaveBack: () => sunTween.pause(),
         });
       }
 
@@ -157,13 +168,13 @@ export function CustomDesignSection() {
         delay: 0.1,
       });
 
-      // Natural gradient noise dissolves and lifts away without ANY moving lines or seams
+      // Natural gradient noise dissolves and lifts away smoothly
       tl.to(
         noiseEl,
         {
           autoAlpha: 0,
-          filter: "blur(16px)",
-          duration: 1.45,
+          filter: "blur(8px)",
+          duration: 1.2,
           ease: "power2.out",
           onComplete: () => {
             gsap.set(noiseEl, { display: "none" });
@@ -229,7 +240,7 @@ export function CustomDesignSection() {
     <section
       ref={sectionRef}
       id="custom-design"
-      className="relative w-full bg-[#EAE2D5] min-h-[500px] sm:min-h-[540px] lg:min-h-[580px] flex flex-col justify-between overflow-hidden select-none isolate"
+      className="relative w-full bg-[#EAE2D5] section-optimize min-h-[500px] sm:min-h-[540px] lg:min-h-[580px] flex flex-col justify-between overflow-hidden select-none isolate"
     >
       {/* ─── 1. Base Continuous Parchment Canvas (Seamlessly continues from FeaturedCollection) ─── */}
       <div
@@ -239,13 +250,13 @@ export function CustomDesignSection() {
         }}
       />
 
-      {/* ─── 2. Paper Noise Texture Overlay ───────────────────────────── */}
+      {/* ─── 2. Paper Noise Texture Overlay (Optimized 1-octave SVG noise) ─── */}
       <div
-        className="absolute inset-0 z-0 pointer-events-none opacity-[0.06] mix-blend-overlay"
+        className="absolute inset-0 z-0 pointer-events-none opacity-[0.05] mix-blend-overlay"
         style={{
           backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")",
-          backgroundSize: "300px 300px",
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")",
+          backgroundSize: "200px 200px",
         }}
       />
 

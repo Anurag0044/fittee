@@ -276,8 +276,25 @@ export function FeaturedCollection() {
   const [isNormalizing, setIsNormalizing] = useState(false);
   const [isLayoutReady, setIsLayoutReady] = useState(false);
 
+  const isSectionVisibleRef = useRef(true);
+
+  // Monitor section visibility to pause background timers when offscreen
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || typeof window === "undefined" || !("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isSectionVisibleRef.current = entry.isIntersecting;
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     const timer = setInterval(() => {
+      if (!isSectionVisibleRef.current || (typeof document !== "undefined" && document.hidden)) return;
       setPhraseIndex((prev) => (prev + 1) % ANIMATED_PHRASES.length);
     }, 2400);
     return () => clearInterval(timer);
@@ -285,6 +302,7 @@ export function FeaturedCollection() {
 
   useEffect(() => {
     const timer = setInterval(() => {
+      if (!isSectionVisibleRef.current || (typeof document !== "undefined" && document.hidden)) return;
       setCarouselWordIndex((prev) => (prev + 1) % CAROUSEL_WORDS.length);
     }, 2800);
     return () => clearInterval(timer);
@@ -366,10 +384,11 @@ export function FeaturedCollection() {
     }
   };
 
-  // Autoplay timer: 3.8s cadence with automatic pause on hover
+  // Autoplay timer: 3.8s cadence with automatic pause on hover and offscreen
   useEffect(() => {
     if (isPaused) return;
     const timer = setInterval(() => {
+      if (!isSectionVisibleRef.current || (typeof document !== "undefined" && document.hidden)) return;
       handleNext();
     }, 3800);
     return () => clearInterval(timer);
@@ -452,19 +471,11 @@ export function FeaturedCollection() {
     <section
       ref={sectionRef}
       id="shop"
-      className="relative w-full bg-[#EAE2D5] pt-14 sm:pt-16 lg:pt-20 pb-8 sm:pb-10 lg:pb-12 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 overflow-hidden select-none isolate"
+      className="relative w-full bg-[#EAE2D5] section-optimize pt-14 sm:pt-16 lg:pt-20 pb-8 sm:pb-10 lg:pb-12 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 overflow-hidden select-none isolate"
     >
       {/* ─── Hidden SVG Pattern Defs ──────────────────────────────────── */}
       <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
         <defs>
-          {/* Paper grain texture */}
-          <filter id="paperGrain">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise" />
-            <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise" />
-            <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended" />
-            <feComposite in="blended" in2="SourceGraphic" operator="in" />
-          </filter>
-
           {/* ── Premium Botanical Leaf Textures ── */}
           {/* 1. Cellular Cuticle Matrix — Microscopic organic cell texture */}
           <pattern id="leafCellularPattern" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(25)">
@@ -633,9 +644,9 @@ export function FeaturedCollection() {
         style={{ background: "radial-gradient(ellipse 130% 90% at 50% -5%, #F5EFE2 0%, #EAE0CA 40%, #E2D5BB 100%)" }}
       />
 
-      {/* ─── 2. Paper / Handmade-Paper Noise Texture ─────────────────── */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.07] mix-blend-overlay"
-        style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundSize: "300px 300px" }}
+      {/* ─── 2. Paper / Handmade-Paper Noise Texture (Optimized 1-octave SVG noise) ─── */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.05] mix-blend-overlay"
+        style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundSize: "200px 200px" }}
       />
 
 
@@ -717,10 +728,10 @@ export function FeaturedCollection() {
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={phraseIndex}
-                    initial={{ y: 16, opacity: 0, filter: "blur(4px)" }}
-                    animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                    exit={{ y: -16, opacity: 0, filter: "blur(4px)" }}
-                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                    initial={{ y: 14, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -14, opacity: 0 }}
+                    transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
                     className="font-editorial italic text-xl sm:text-2xl font-normal text-[#B87A22] tracking-tight whitespace-nowrap leading-normal py-0.5 pr-4 pl-1"
                   >
                     {ANIMATED_PHRASES[phraseIndex]}
@@ -774,7 +785,7 @@ export function FeaturedCollection() {
             <motion.div
               key={product.id}
               variants={productItemVariants}
-              className="group relative flex flex-col rounded-xl overflow-hidden bg-[#F7F3EB] border border-[#DDD3C2] hover:border-[#B8853B]/70 transition-[border-color,box-shadow] duration-300 shadow-[0_2px_8px_rgba(40,28,14,0.04)] hover:shadow-[0_8px_20px_rgba(40,28,14,0.08)] cursor-pointer transform-gpu will-change-transform"
+              className="group relative flex flex-col rounded-xl overflow-hidden bg-[#F7F3EB] border border-[#DDD3C2] hover:border-[#B8853B]/70 transition-[border-color,box-shadow] duration-300 shadow-[0_2px_8px_rgba(40,28,14,0.04)] hover:shadow-[0_8px_20px_rgba(40,28,14,0.08)] cursor-pointer"
             >
               {/* 1. Compact Portrait Photography Window (Natural, Unobstructed) */}
               <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#E2D8C7]">
@@ -948,10 +959,10 @@ export function FeaturedCollection() {
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={carouselWordIndex}
-                      initial={{ y: 20, opacity: 0, filter: "blur(4px)" }}
-                      animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                      exit={{ y: -20, opacity: 0, filter: "blur(4px)" }}
-                      transition={{ duration: 0.48, ease: luxuryEase }}
+                      initial={{ y: 16, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -16, opacity: 0 }}
+                      transition={{ duration: 0.42, ease: luxuryEase }}
                       className="italic font-normal text-[#B87A22] inline-flex items-baseline gap-2"
                     >
                       <span>{CAROUSEL_WORDS[carouselWordIndex]}</span>

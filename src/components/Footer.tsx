@@ -173,15 +173,15 @@ export function Footer() {
     <footer
       id="footer"
       aria-label="Fitee Brand Heritage Footer"
-      className="relative w-full overflow-hidden isolate select-none bg-[#080D09] text-[#FAF4EA] border-t border-[#1C261B]"
+      className="relative w-full section-optimize overflow-hidden isolate select-none bg-[#080D09] text-[#FAF4EA] border-t border-[#1C261B]"
     >
-      {/* ─── 1. Tactile Paper Texture Overlay ─── */}
+      {/* ─── 1. Tactile Paper Texture Overlay (Optimized 1-octave SVG noise) ─── */}
       <div
         className="absolute inset-0 z-0 pointer-events-none opacity-[0.025] mix-blend-overlay"
         style={{
           backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")",
-          backgroundSize: "300px 300px",
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")",
+          backgroundSize: "200px 200px",
         }}
       />
 
@@ -215,7 +215,7 @@ export function Footer() {
             src="/images/footer/tribal-landscape.png"
             alt="Fitee Tribal Heritage Landscape Illustration"
             className="w-full h-auto min-h-[240px] sm:min-h-[300px] lg:min-h-[360px] max-h-[440px] object-cover object-bottom opacity-[0.65] sm:opacity-[0.72] brightness-[0.98] contrast-[1.02]"
-            loading="eager"
+            loading="lazy"
             decoding="async"
           />
         </picture>

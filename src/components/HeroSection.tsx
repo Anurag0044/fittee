@@ -88,13 +88,31 @@ export function HeroSection() {
     prevSlideRef.current = slide;
   }, [slide, totalSlides]);
 
-  // 3. Autoplay outfit cycle every 4.5 seconds
+  // 3. Autoplay outfit cycle every 4.5 seconds (smart pause when off-screen or tab hidden)
   useEffect(() => {
+    let isVisible = true;
+    const heroEl = heroSectionRef.current;
+
+    let observer: IntersectionObserver | null = null;
+    if (typeof window !== "undefined" && "IntersectionObserver" in window && heroEl) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          isVisible = entry.isIntersecting;
+        },
+        { threshold: 0.1 }
+      );
+      observer.observe(heroEl);
+    }
+
     const timer = setInterval(() => {
+      if (!isVisible || (typeof document !== "undefined" && document.hidden)) return;
       setSlide((prev) => (prev === totalSlides ? 1 : prev + 1));
     }, 4500);
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+      if (observer && heroEl) observer.unobserve(heroEl);
+    };
   }, [totalSlides]);
 
 
@@ -135,8 +153,8 @@ export function HeroSection() {
         <div className="max-w-md sm:max-w-xl lg:max-w-2xl text-left">
           {/* Eyebrow Tag */}
           <motion.div
-            initial={{ opacity: 0, y: -16, filter: "blur(4px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            initial={{ opacity: 0, y: -16 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="flex items-center gap-2.5 sm:gap-3 mb-2.5 sm:mb-5"
           >
@@ -152,24 +170,24 @@ export function HeroSection() {
           {/* Main Display Headline */}
           <h1 className="font-editorial text-[42px] sm:text-6xl md:text-7xl lg:text-[76px] xl:text-[80px] font-bold text-white tracking-tight leading-[1.04] drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]">
             <motion.span
-              initial={{ opacity: 0, y: 36, filter: "blur(5px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 32 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.85, delay: 0.36, ease: [0.16, 1, 0.3, 1] }}
               className="block text-white"
             >
               Wear Your
             </motion.span>
             <motion.span
-              initial={{ opacity: 0, y: 36, filter: "blur(5px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 32 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.85, delay: 0.48, ease: [0.16, 1, 0.3, 1] }}
               className="block text-[#E2A642] italic font-normal tracking-tight my-0.5 sm:my-1 drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)]"
             >
               Culture
             </motion.span>
             <motion.span
-              initial={{ opacity: 0, y: 36, filter: "blur(5px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 32 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.85, delay: 0.60, ease: [0.16, 1, 0.3, 1] }}
               className="block text-white"
             >
@@ -267,7 +285,8 @@ export function HeroSection() {
               alt="Fittee Tribal Fashion Campaign"
               className="absolute inset-0 h-full w-auto mx-auto object-contain object-bottom drop-shadow-[0_24px_48px_rgba(0,0,0,0.85)] filter pointer-events-none select-none will-change-transform"
               style={{ opacity: index === 0 ? 1 : 0 }}
-              loading="eager"
+              loading={index <= 1 ? "eager" : "lazy"}
+              decoding="async"
             />
           ))}
         </div>
