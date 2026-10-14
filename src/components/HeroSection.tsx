@@ -100,9 +100,6 @@ export function HeroSection() {
   }, [totalSlides]);
 
 
-  const handleNext = () => {
-    setSlide((prev) => (prev === totalSlides ? 1 : prev + 1));
-  };
 
   return (
     <section
@@ -727,7 +724,7 @@ export function HeroSection() {
         </motion.div>
 
         {/* Content: 4 Columns & Controls inside Ivory Canvas Wave - Generous clearance & harmonious spacing */}
-        <div className="relative z-30 w-full h-full pl-10 pr-4 sm:pl-16 sm:pr-8 md:pl-20 md:pr-10 lg:pl-28 xl:pl-32 lg:pr-14 xl:pr-18 pt-[70px] sm:pt-[56px] lg:pt-[60px] xl:pt-[62px] pb-2 sm:pb-3.5 lg:pb-4 flex items-center">
+        <div className="relative z-30 w-full h-full pl-8 pr-6 sm:pl-14 sm:pr-10 md:pl-18 md:pr-14 lg:pl-24 xl:pl-28 lg:pr-24 xl:pr-32 pt-[70px] sm:pt-[56px] lg:pt-[60px] xl:pt-[62px] pb-2 sm:pb-3.5 lg:pb-4 flex items-center">
           {/* Desktop Single-Row Layout (lg and above) */}
           <div className="hidden lg:flex items-center justify-between w-full gap-2 xl:gap-4">
             {/* Col 1: Premium Fabrics */}
@@ -813,7 +810,7 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 1.0, ease: [0.16, 1, 0.3, 1] }}
-              className="group flex items-center gap-2.5 xl:gap-3 select-none cursor-default shrink-0"
+              className="group flex items-center gap-2.5 xl:gap-3 select-none cursor-default shrink-0 mr-4 lg:mr-8 xl:mr-12"
             >
               <JharkhandMapIcon className="w-7 h-7 xl:w-8 xl:h-8 text-[#543818] shrink-0 group-hover:scale-105 transition-transform duration-200" />
               <div className="text-left">
@@ -825,24 +822,6 @@ export function HeroSection() {
                 </div>
               </div>
             </motion.div>
-
-            {/* Circular Next Button (Control) */}
-            <motion.button
-              type="button"
-              onClick={handleNext}
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              whileTap={{ scale: 0.9 }}
-              className="w-7.5 h-7.5 xl:w-8.5 xl:h-8.5 rounded-full border border-[#8C6D3B] hover:border-[#543818] hover:bg-[#543818]/10 text-[#543818] flex items-center justify-center transition-colors duration-200 cursor-pointer ml-1.5 xl:ml-3 shrink-0 focus:outline-none shadow-sm"
-              aria-label="Next Outfit"
-              title="Next outfit"
-            >
-              <svg className="w-3.5 h-3.5 stroke-[1.8]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 5l7 7-7 7" />
-              </svg>
-            </motion.button>
           </div>
 
           {/* Mobile & Tablet 2x2 Clean Responsive Grid (under lg) */}
@@ -887,31 +866,17 @@ export function HeroSection() {
                 </div>
               </div>
 
-              {/* Item 4 + Button */}
-              <div className="flex items-center justify-between gap-1.5 pl-2 sm:pl-3 pt-1.5 border-l border-t border-[#D3C7B5]/80">
-                <div className="flex items-center gap-1.5 sm:gap-2.5">
-                  <JharkhandMapIcon className="w-5 h-5 sm:w-7 sm:h-7 text-[#543818] shrink-0" />
-                  <div className="text-left">
-                    <div className="font-editorial text-[#1E1914] text-[11px] sm:text-[13px] font-medium leading-tight">
-                      Proudly from
-                    </div>
-                    <div className="font-editorial text-[#1E1914] text-[11px] sm:text-[13px] font-medium leading-tight">
-                      Jharkhand, India
-                    </div>
+              {/* Item 4 */}
+              <div className="flex items-center gap-1.5 sm:gap-2.5 pl-2 sm:pl-3 pt-1.5 border-l border-t border-[#D3C7B5]/80">
+                <JharkhandMapIcon className="w-5 h-5 sm:w-7 sm:h-7 text-[#543818] shrink-0" />
+                <div className="text-left">
+                  <div className="font-editorial text-[#1E1914] text-[11px] sm:text-[13px] font-medium leading-tight">
+                    Proudly from
+                  </div>
+                  <div className="font-editorial text-[#1E1914] text-[11px] sm:text-[13px] font-medium leading-tight">
+                    Jharkhand, India
                   </div>
                 </div>
-
-                {/* Next button */}
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  className="w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full border border-[#8C6D3B] text-[#543818] flex items-center justify-center shrink-0 active:scale-90"
-                  aria-label="Next Outfit"
-                >
-                  <svg className="w-3 h-3 stroke-[2]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 5l7 7-7 7" />
-                  </svg>
-                </button>
               </div>
             </div>
           </div>

@@ -247,29 +247,7 @@ export function Footer() {
               </p>
             </div>
 
-            {/* Social Media Tags: Fluid Interactive Spring Touch */}
-            <div className="mt-8 flex items-center gap-4 text-[#D4A13E]">
-              {[
-                { name: "Instagram", icon: <InstagramIcon className="w-[18px] h-[18px]" />, href: "https://instagram.com" },
-                { name: "Facebook", icon: <FacebookIcon className="w-[18px] h-[18px]" />, href: "https://facebook.com" },
-                { name: "YouTube", icon: <YoutubeIcon className="w-[19px] h-[19px]" />, href: "https://youtube.com" },
-                { name: "X", icon: <XIcon className="w-[16px] h-[16px]" />, href: "https://x.com" },
-              ].map((social) => (
-                <motion.a
-                  key={social.name}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Follow Fitee on ${social.name}`}
-                  whileHover={{ scale: 1.25, y: -2.5, color: "#FAF4EA" }}
-                  whileTap={{ scale: 0.88 }}
-                  transition={{ type: "spring", stiffness: 450, damping: 18 }}
-                  className="cursor-pointer drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] inline-flex items-center justify-center"
-                >
-                  {social.icon}
-                </motion.a>
-              ))}
-            </div>
+
           </motion.div>
 
           {/* ── Column 2: Shop (Lg: 2 cols) ── */}
@@ -298,6 +276,30 @@ export function Footer() {
                 </li>
               ))}
             </ul>
+
+            {/* Social Media App Icons - Positioned Just Below Bestsellers */}
+            <div className="mt-5 flex items-center gap-3.5 text-[#D4A13E]">
+              {[
+                { name: "Instagram", icon: <InstagramIcon className="w-[17px] h-[17px]" />, href: "https://instagram.com" },
+                { name: "Facebook", icon: <FacebookIcon className="w-[17px] h-[17px]" />, href: "https://facebook.com" },
+                { name: "YouTube", icon: <YoutubeIcon className="w-[18px] h-[18px]" />, href: "https://youtube.com" },
+                { name: "X", icon: <XIcon className="w-[15px] h-[15px]" />, href: "https://x.com" },
+              ].map((social) => (
+                <motion.a
+                  key={social.name}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Follow Fitee on ${social.name}`}
+                  whileHover={{ scale: 1.25, y: -2.5, color: "#FAF4EA" }}
+                  whileTap={{ scale: 0.88 }}
+                  transition={{ type: "spring", stiffness: 450, damping: 18 }}
+                  className="cursor-pointer drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] inline-flex items-center justify-center"
+                >
+                  {social.icon}
+                </motion.a>
+              ))}
+            </div>
           </motion.div>
 
           {/* ── Column 3: Company (Lg: 2 cols) ── */}

@@ -263,12 +263,11 @@ export function FollowSection() {
               className="w-[130px] sm:w-[150px] md:w-[165px] lg:w-[180px] xl:w-[200px] shrink-0 sm:pt-0.5 pointer-events-none select-none mix-blend-multiply opacity-85 sm:opacity-90 will-change-transform"
               style={{ aspectRatio: "885 / 604" }}
             >
-              <Image
-                src="/images/community/sohrai-squirrel-art.png"
+              <img
+                src="/images/community/sohrai-squirrel.svg"
                 alt="Traditional Sohrai folk squirrel perched on blooming branch"
                 width={885}
                 height={604}
-                priority
                 draggable={false}
                 className="w-full h-auto object-contain object-left pointer-events-none select-none"
               />

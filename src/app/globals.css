@@ -33,21 +33,24 @@ body {
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: #121611;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #394235;
   border-radius: 9999px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #e5a93c;
 }
 
 /* Prevent browser autofill from turning inputs white */
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 1000px #0B100C inset !important;
   -webkit-text-fill-color: #FAF4EA !important;
@@ -61,6 +64,7 @@ input:-webkit-autofill:active {
   0% {
     transform: translate3d(0%, 0, 0);
   }
+
   100% {
     transform: translate3d(-50%, 0, 0);
   }
@@ -79,10 +83,13 @@ input:-webkit-autofill:active {
 
 /* Minimal Tasteful Luxury Editorial Sheen */
 @keyframes subtle-sheen {
-  0%, 100% {
+
+  0%,
+  100% {
     color: #A36B20;
     text-shadow: 0 0 0px rgba(163, 107, 32, 0);
   }
+
   50% {
     color: #CF923A;
     text-shadow: 0 0 16px rgba(207, 146, 58, 0.28);
@@ -93,3 +100,86 @@ input:-webkit-autofill:active {
   animation: subtle-sheen 6s ease-in-out infinite;
 }
 
+/* Minimal, Clean, Persistent Luxury Discount Highlighting Animation */
+@keyframes discount-highlight {
+
+  0%,
+  100% {
+    background-color: #FDF2E7;
+    border-color: #EBB28E;
+    color: #9C380A;
+    box-shadow: 0 1px 4px rgba(156, 56, 10, 0.10);
+    transform: scale(1);
+  }
+
+  50% {
+    background-color: #FCE1CC;
+    border-color: #D96A27;
+    color: #7D2804;
+    box-shadow: 0 0 12px rgba(217, 106, 39, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    transform: scale(1.03);
+  }
+}
+
+@keyframes discount-sweep {
+  0% {
+    transform: translateX(-160%) skewX(-18deg);
+  }
+
+  30%,
+  100% {
+    transform: translateX(180%) skewX(-18deg);
+  }
+}
+
+.animate-discount-highlight {
+  animation: discount-highlight 2.6s ease-in-out infinite;
+}
+
+.animate-discount-sweep {
+  animation: discount-sweep 2.6s ease-in-out infinite;
+}
+
+/* Prevent image dragging globally */
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  user-select: none;
+}
+
+/* Buttery Smooth Tilted Single-Pass Shine for 'Durga Puja' and 'Great Offers' (Left to Right, Consistent Flow) */
+@keyframes durga-shine {
+  0% {
+    background-position: 150% 0;
+  }
+  70%, 100% {
+    background-position: -50% 0;
+  }
+}
+
+.animate-durga-shine {
+  background: linear-gradient(
+    115deg,
+    #1C1610 0%,
+    #1C1610 36%,
+    #C48D3B 44%,
+    #FFF6E5 50%,
+    #C48D3B 56%,
+    #1C1610 64%,
+    #1C1610 100%
+  );
+  background-size: 200% 100%;
+  color: #1C1610;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: durga-shine 3.8s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  display: inline-block;
+  padding-bottom: 0.25em;
+  margin-bottom: -0.25em;
+  padding-right: 0.1em;
+  vertical-align: baseline;
+}

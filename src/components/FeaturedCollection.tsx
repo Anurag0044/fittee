@@ -1,15 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useAnimation, type Variants } from "framer-motion";
-import { Check, ShoppingCart, ChevronLeft, ChevronRight } from "lucide-react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { Check, ShoppingCart, ChevronLeft, ChevronRight, Heart, Star, ArrowRight } from "lucide-react";
 import { TribalTreeWatermark } from "./TribalTreeWatermark";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const luxuryEase = [0.16, 1, 0.3, 1] as const;
 
@@ -18,19 +12,19 @@ const headerContainerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.1,
+      staggerChildren: 0.08,
+      delayChildren: 0.05,
     },
   },
 };
 
 const headerItemVariants: Variants = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: { opacity: 0, y: 14 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.75,
+      duration: 0.55,
       ease: luxuryEase,
     },
   },
@@ -41,32 +35,31 @@ const productsContainerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.05,
-      delayChildren: 0.22,
+      staggerChildren: 0.04,
+      delayChildren: 0.08,
     },
   },
 };
 
 const productItemVariants: Variants = {
-  hidden: { opacity: 0, y: 24, scale: 0.98 },
+  hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      duration: 0.7,
+      duration: 0.5,
       ease: luxuryEase,
     },
   },
 };
 
 const carouselShelfVariants: Variants = {
-  hidden: { opacity: 0, y: 26 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.8,
+      duration: 0.6,
       ease: luxuryEase,
     },
   },
@@ -78,10 +71,13 @@ interface Product {
   fit: "Regular Fit Tee" | "Oversized Fit Tee";
   category: "regular" | "oversized" | "new";
   price: number;
+  originalPrice: number;
   badge?: "New" | "Bestseller" | null;
   image: string;
   colors: string[];
   objectPosition?: string;
+  rating: number;
+  reviewsCount: number;
 }
 
 const PRODUCTS: Product[] = [
@@ -91,10 +87,13 @@ const PRODUCTS: Product[] = [
     fit: "Regular Fit Tee",
     category: "regular",
     price: 699,
+    originalPrice: 1299,
     badge: "New",
     image: "/images/products/sohrai-spirit.jpg",
     colors: ["#E8DFC8", "#7A4B2A", "#2C3A24", "#1C1917"],
     objectPosition: "object-top",
+    rating: 4.9,
+    reviewsCount: 128,
   },
   {
     id: 2,
@@ -102,10 +101,13 @@ const PRODUCTS: Product[] = [
     fit: "Oversized Fit Tee",
     category: "oversized",
     price: 749,
+    originalPrice: 1399,
     badge: null,
     image: "/images/products/karma-lines.jpg",
     colors: ["#EAE0CE", "#944C32", "#462519", "#191512"],
     objectPosition: "object-[center_20%]",
+    rating: 4.8,
+    reviewsCount: 94,
   },
   {
     id: 3,
@@ -113,10 +115,13 @@ const PRODUCTS: Product[] = [
     fit: "Oversized Fit Tee",
     category: "oversized",
     price: 749,
+    originalPrice: 1499,
     badge: null,
     image: "/images/products/rising-roots.jpg",
     colors: ["#D9CFBD", "#B07C38", "#573919", "#1E1B17"],
     objectPosition: "object-top",
+    rating: 4.9,
+    reviewsCount: 156,
   },
   {
     id: 4,
@@ -124,10 +129,13 @@ const PRODUCTS: Product[] = [
     fit: "Regular Fit Tee",
     category: "regular",
     price: 699,
+    originalPrice: 1299,
     badge: null,
     image: "/images/products/forest-tales.jpg",
     colors: ["#EAE2D2", "#8A572D", "#2E3A24", "#161616"],
     objectPosition: "object-[center_18%]",
+    rating: 4.7,
+    reviewsCount: 82,
   },
   {
     id: 5,
@@ -135,10 +143,13 @@ const PRODUCTS: Product[] = [
     fit: "Oversized Fit Tee",
     category: "oversized",
     price: 749,
+    originalPrice: 1499,
     badge: "Bestseller",
     image: "/images/products/tribal-horizon.jpg",
     colors: ["#DFD4C0", "#C28A32", "#1E3522", "#181816"],
     objectPosition: "object-top",
+    rating: 4.8,
+    reviewsCount: 110,
   },
   {
     id: 6,
@@ -146,10 +157,13 @@ const PRODUCTS: Product[] = [
     fit: "Regular Fit Tee",
     category: "regular",
     price: 799,
+    originalPrice: 1599,
     badge: null,
     image: "/images/products/hazaribagh-earth.jpg?v=2",
     colors: ["#E5D9C4", "#8C4325", "#36432B", "#1A1816"],
     objectPosition: "object-[center_22%]",
+    rating: 4.8,
+    reviewsCount: 76,
   },
   {
     id: 7,
@@ -157,10 +171,13 @@ const PRODUCTS: Product[] = [
     fit: "Oversized Fit Tee",
     category: "oversized",
     price: 699,
+    originalPrice: 1299,
     badge: "New",
     image: "/images/products/sarna-bloom.jpg?v=2",
     colors: ["#E9E0CB", "#9A3428", "#4E2D22", "#191513"],
     objectPosition: "object-[center_18%]",
+    rating: 5.0,
+    reviewsCount: 204,
   },
   {
     id: 8,
@@ -168,10 +185,13 @@ const PRODUCTS: Product[] = [
     fit: "Oversized Fit Tee",
     category: "oversized",
     price: 749,
+    originalPrice: 1499,
     badge: null,
     image: "/images/products/karam-rhythm.jpg?v=2",
     colors: ["#DED3BE", "#4A5432", "#5A3C22", "#1B1916"],
     objectPosition: "object-[center_22%]",
+    rating: 4.7,
+    reviewsCount: 68,
   },
   {
     id: 9,
@@ -179,10 +199,13 @@ const PRODUCTS: Product[] = [
     fit: "Regular Fit Tee",
     category: "regular",
     price: 799,
+    originalPrice: 1599,
     badge: null,
     image: "/images/products/palash-stories.jpg?v=2",
     colors: ["#EAE1CD", "#7D1F26", "#9B5F2A", "#1B1716"],
     objectPosition: "object-[center_18%]",
+    rating: 4.9,
+    reviewsCount: 142,
   },
   {
     id: 10,
@@ -190,10 +213,13 @@ const PRODUCTS: Product[] = [
     fit: "Oversized Fit Tee",
     category: "oversized",
     price: 749,
+    originalPrice: 1499,
     badge: "Bestseller",
     image: "/images/products/adivasi-roots.jpg?v=2",
     colors: ["#E4D8C2", "#B57E2F", "#3F2D1E", "#161412"],
     objectPosition: "object-[center_20%]",
+    rating: 4.9,
+    reviewsCount: 189,
   },
 ];
 
@@ -203,6 +229,12 @@ const ANIMATED_PHRASES = [
   "People's picks",
   "Get one now",
 ];
+
+const CAROUSEL_WORDS = [
+  "Arrivals",
+  "Trends",
+  "Wears",
+] as const;
 
 const NEW_ARRIVALS = [
   PRODUCTS[0], // Sohrai Spirit (New)
@@ -220,13 +252,17 @@ const CAROUSEL_PRODUCTS = [...NEW_ARRIVALS, ...NEW_ARRIVALS, ...NEW_ARRIVALS];
 export function FeaturedCollection() {
   const [selectedColor, setSelectedColor] = useState<Record<number, number>>({});
   const [addedId, setAddedId] = useState<number | null>(null);
+  const [buyNowId, setBuyNowId] = useState<number | null>(null);
+  const [favorites, setFavorites] = useState<Record<number, boolean>>({});
+  const [favToast, setFavToast] = useState<{ id: number; text: string; isAdding: boolean } | null>(null);
+  const favToastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [cartToast, setCartToast] = useState<{ id: number; text: string } | null>(null);
+  const cartToastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [phraseIndex, setPhraseIndex] = useState(0);
+  const [carouselWordIndex, setCarouselWordIndex] = useState(0);
 
   const sectionRef = useRef<HTMLElement>(null);
   const carouselSectionRef = useRef<HTMLDivElement>(null);
-  const headerControls = useAnimation();
-  const productsControls = useAnimation();
-  const carouselControls = useAnimation();
 
   // Centered Focus Coverflow Carousel State
   const containerRef = useRef<HTMLDivElement>(null);
@@ -235,62 +271,7 @@ export function FeaturedCollection() {
   const [activeIndex, setActiveIndex] = useState(NEW_ARRIVALS.length); // Middle set (index 8)
   const [isPaused, setIsPaused] = useState(false);
   const [isNormalizing, setIsNormalizing] = useState(false);
-
-  // ─── Synchronized GSAP ScrollTrigger & Refresh Entrance Trigger ───
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const ctx = gsap.context(() => {
-      // 1. Main Grid Entrance
-      const triggerMainGrid = () => {
-        headerControls.start("visible");
-        productsControls.start("visible");
-      };
-
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top 85%",
-          once: true,
-          onEnter: triggerMainGrid,
-        },
-        delay: 0.1,
-      });
-
-      // Immediate refresh detection for main grid
-      ScrollTrigger.refresh();
-      const rect = section.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
-        triggerMainGrid();
-      }
-
-      // 2. Carousel Shelf Entrance
-      const carouselEl = carouselSectionRef.current;
-      if (carouselEl) {
-        const triggerCarousel = () => {
-          carouselControls.start("visible");
-        };
-
-        gsap.timeline({
-          scrollTrigger: {
-            trigger: carouselEl,
-            start: "top 85%",
-            once: true,
-            onEnter: triggerCarousel,
-          },
-          delay: 0.1,
-        });
-
-        const cRect = carouselEl.getBoundingClientRect();
-        if (cRect.top < window.innerHeight * 0.9 && cRect.bottom > 0) {
-          triggerCarousel();
-        }
-      }
-    }, section);
-
-    return () => ctx.revert();
-  }, [headerControls, productsControls, carouselControls]);
+  const [isLayoutReady, setIsLayoutReady] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -299,7 +280,25 @@ export function FeaturedCollection() {
     return () => clearInterval(timer);
   }, []);
 
-  // Responsive dimensions for precise viewport centering
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCarouselWordIndex((prev) => (prev + 1) % CAROUSEL_WORDS.length);
+    }, 2800);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (favToastTimeoutRef.current) {
+        clearTimeout(favToastTimeoutRef.current);
+      }
+      if (cartToastTimeoutRef.current) {
+        clearTimeout(cartToastTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Responsive dimensions for precise viewport centering without mount jitter
   useEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
@@ -314,6 +313,7 @@ export function FeaturedCollection() {
           setCardDim({ width: 360, gap: 24 });
         }
       }
+      setIsLayoutReady(true);
     };
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
@@ -362,7 +362,67 @@ export function FeaturedCollection() {
   const handleAddToCart = (e: React.MouseEvent, id: number) => {
     e.stopPropagation();
     setAddedId(id);
+
+    if (cartToastTimeoutRef.current) {
+      clearTimeout(cartToastTimeoutRef.current);
+    }
+    if (favToastTimeoutRef.current) {
+      clearTimeout(favToastTimeoutRef.current);
+    }
+    setFavToast(null);
+
+    setCartToast({ id, text: "Added to Cart" });
+
+    cartToastTimeoutRef.current = setTimeout(() => {
+      setCartToast(null);
+    }, 2200);
+
     setTimeout(() => setAddedId(null), 1400);
+  };
+
+  const toggleFavorite = (e: React.MouseEvent, id: number) => {
+    e.stopPropagation();
+    const willBeFav = !favorites[id];
+    setFavorites((prev) => ({ ...prev, [id]: willBeFav }));
+
+    if (favToastTimeoutRef.current) {
+      clearTimeout(favToastTimeoutRef.current);
+    }
+    if (cartToastTimeoutRef.current) {
+      clearTimeout(cartToastTimeoutRef.current);
+    }
+    setCartToast(null);
+
+    setFavToast({
+      id,
+      text: willBeFav ? "Added to your favourites" : "Removed from favourites",
+      isAdding: willBeFav,
+    });
+
+    favToastTimeoutRef.current = setTimeout(() => {
+      setFavToast(null);
+    }, 2200);
+  };
+
+  const handleBuyNow = (e: React.MouseEvent, id: number) => {
+    e.stopPropagation();
+    setBuyNowId(id);
+
+    if (cartToastTimeoutRef.current) {
+      clearTimeout(cartToastTimeoutRef.current);
+    }
+    if (favToastTimeoutRef.current) {
+      clearTimeout(favToastTimeoutRef.current);
+    }
+    setFavToast(null);
+
+    setCartToast({ id, text: "Added to Cart" });
+
+    cartToastTimeoutRef.current = setTimeout(() => {
+      setCartToast(null);
+    }, 2200);
+
+    setTimeout(() => setBuyNowId(null), 1600);
   };
 
   return (
@@ -592,9 +652,8 @@ export function FeaturedCollection() {
         {/* Editorial Section Header */}
         <motion.div
           initial="hidden"
-          animate={headerControls}
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.05, margin: "0px 0px -30px 0px" }}
           variants={headerContainerVariants}
           className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 sm:mb-9"
         >
@@ -625,11 +684,18 @@ export function FeaturedCollection() {
           {/* Right Side: Premium Animated Classy Editorial Text */}
           <motion.div variants={headerItemVariants} className="flex items-center sm:items-end justify-start sm:justify-end gap-3.5 self-start sm:self-end">
             {/* Subtle Vertical Gold Divider */}
-            <div className="hidden sm:block w-[1px] h-12 bg-gradient-to-b from-transparent via-[#B37E26]/50 to-transparent" />
+            <div className="hidden sm:block w-[1px] h-20 bg-gradient-to-b from-transparent via-[#B37E26]/50 to-transparent" />
 
             <div className="text-left sm:text-right">
+              {/* Great Offers with Durga Puja Shine Animation */}
+              <div className="flex items-center sm:justify-end mb-0.5 px-2">
+                <span className="font-editorial text-xl sm:text-2xl font-bold tracking-tight select-none">
+                  <span className="animate-durga-shine pr-1 pb-0.5">Great Offers</span>
+                </span>
+              </div>
+
               {/* Classy Animated Rotating Text - Expanded width & right padding to prevent italic clipping */}
-              <div className="h-11 sm:h-12 relative overflow-hidden flex items-center sm:justify-end min-w-[220px] sm:min-w-[260px] px-2 py-1">
+              <div className="h-10 sm:h-11 relative overflow-hidden flex items-center sm:justify-end min-w-[220px] sm:min-w-[260px] px-2 py-0.5">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={phraseIndex}
@@ -637,7 +703,7 @@ export function FeaturedCollection() {
                     animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
                     exit={{ y: -16, opacity: 0, filter: "blur(4px)" }}
                     transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                    className="font-editorial italic text-2xl sm:text-[28px] font-medium text-[#1C1610] tracking-tight whitespace-nowrap leading-normal py-0.5 pr-4 pl-1"
+                    className="font-editorial italic text-xl sm:text-2xl font-normal text-[#B87A22] tracking-tight whitespace-nowrap leading-normal py-0.5 pr-4 pl-1"
                   >
                     {ANIMATED_PHRASES[phraseIndex]}
                   </motion.div>
@@ -657,6 +723,23 @@ export function FeaturedCollection() {
                   />
                 ))}
               </div>
+
+              {/* Show All Option */}
+              <div className="flex items-center sm:justify-end mt-2.5 px-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const shopGrid = document.querySelector("#shop .grid");
+                    if (shopGrid) {
+                      shopGrid.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }
+                  }}
+                  className="group/showall inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#D9CEBC] hover:border-[#B87A22] bg-[#FAF7F2]/85 hover:bg-[#FAF7F2] text-[#5C4832] hover:text-[#1C1610] text-[10.5px] sm:text-[11px] font-sans font-semibold tracking-[0.14em] uppercase transition-all duration-200 shadow-2xs hover:shadow-xs cursor-pointer active:scale-95"
+                >
+                  <span>Show All</span>
+                  <ArrowRight className="w-3 h-3 text-[#B87A22] transition-transform duration-200 group-hover/showall:translate-x-0.5" />
+                </button>
+              </div>
             </div>
           </motion.div>
         </motion.div>
@@ -664,9 +747,8 @@ export function FeaturedCollection() {
         {/* Compact, High-End Luxury Editorial Product Grid */}
         <motion.div
           initial="hidden"
-          animate={productsControls}
           whileInView="visible"
-          viewport={{ once: true, amount: 0.05 }}
+          viewport={{ once: true, amount: 0.05, margin: "0px 0px -40px 0px" }}
           variants={productsContainerVariants}
           className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-3.5 lg:gap-4"
         >
@@ -674,104 +756,127 @@ export function FeaturedCollection() {
             <motion.div
               key={product.id}
               variants={productItemVariants}
-              className="group relative flex flex-col rounded-xl overflow-hidden bg-[#F7F3EB] border border-[#DDD3C2] hover:border-[#B8853B]/70 transition-all duration-300 shadow-[0_2px_8px_rgba(40,28,14,0.04)] hover:shadow-[0_8px_20px_rgba(40,28,14,0.08)] cursor-pointer"
+              className="group relative flex flex-col rounded-xl overflow-hidden bg-[#F7F3EB] border border-[#DDD3C2] hover:border-[#B8853B]/70 transition-[border-color,box-shadow] duration-300 shadow-[0_2px_8px_rgba(40,28,14,0.04)] hover:shadow-[0_8px_20px_rgba(40,28,14,0.08)] cursor-pointer transform-gpu will-change-transform"
             >
-                {/* 1. Compact Portrait Photography Window (Natural, Unobstructed) */}
-                <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#E2D8C7]">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className={`w-full h-full object-cover ${product.objectPosition || "object-top"
-                      } transition-transform duration-500 ease-out group-hover:scale-[1.03]`}
-                    loading="lazy"
+              {/* 1. Compact Portrait Photography Window (Natural, Unobstructed) */}
+              <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#E2D8C7]">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  draggable={false}
+                  decoding="async"
+                  className={`w-full h-full object-cover select-none pointer-events-none ${product.objectPosition || "object-top"
+                    } transition-transform duration-500 ease-out group-hover:scale-[1.03]`}
+                  loading="lazy"
+                />
+
+                {/* Subtle Top Photographic Vignette */}
+                <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/20 via-transparent to-transparent opacity-60" />
+
+                {/* Minimal Subtle Badge */}
+                {product.badge && (
+                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-full text-[8.5px] font-sans font-semibold tracking-wider uppercase text-[#1C1610] bg-[#E5A93C] shadow-2xs">
+                    {product.badge}
+                  </span>
+                )}
+
+                {/* Floating Favourite Icon - Minimal, clean, no glass */}
+                <button
+                  type="button"
+                  onClick={(e) => toggleFavorite(e, product.id)}
+                  aria-label={favorites[product.id] ? "Remove from wishlist" : "Add to wishlist"}
+                  className="absolute top-2 right-2 z-20 w-7 h-7 sm:w-7.5 sm:h-7.5 rounded-full bg-[#FAF7F2] hover:bg-white text-[#1C1610] border border-[#DDD3C2] shadow-xs flex items-center justify-center transition-all duration-200 cursor-pointer hover:scale-110 active:scale-90 group/fav"
+                >
+                  <Heart
+                    className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all duration-200 ${favorites[product.id]
+                        ? "fill-[#D9383A] text-[#D9383A] scale-110"
+                        : "text-[#5C4D3C] group-hover/fav:text-[#D9383A]"
+                      }`}
                   />
+                </button>
+              </div>
 
-                  {/* Subtle Top Photographic Vignette */}
-                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/20 via-transparent to-transparent opacity-60" />
+              {/* Organic Wave Transition into Cloth Panel */}
+              <div className="relative w-full h-2.5 -mt-2.5 z-10 pointer-events-none overflow-hidden">
+                <svg viewBox="0 0 100 10" preserveAspectRatio="none" className="w-full h-full block">
+                  <path d="M 0 10 C 35 2, 65 10, 100 4 L 100 10 L 0 10 Z" fill="#F7F3EB" />
+                </svg>
+              </div>
 
-                  {/* Minimal Subtle Badge */}
-                  {product.badge && (
-                    <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-full text-[8.5px] font-sans font-semibold tracking-wider uppercase text-[#1C1610] bg-[#E5A93C] shadow-2xs">
-                      {product.badge}
-                    </span>
-                  )}
-
-                  {/* Understated Quick Add Pill (Floats up on Hover) */}
-                  <div className="absolute inset-x-2 bottom-2 z-20 pointer-events-none group-hover:pointer-events-auto opacity-0 translate-y-1.5 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 ease-out">
-                    <button
-                      type="button"
-                      onClick={(e) => handleAddToCart(e, product.id)}
-                      className="w-full py-1.5 px-2.5 rounded-lg bg-[#1C1610]/90 hover:bg-[#1C1610] text-[#FAF7F2] text-[10.5px] font-semibold tracking-wide uppercase flex items-center justify-center gap-1 transition-colors duration-150 shadow-md cursor-pointer backdrop-blur-xs"
-                    >
-                      {addedId === product.id ? (
-                        <>
-                          <Check className="w-3 h-3 stroke-[2.5]" />
-                          <span>Added</span>
-                        </>
-                      ) : (
-                        <span>Quick Add</span>
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Organic Wave Transition into Cloth Panel */}
-                <div className="relative w-full h-2.5 -mt-2.5 z-10 pointer-events-none overflow-hidden">
-                  <svg viewBox="0 0 100 10" preserveAspectRatio="none" className="w-full h-full block">
-                    <path d="M 0 10 C 35 2, 65 10, 100 4 L 100 10 L 0 10 Z" fill="#F7F3EB" />
+              {/* 2. Compact Minimalist Information Panel with Tactile Cloth Weave */}
+              <div className="relative p-2.5 sm:p-3 flex flex-col justify-between flex-1 bg-[#F7F3EB] overflow-hidden">
+                {/* Subtle Tactile Cloth Weave Texture Overlay */}
+                <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-multiply">
+                  <svg className="w-full h-full block">
+                    <rect width="100%" height="100%" fill="url(#cardClothWeavePattern)" />
                   </svg>
                 </div>
 
-                {/* 2. Compact Minimalist Information Panel with Tactile Cloth Weave */}
-                <div className="relative p-2.5 sm:p-3 flex flex-col justify-between flex-1 bg-[#F7F3EB] overflow-hidden">
-                  {/* Subtle Tactile Cloth Weave Texture Overlay */}
-                  <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-multiply">
-                    <svg className="w-full h-full block">
-                      <rect width="100%" height="100%" fill="url(#cardClothWeavePattern)" />
-                    </svg>
-                  </div>
-
-                  <div className="relative z-10">
-                    {/* Fit Taxonomy */}
-                    <p className="font-sans text-[9px] sm:text-[9.5px] uppercase tracking-[0.16em] text-[#857461] font-semibold leading-none">
+                <div className="relative z-10">
+                  {/* Fit Taxonomy & Star Rating Row - Minimal, clean, high-visibility */}
+                  <div className="flex items-center justify-between gap-1.5 min-w-0">
+                    <p className="font-sans text-[8.5px] sm:text-[9.5px] uppercase tracking-[0.12em] text-[#857461] font-semibold leading-none truncate min-w-0 flex-1">
                       {product.fit}
                     </p>
-
-                    {/* Product Name */}
-                    <h3 className="font-editorial text-[13.5px] sm:text-[14px] font-semibold text-[#1C1610] group-hover:text-[#9E6C21] transition-colors duration-200 mt-1 leading-snug truncate">
-                      {product.name}
-                    </h3>
+                    <div className="flex items-center gap-1 font-sans leading-none shrink-0 whitespace-nowrap ml-auto">
+                      <Star className="w-3 h-3 fill-[#B87A22] text-[#B87A22] shrink-0" />
+                      <span className="font-bold text-[11px] text-[#1C1610]">{product.rating.toFixed(1)}</span>
+                      <span className="text-[#4E3F2F] font-semibold text-[10px] sm:text-[10.5px]">({product.reviewsCount})</span>
+                    </div>
                   </div>
 
-                  {/* Price, Colorways & Circular Cart Action */}
-                  <div className="relative z-10 flex items-end justify-between mt-2 pt-1.5 border-t border-[#E6DDD0]">
-                    <div>
-                      <span className="font-sans text-[13px] sm:text-[13.5px] font-bold text-[#1C1610] tracking-tight block">
+                  {/* Product Name */}
+                  <h3 className="font-editorial text-[13.5px] sm:text-[14px] font-semibold text-[#1C1610] group-hover:text-[#9E6C21] transition-colors duration-200 mt-1 leading-snug truncate">
+                    {product.name}
+                  </h3>
+                </div>
+
+                {/* Price, Colorways & Actions Panel */}
+                <div className="relative z-10 flex flex-col mt-2.5 pt-2 border-t border-[#E6DDD0]/80">
+                  {/* Price Row: Discounted Price, Strikethrough M.R.P., and High-Visibility Animated Discount Tag */}
+                  <div className="flex items-center justify-between gap-2 py-0.5">
+                    <div className="flex items-baseline flex-nowrap min-w-0">
+                      <span className="font-sans text-[15px] sm:text-[15.5px] font-bold text-[#1C1610] tracking-tight leading-none">
                         ₹{product.price}
                       </span>
+                      <span className="font-sans text-[11.5px] sm:text-[12px] text-[#8C7E6D] line-through font-normal leading-none ml-2 tracking-normal shrink-0">
+                        ₹{product.originalPrice}
+                      </span>
+                    </div>
+                    <span className="relative overflow-hidden inline-flex items-center shrink-0 whitespace-nowrap font-sans text-[9.5px] sm:text-[10px] font-extrabold tracking-wide px-2 py-0.5 rounded-md border animate-discount-highlight select-none shadow-xs">
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-0 pointer-events-none -translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent animate-discount-sweep"
+                      />
+                      <span className="relative z-10 font-bold">
+                        {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                      </span>
+                    </span>
+                  </div>
 
-                      {/* Minimalist Colorway Circles */}
-                      <div className="flex items-center gap-1 mt-1">
-                        {product.colors.map((color, colorIdx) => {
-                          const isSelected = (selectedColor[product.id] ?? 0) === colorIdx;
-                          return (
-                            <button
-                              key={colorIdx}
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedColor((prev) => ({ ...prev, [product.id]: colorIdx }));
-                              }}
-                              style={{ backgroundColor: color }}
-                              className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all cursor-pointer ${isSelected
-                                ? "ring-1.5 ring-[#1C1610] scale-110 shadow-2xs"
-                                : "border border-black/15 opacity-80 hover:opacity-100"
-                                }`}
-                              title={`Colorway ${colorIdx + 1}`}
-                            />
-                          );
-                        })}
-                      </div>
+                  {/* Colorway Swatches and Cart Button Row */}
+                  <div className="flex items-center justify-between mt-2.5">
+                    {/* Minimalist Colorway Circles */}
+                    <div className="flex items-center gap-1">
+                      {product.colors.map((color, colorIdx) => {
+                        const isSelected = (selectedColor[product.id] ?? 0) === colorIdx;
+                        return (
+                          <button
+                            key={colorIdx}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedColor((prev) => ({ ...prev, [product.id]: colorIdx }));
+                            }}
+                            style={{ backgroundColor: color }}
+                            className={`w-2 h-2 rounded-full transition-all cursor-pointer ${isSelected
+                              ? "ring-1.5 ring-[#1C1610] scale-110 shadow-2xs"
+                              : "border border-black/15 opacity-80 hover:opacity-100"
+                              }`}
+                            title={`Colorway ${colorIdx + 1}`}
+                          />
+                        );
+                      })}
                     </div>
 
                     {/* Circular Luxury Shopping Cart Button */}
@@ -779,7 +884,8 @@ export function FeaturedCollection() {
                       type="button"
                       onClick={(e) => handleAddToCart(e, product.id)}
                       aria-label={`Add ${product.name} to cart`}
-                      className="w-7 h-7 rounded-full bg-[#EDE5D6] hover:bg-[#1C1610] text-[#3D3122] hover:text-[#FAF7F2] border border-[#DDD3C2] flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs shrink-0 group/cart"
+                      className="w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full bg-[#EDE5D6] hover:bg-[#1C1610] text-[#3D3122] hover:text-[#FAF7F2] border border-[#DDD3C2] flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs shrink-0 group/cart"
+                      title="Add to Cart"
                     >
                       {addedId === product.id ? (
                         <Check className="w-3.5 h-3.5 stroke-[2.5] text-emerald-600" />
@@ -788,34 +894,83 @@ export function FeaturedCollection() {
                       )}
                     </button>
                   </div>
+
+                  {/* Minimalist Cream Luxury Buy Now Button */}
+                  <button
+                    type="button"
+                    onClick={(e) => handleBuyNow(e, product.id)}
+                    aria-label={`Buy ${product.name} now`}
+                    className={`w-full mt-2 py-1.5 sm:py-2 px-3 rounded-lg font-sans text-[10px] sm:text-[10.5px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 cursor-pointer active:scale-[0.98] ${buyNowId === product.id
+                        ? "bg-[#E2DBCF] text-[#143D1F] border border-emerald-600/50 shadow-xs"
+                        : "bg-gradient-to-r from-[#F4EEE2] via-[#ECE2D0] to-[#F4EEE2] text-[#221810] border border-[#D6C7B2] hover:border-[#B87A22] hover:text-[#8D4E13] shadow-[0_2px_6px_rgba(40,28,14,0.05),inset_0_1px_0_rgba(255,255,255,0.8)]"
+                      }`}
+                  >
+                    <span className="flex items-center justify-center">
+                      {buyNowId === product.id ? (
+                        <span className="flex items-center gap-1.5 text-emerald-800">
+                          <Check className="w-3.5 h-3.5 stroke-[2.5] text-emerald-700" />
+                          <span className="tracking-[0.16em] text-[10px]">Proceeding</span>
+                        </span>
+                      ) : (
+                        <span>Buy Now</span>
+                      )}
+                    </span>
+                  </button>
                 </div>
-              </motion.div>
-            ))}
+              </div>
+            </motion.div>
+          ))}
         </motion.div>
 
         {/* ─── Premium Horizontal Autoplay Carousel / Slider: New Arrivals ─── */}
         <motion.div
           ref={carouselSectionRef}
           initial="hidden"
-          animate={carouselControls}
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.05, margin: "0px 0px -40px 0px" }}
           variants={carouselShelfVariants}
           className="mt-14 sm:mt-18 lg:mt-20 pt-10 sm:pt-14 border-t border-[#D9CEBC]"
         >
-          {/* Section Header: Minimal, Tasteful Editorial Header */}
-          <div className="mb-6 sm:mb-8">
-            <h3 className="font-editorial text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#1C1610] tracking-tight leading-[1.15] flex items-baseline gap-2">
-              <span>New</span>
-              <span className="italic font-normal text-[#B87A22] animate-subtle-sheen inline-block pr-1">
-                Arrivals
-              </span>
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#B87A22]/75" />
-            </h3>
+          {/* Section Header: Minimal, Tasteful Editorial Header with Continuous Premium Motion & Durga Puja Offers */}
+          <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+            <div>
+              <h3 className="font-editorial text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#1C1610] tracking-tight leading-none flex items-center gap-2 whitespace-nowrap">
+                <span>New</span>
+                <span className="relative h-9 sm:h-11 lg:h-12 overflow-hidden inline-flex items-center py-1 pr-2">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={carouselWordIndex}
+                      initial={{ y: 20, opacity: 0, filter: "blur(4px)" }}
+                      animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                      exit={{ y: -20, opacity: 0, filter: "blur(4px)" }}
+                      transition={{ duration: 0.48, ease: luxuryEase }}
+                      className="italic font-normal text-[#B87A22] inline-flex items-baseline gap-2"
+                    >
+                      <span>{CAROUSEL_WORDS[carouselWordIndex]}</span>
+                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#B87A22]/75 translate-y-[-2px]" />
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
+              </h3>
 
-            <p className="mt-1 text-[#6B5E4C] text-[12.5px] sm:text-[13px] font-normal leading-relaxed">
-              Curated silhouettes inspired by regional tribal folklore.
-            </p>
+              <p className="mt-1 text-[#6B5E4C] text-[12.5px] sm:text-[13px] font-normal leading-relaxed">
+                Curated silhouettes inspired by regional tribal folklore.
+              </p>
+            </div>
+
+            {/* Right End Side: Lifted up to the exact level of New Arrivals with Shiny Effect */}
+            <div className="flex items-center sm:items-start justify-start sm:justify-end shrink-0 sm:pt-0.5">
+              <div className="text-left sm:text-right">
+                <h4 className="font-editorial text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#1C1610] tracking-tight leading-[1.25] pb-1 whitespace-nowrap select-none flex items-baseline sm:justify-end gap-2">
+                  <span className="animate-durga-shine pr-1 pb-1">Durga Puja</span>
+                  <span className="italic font-normal text-[#B87A22]">Offers</span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#B87A22]/75 translate-y-[-2px]" />
+                </h4>
+                <p className="mt-1 text-[#8C765E] text-[11px] sm:text-[12px] font-medium tracking-wide uppercase sm:text-right">
+                  Festive Special Edition
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Centered Focus Coverflow Carousel with Auto-Play & Navigation */}
@@ -837,13 +992,14 @@ export function FeaturedCollection() {
               >
                 {/* Smooth Centered Gliding Track */}
                 <motion.div
+                  initial={false}
                   animate={{ x: targetTranslateX }}
                   transition={
-                    isNormalizing
+                    !isLayoutReady || isNormalizing
                       ? { duration: 0 }
-                      : { duration: 0.85, ease: [0.16, 1, 0.3, 1] }
+                      : { duration: 0.85, ease: luxuryEase }
                   }
-                  className="flex items-center"
+                  className="flex items-center transform-gpu will-change-transform"
                   style={{ gap: `${cardDim.gap}px` }}
                 >
                   {CAROUSEL_PRODUCTS.map((product, idx) => {
@@ -860,52 +1016,53 @@ export function FeaturedCollection() {
                           }
                         }}
                         style={{ width: `${cardDim.width}px` }}
-                        className={`shrink-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer rounded-2xl overflow-hidden bg-[#F7F3EB] border ${
-                          isActive
+                        className={`shrink-0 ${
+                          isLayoutReady
+                            ? "transition-[transform,opacity,border-color,box-shadow] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                            : ""
+                        } cursor-pointer rounded-2xl overflow-hidden bg-[#F7F3EB] border ${isActive
                             ? "scale-[1.06] z-20 border-[#B8853B]/70"
                             : isDirectNeighbor
-                            ? "scale-[0.91] z-10 opacity-90 hover:opacity-100 border-[#DDD3C2]"
-                            : "scale-[0.86] z-0 opacity-75 hover:opacity-90 border-[#DDD3C2]"
-                        }`}
+                              ? "scale-[0.91] z-10 opacity-90 hover:opacity-100 border-[#DDD3C2]"
+                              : "scale-[0.86] z-0 opacity-75 hover:opacity-90 border-[#DDD3C2]"
+                          }`}
                       >
                         {/* Portrait Photography Window */}
                         <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#E2D8C7]">
                           <img
                             src={product.image}
                             alt={product.name}
-                            className={`w-full h-full object-cover ${product.objectPosition || "object-top"} transition-transform duration-700 ease-out ${
-                              isActive ? "hover:scale-105" : ""
-                            }`}
+                            draggable={false}
+                            decoding="async"
+                            className={`w-full h-full object-cover select-none pointer-events-none ${product.objectPosition || "object-top"} transition-transform duration-700 ease-out ${isActive ? "hover:scale-105" : ""
+                              }`}
                             loading="lazy"
                           />
 
                           {/* Subtle Photographic Vignette */}
                           <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/20 via-transparent to-transparent opacity-60" />
 
-                          {/* Top-Right Gold NEW Badge */}
+                          {/* Top-Left Gold NEW Badge */}
                           {product.badge && (
-                            <span className="absolute top-3 right-3 z-10 px-2.5 py-0.5 rounded-full text-[9px] font-sans font-bold tracking-wider uppercase text-[#1C1610] bg-[#E5A93C] shadow-2xs">
+                            <span className="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full text-[9px] font-sans font-bold tracking-wider uppercase text-[#1C1610] bg-[#E5A93C] shadow-2xs">
                               {product.badge}
                             </span>
                           )}
 
-                          {/* Quick Add Pill */}
-                          <div className="absolute inset-x-2 bottom-2 z-20 pointer-events-none group-hover:pointer-events-auto opacity-0 translate-y-1.5 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 ease-out">
-                            <button
-                              type="button"
-                              onClick={(e) => handleAddToCart(e, product.id)}
-                              className="w-full py-1.5 px-2.5 rounded-lg bg-[#1C1610]/95 hover:bg-[#1C1610] text-[#FAF7F2] text-[10.5px] font-semibold tracking-wide uppercase flex items-center justify-center gap-1 transition-colors duration-150 shadow-md cursor-pointer backdrop-blur-xs"
-                            >
-                              {addedId === product.id ? (
-                                <>
-                                  <Check className="w-3 h-3 stroke-[2.5]" />
-                                  <span>Added</span>
-                                </>
-                              ) : (
-                                <span>Quick Add</span>
-                              )}
-                            </button>
-                          </div>
+                          {/* Top-Right Favorite Button - Minimal, clean, no glass */}
+                          <button
+                            type="button"
+                            onClick={(e) => toggleFavorite(e, product.id)}
+                            aria-label={favorites[product.id] ? "Remove from wishlist" : "Add to wishlist"}
+                            className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-[#FAF7F2] hover:bg-white text-[#1C1610] border border-[#DDD3C2] shadow-xs flex items-center justify-center transition-all duration-200 cursor-pointer hover:scale-110 active:scale-90 group/fav"
+                          >
+                            <Heart
+                              className={`w-4 h-4 transition-all duration-200 ${favorites[product.id]
+                                  ? "fill-[#D9383A] text-[#D9383A] scale-110"
+                                  : "text-[#5C4D3C] group-hover/fav:text-[#D9383A]"
+                                }`}
+                            />
+                          </button>
                         </div>
 
                         {/* Organic Wave Transition into Cloth Panel */}
@@ -925,10 +1082,17 @@ export function FeaturedCollection() {
                           </div>
 
                           <div className="relative z-10">
-                            {/* Fit Taxonomy */}
-                            <p className="font-sans text-[9.5px] uppercase tracking-[0.16em] text-[#857461] font-semibold leading-none">
-                              {product.fit}
-                            </p>
+                            {/* Fit Taxonomy & Star Rating Row - Minimal, clean, high-visibility */}
+                            <div className="flex items-center justify-between gap-1.5 min-w-0">
+                              <p className="font-sans text-[9px] sm:text-[9.5px] uppercase tracking-[0.12em] text-[#857461] font-semibold leading-none truncate min-w-0 flex-1">
+                                {product.fit}
+                              </p>
+                              <div className="flex items-center gap-1 font-sans leading-none shrink-0 whitespace-nowrap ml-auto">
+                                <Star className="w-3.5 h-3.5 fill-[#B87A22] text-[#B87A22] shrink-0" />
+                                <span className="font-bold text-[11.5px] text-[#1C1610]">{product.rating.toFixed(1)}</span>
+                                <span className="text-[#4E3F2F] font-semibold text-[10.5px] sm:text-[11px]">({product.reviewsCount})</span>
+                              </div>
+                            </div>
 
                             {/* Product Name */}
                             <h4 className="font-editorial text-[15px] sm:text-[16.5px] font-bold text-[#1C1610] group-hover:text-[#9E6C21] transition-colors duration-200 mt-1 leading-snug truncate">
@@ -937,14 +1101,32 @@ export function FeaturedCollection() {
                           </div>
 
                           {/* Price, Colorways & Action */}
-                          <div className="relative z-10 flex items-end justify-between mt-3 pt-2 border-t border-[#E6DDD0]">
-                            <div>
-                              <span className="font-sans text-[14px] sm:text-[15px] font-bold text-[#1C1610] tracking-tight block">
-                                ₹{product.price}
+                          <div className="relative z-10 flex flex-col mt-3.5 pt-2.5 border-t border-[#E6DDD0]/80">
+                            {/* Price Row: Discounted Price, Strikethrough M.R.P., and High-Visibility Animated Discount Tag */}
+                            <div className="flex items-center justify-between gap-2 py-0.5">
+                              <div className="flex items-baseline flex-nowrap min-w-0">
+                                <span className="font-sans text-[16px] sm:text-[17px] font-bold text-[#1C1610] tracking-tight leading-none">
+                                  ₹{product.price}
+                                </span>
+                                <span className="font-sans text-[12px] sm:text-[12.5px] text-[#8C7E6D] line-through font-normal leading-none ml-2.5 tracking-normal shrink-0">
+                                  ₹{product.originalPrice}
+                                </span>
+                              </div>
+                              <span className="relative overflow-hidden inline-flex items-center shrink-0 whitespace-nowrap font-sans text-[10px] sm:text-[10.5px] font-extrabold tracking-wide px-2.5 py-0.5 rounded-md border animate-discount-highlight select-none shadow-xs">
+                                <span
+                                  aria-hidden="true"
+                                  className="absolute inset-0 pointer-events-none -translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent animate-discount-sweep"
+                                />
+                                <span className="relative z-10 font-bold">
+                                  {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                                </span>
                               </span>
+                            </div>
 
+                            {/* Colorways and Cart Action Button */}
+                            <div className="flex items-center justify-between mt-2.5">
                               {/* Minimalist Colorway Circles */}
-                              <div className="flex items-center gap-1.5 mt-1.5">
+                              <div className="flex items-center gap-1.5">
                                 {product.colors.map((color, colorIdx) => {
                                   const isSelected = (selectedColor[product.id] ?? 0) === colorIdx;
                                   return (
@@ -956,30 +1138,52 @@ export function FeaturedCollection() {
                                         setSelectedColor((prev) => ({ ...prev, [product.id]: colorIdx }));
                                       }}
                                       style={{ backgroundColor: color }}
-                                      className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
-                                        isSelected
+                                      className={`w-2 h-2 rounded-full transition-all cursor-pointer ${isSelected
                                           ? "ring-1.5 ring-[#1C1610] scale-110 shadow-2xs"
                                           : "border border-black/15 opacity-80 hover:opacity-100"
-                                      }`}
+                                        }`}
                                       title={`Colorway ${colorIdx + 1}`}
                                     />
                                   );
                                 })}
                               </div>
+
+                              {/* Circular Cart Action Button */}
+                              <button
+                                type="button"
+                                onClick={(e) => handleAddToCart(e, product.id)}
+                                aria-label={`Add ${product.name} to cart`}
+                                className="w-7.5 h-7.5 sm:w-8 sm:h-8 rounded-full bg-[#EAE2D5] hover:bg-[#1C1610] text-[#3D3122] hover:text-[#FAF7F2] border border-[#DDD3C2] flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs shrink-0 group/cart"
+                                title="Add to Cart"
+                              >
+                                {addedId === product.id ? (
+                                  <Check className="w-3.5 h-3.5 stroke-[2.5] text-emerald-600" />
+                                ) : (
+                                  <ShoppingCart className="w-3.5 h-3.5 stroke-[1.8] group-hover/cart:scale-105 transition-transform" />
+                                )}
+                              </button>
                             </div>
 
-                            {/* Circular Cart Action Button */}
+                            {/* Minimalist Cream Luxury Buy Now Button */}
                             <button
                               type="button"
-                              onClick={(e) => handleAddToCart(e, product.id)}
-                              aria-label={`Add ${product.name} to cart`}
-                              className="w-8 h-8 rounded-full bg-[#EAE2D5] hover:bg-[#1C1610] text-[#3D3122] hover:text-[#FAF7F2] border border-[#DDD3C2] flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs shrink-0 group/cart"
+                              onClick={(e) => handleBuyNow(e, product.id)}
+                              aria-label={`Buy ${product.name} now`}
+                              className={`w-full mt-2.5 py-2 sm:py-2.5 px-3.5 rounded-lg font-sans text-[10.5px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase transition-colors duration-200 cursor-pointer active:scale-[0.98] ${buyNowId === product.id
+                                  ? "bg-[#E2DBCF] text-[#143D1F] border border-emerald-600/50 shadow-xs"
+                                  : "bg-gradient-to-r from-[#F4EEE2] via-[#ECE2D0] to-[#F4EEE2] text-[#221810] border border-[#D6C7B2] hover:border-[#B87A22] hover:text-[#8D4E13] shadow-[0_2px_6px_rgba(40,28,14,0.05),inset_0_1px_0_rgba(255,255,255,0.8)]"
+                                }`}
                             >
-                              {addedId === product.id ? (
-                                <Check className="w-3.5 h-3.5 stroke-[2.5] text-emerald-600" />
-                              ) : (
-                                <ShoppingCart className="w-3.5 h-3.5 stroke-[1.8] group-hover/cart:scale-105 transition-transform" />
-                              )}
+                              <span className="flex items-center justify-center">
+                                {buyNowId === product.id ? (
+                                  <span className="flex items-center gap-1.5 text-emerald-800">
+                                    <Check className="w-3.5 h-3.5 stroke-[2.5] text-emerald-700" />
+                                    <span className="tracking-[0.16em] text-[10.5px]">Proceeding</span>
+                                  </span>
+                                ) : (
+                                  <span>Buy Now</span>
+                                )}
+                              </span>
                             </button>
                           </div>
                         </div>
@@ -1017,11 +1221,10 @@ export function FeaturedCollection() {
                         setActiveIndex(NEW_ARRIVALS.length + i);
                       }}
                       aria-label={`Go to slide ${i + 1}`}
-                      className={`h-1 rounded-full transition-all duration-500 cursor-pointer ${
-                        i === (activeIndex % NEW_ARRIVALS.length)
+                      className={`h-1 rounded-full transition-all duration-500 cursor-pointer ${i === (activeIndex % NEW_ARRIVALS.length)
                           ? "w-8 bg-[#B87A22]"
                           : "w-3.5 bg-[#CBBFB0]/70 hover:bg-[#A89882]"
-                      }`}
+                        }`}
                     />
                   ))}
                 </div>
@@ -1030,6 +1233,49 @@ export function FeaturedCollection() {
           })()}
         </motion.div>
       </div>
+
+      {/* ─── Global Minimal Floating Toast for Cart & Favourites - Luxury Minimalist, No Glass ─── */}
+      <AnimatePresence>
+        {cartToast && (
+          <motion.div
+            key="cart-toast"
+            initial={{ opacity: 0, y: 24, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 16, scale: 0.94 }}
+            transition={{ duration: 0.28, ease: luxuryEase }}
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-[#1C1610] text-[#FAF7F2] border border-[#3A2F22] shadow-[0_12px_32px_rgba(0,0,0,0.35)] flex items-center gap-2.5 pointer-events-none select-none max-w-[90vw]"
+          >
+            <span className="w-6 h-6 rounded-full bg-[#2C2218] border border-emerald-500/30 flex items-center justify-center shrink-0">
+              <Check className="w-3.5 h-3.5 stroke-[2.5] text-emerald-400" />
+            </span>
+            <span className="font-sans text-xs sm:text-[13px] font-medium tracking-wide text-[#FAF7F2]">
+              {cartToast.text}
+            </span>
+          </motion.div>
+        )}
+        {favToast && !cartToast && (
+          <motion.div
+            key="fav-toast"
+            initial={{ opacity: 0, y: 24, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 16, scale: 0.94 }}
+            transition={{ duration: 0.28, ease: luxuryEase }}
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-[#1C1610] text-[#FAF7F2] border border-[#3A2F22] shadow-[0_12px_32px_rgba(0,0,0,0.35)] flex items-center gap-2.5 pointer-events-none select-none max-w-[90vw]"
+          >
+            <span className="w-6 h-6 rounded-full bg-[#2C2218] flex items-center justify-center shrink-0">
+              <Heart
+                className={`w-3.5 h-3.5 ${favorites[favToast.id]
+                    ? "fill-[#D9383A] text-[#D9383A]"
+                    : "text-[#FAF7F2]/60"
+                  }`}
+              />
+            </span>
+            <span className="font-sans text-xs sm:text-[13px] font-medium tracking-wide text-[#FAF7F2]">
+              {favToast.text}
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

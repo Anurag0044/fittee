@@ -22,25 +22,25 @@ const FABRIC_CARDS: FabricCard[] = [
     id: "linen",
     title: "Linen",
     desc: "Lightweight, breathable and perfect for everyday comfort.",
-    image: "/images/fabrics/swatch-linen.jpg",
+    image: "/images/fabrics/swatch-linen-hd.jpg",
   },
   {
     id: "cotton",
     title: "Cotton",
     desc: "Soft, durable and naturally keeps you comfortable.",
-    image: "/images/fabrics/swatch-cotton.jpg",
+    image: "/images/fabrics/swatch-cotton-hd.jpg",
   },
   {
     id: "handloom",
     title: "Handloom",
     desc: "Traditionally woven, rich in texture and cultural value.",
-    image: "/images/fabrics/swatch-handloom.jpg",
+    image: "/images/fabrics/swatch-handloom-hd.jpg",
   },
   {
     id: "tribal-prints",
     title: "Tribal Prints",
     desc: "Authentic patterns inspired by Jharkhand's art and heritage.",
-    image: "/images/fabrics/swatch-tribal.jpg",
+    image: "/images/fabrics/swatch-tribal-hd.jpg",
   },
 ];
 
@@ -511,13 +511,12 @@ export function PremiumFabricsSection() {
               >
                 {/* Left Swatch Preview: Flush to card top, bottom, and left edge */}
                 <div className="relative w-[38%] sm:w-[40%] shrink-0 overflow-hidden bg-[#ECE2D0] pointer-events-none select-none">
-                  <Image
+                  <img
                     src={card.image}
                     alt={`${card.title} texture`}
-                    fill
-                    sizes="(max-width: 640px) 140px, 120px"
                     draggable={false}
-                    className="object-cover transition-transform duration-500 group-hover:scale-105 pointer-events-none select-none"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 pointer-events-none select-none"
+                    loading="eager"
                   />
                 </div>
 
