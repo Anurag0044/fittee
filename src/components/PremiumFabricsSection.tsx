@@ -53,7 +53,7 @@ function LinenIcon() {
       stroke="#8D5A32"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-7 h-7 sm:w-[30px] sm:h-[30px]"
+      className="w-5.5 h-5.5"
       aria-hidden="true"
     >
       {/* Outer elegant circle */}
@@ -90,7 +90,7 @@ function CottonIcon() {
       stroke="#8D5A32"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-7 h-7 sm:w-[30px] sm:h-[30px]"
+      className="w-5.5 h-5.5"
       aria-hidden="true"
     >
       {/* Outer elegant circle */}
@@ -119,7 +119,7 @@ function HandloomIcon() {
       stroke="#8D5A32"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-7 h-7 sm:w-[30px] sm:h-[30px]"
+      className="w-5.5 h-5.5"
       aria-hidden="true"
     >
       {/* Outer elegant circle */}
@@ -146,7 +146,7 @@ function TribalPrintsIcon() {
       stroke="#8D5A32"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-7 h-7 sm:w-[30px] sm:h-[30px]"
+      className="w-5.5 h-5.5"
       aria-hidden="true"
     >
       {/* Outer elegant circle */}
@@ -369,12 +369,12 @@ export function PremiumFabricsSection() {
         Reveals as natural gradient noise dissolves smoothly away on refresh/scroll.
       */}
       <div
-        className="absolute right-0 top-5 sm:top-6 lg:top-7 bottom-20 sm:bottom-24 lg:bottom-28 w-full sm:w-[60%] md:w-[55%] lg:w-[53%] xl:w-[50%] pointer-events-none select-none z-2 overflow-hidden"
+        className="absolute right-0 top-0 sm:top-6 lg:top-7 h-[420px] sm:h-auto sm:bottom-24 lg:bottom-28 w-[48%] sm:w-[60%] md:w-[55%] lg:w-[53%] xl:w-[50%] pointer-events-none select-none z-2 overflow-hidden"
         style={{
           maskImage:
-            "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.12) 3%, rgba(0,0,0,0.85) 15%, black 24%, black 100%)",
+            "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.1) 8%, rgba(0,0,0,0.85) 28%, black 45%, black 100%)",
           WebkitMaskImage:
-            "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.12) 3%, rgba(0,0,0,0.85) 15%, black 24%, black 100%)",
+            "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.1) 8%, rgba(0,0,0,0.85) 28%, black 45%, black 100%)",
         }}
       >
         {/* The Stationary HD Photo (100% full rich contrast) */}
@@ -386,7 +386,7 @@ export function PremiumFabricsSection() {
             src="/images/fabrics/stacked-fabrics-hero.jpg"
             alt="Handpicked folded artisanal fabrics"
             draggable={false}
-            className="w-full h-full object-cover object-center sm:object-right pointer-events-none select-none"
+            className="w-full h-full object-cover object-[75%_18%] sm:object-right pointer-events-none select-none"
             loading="eager"
           />
         </div>
@@ -408,10 +408,10 @@ export function PremiumFabricsSection() {
         />
       </div>
 
-      {/* ─── 4. Left Far Edge: Folk Tree Artwork (Anchored to avoid text collision) ─── */}
+      {/* ─── 4. Left Far Edge: Folk Tree Artwork (Anchored cleanly below text on mobile, left on desktop) ─── */}
       <div
         ref={treeRef}
-        className="absolute -left-2 sm:left-0 top-0 bottom-24 sm:bottom-28 lg:bottom-32 w-[180px] sm:w-[240px] md:w-[280px] lg:w-[320px] pointer-events-none select-none z-1 opacity-80 sm:opacity-90 mix-blend-multiply will-change-transform"
+        className="absolute -left-3 sm:left-0 top-[298px] sm:top-0 h-[145px] sm:h-auto sm:bottom-28 lg:bottom-32 w-[180px] sm:w-[240px] md:w-[280px] lg:w-[320px] pointer-events-none select-none z-1 opacity-80 sm:opacity-90 mix-blend-multiply will-change-transform"
       >
         <Image
           src="/images/fabrics/sohrai-tree-art.png"
@@ -420,12 +420,12 @@ export function PremiumFabricsSection() {
           priority
           sizes="320px"
           draggable={false}
-          className="object-contain object-left-top sm:object-left pointer-events-none select-none"
+          className="object-contain object-left-bottom sm:object-left pointer-events-none select-none"
         />
       </div>
 
       {/* ─── 5. Main Content Container ─── */}
-      <div className="relative z-10 max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 lg:pt-14 pb-5 sm:pb-7 flex flex-col justify-between min-h-[560px] sm:min-h-[590px] lg:min-h-[620px]">
+      <div className="relative z-10 max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-12 lg:pt-14 pb-5 sm:pb-7 flex flex-col justify-between min-h-[500px] sm:min-h-[590px] lg:min-h-[620px]">
 
         {/* ── Top Half: Headlines & Subtext (Staggered Silky Reveal) ── */}
         <motion.div
@@ -434,21 +434,21 @@ export function PremiumFabricsSection() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={textBlockVariants}
-          className="relative z-10 w-full pl-0 sm:pl-[70px] md:pl-[100px] lg:pl-[130px] xl:pl-[160px] max-w-[560px] lg:max-w-[640px] pt-5 sm:pt-7 lg:pt-9"
+          className="relative z-10 w-full pl-0 sm:pl-[70px] md:pl-[100px] lg:pl-[130px] xl:pl-[160px] max-w-[560px] lg:max-w-[640px] pt-4 sm:pt-7 lg:pt-9"
         >
           {/* Eyebrow: PREMIUM FABRICS — with Subtle Flying Bird */}
           <motion.div
             variants={textItemVariants}
-            className="flex items-center justify-between max-w-[340px] sm:max-w-[380px] mb-2.5 sm:mb-3"
+            className="flex items-center justify-between max-w-[340px] sm:max-w-[380px] mb-2 sm:mb-3"
           >
             <div className="flex items-center gap-2.5 sm:gap-3">
-              <span className="font-sans text-[10.5px] sm:text-[11.5px] font-semibold tracking-[0.24em] text-[#8D4E13] uppercase">
+              <span className="font-sans text-[10px] sm:text-[11.5px] font-semibold tracking-[0.24em] text-[#8D4E13] uppercase">
                 PREMIUM FABRICS
               </span>
               <span className="inline-block w-8 sm:w-12 h-[1.5px] bg-[#8D4E13]/70" />
             </div>
 
-            {/* Subtle Flying Bird Folk Motif */}
+            {/* Subtle Flying Bird Folk Motif on Desktop */}
             <motion.div
               animate={{
                 y: [-1, 2, -1],
@@ -459,7 +459,7 @@ export function PremiumFabricsSection() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="w-8 sm:w-9 h-auto opacity-80 mix-blend-multiply pointer-events-none -mt-1 mr-2"
+              className="hidden sm:block w-8 sm:w-9 h-auto opacity-80 mix-blend-multiply pointer-events-none -mt-1 mr-2"
             >
               <Image
                 src="/images/fabrics/sohrai-bird-flight.png"
@@ -472,29 +472,69 @@ export function PremiumFabricsSection() {
             </motion.div>
           </motion.div>
 
-          {/* Main Headline Stack: Natural Textures / Deeper Stories (Strictly on one line each) */}
+          {/* Main Headline Stack: Natural Textures / Deeper Stories */}
           <motion.h2
             variants={textItemVariants}
-            className="font-editorial text-3xl sm:text-4xl md:text-[44px] lg:text-[50px] xl:text-[54px] font-bold text-[#081A0B] tracking-[-0.02em] leading-[1.06]"
+            className="tracking-[-0.02em]"
           >
-            <span className="block whitespace-nowrap">Natural Textures</span>
-            <span className="block font-normal italic text-[#B87A38] my-0.5 sm:my-1 pr-2 whitespace-nowrap">
-              Deeper Stories
-            </span>
+            {/* Mobile View: 4 Staggered Lines with Bird next to Textures */}
+            <div className="sm:hidden font-editorial text-[38px] font-bold text-[#081A0B] leading-[0.98]">
+              <span className="block text-[#081A0B]">Natural</span>
+              <div className="flex items-center gap-2.5 my-0.5">
+                <span className="text-[#081A0B]">Textures</span>
+                <motion.div
+                  animate={{
+                    y: [-1, 2, -1],
+                    rotate: [0, -1, 1, 0],
+                  }}
+                  transition={{
+                    duration: 5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="w-7 h-auto opacity-85 mix-blend-multiply pointer-events-none -mt-1"
+                >
+                  <Image
+                    src="/images/fabrics/sohrai-bird-flight.png"
+                    alt="Folk bird in flight"
+                    width={35}
+                    height={26}
+                    draggable={false}
+                    className="w-full h-auto object-contain pointer-events-none select-none"
+                  />
+                </motion.div>
+              </div>
+              <span className="block font-normal italic text-[#B85D1B] my-0.5">
+                Deeper
+              </span>
+              <span className="block font-normal italic text-[#B85D1B]">
+                Stories
+              </span>
+            </div>
+
+            {/* Desktop View: 2 Lines (100% Unchanged) */}
+            <div className="hidden sm:block font-editorial text-3xl sm:text-4xl md:text-[44px] lg:text-[50px] xl:text-[54px] font-bold text-[#081A0B] leading-[1.06]">
+              <span className="block whitespace-nowrap">Natural Textures</span>
+              <span className="block font-normal italic text-[#B87A38] my-0.5 sm:my-1 pr-2 whitespace-nowrap">
+                Deeper Stories
+              </span>
+            </div>
           </motion.h2>
 
-          {/* Subtitle Description */}
+          {/* Subtitle Description: Clean, highly visible, zero collision with right photo */}
           <motion.p
             variants={textItemVariants}
-            className="mt-4 sm:mt-5 text-[#213326]/85 text-[13.5px] sm:text-[14.5px] lg:text-[15.5px] font-normal leading-[1.65] max-w-sm sm:max-w-md font-sans"
+            className="mt-3.5 sm:mt-5 text-[#221B13] sm:text-[#213326]/85 text-[12px] sm:text-[14.5px] lg:text-[15.5px] font-normal leading-[1.45] sm:leading-[1.65] max-w-[190px] sm:max-w-md font-sans tracking-[0.01em] relative z-20"
           >
-            Handpicked fabrics that feel real, breathe better and carry the essence of
-            Jharkhand’s craft and culture.
+            <span className="block sm:inline">Handpicked fabrics that feel </span>
+            <span className="block sm:inline">real, breathe better and carry </span>
+            <span className="block sm:inline">the essence of Jharkhand’s </span>
+            <span className="block sm:inline">craft and culture.</span>
           </motion.p>
         </motion.div>
 
         {/* ── Bottom Half: Simple & Clean Premium Cream Cards Shelf (Staggered Cascade Reveal) ── */}
-        <div className="mt-6 sm:mt-9 lg:mt-11">
+        <div className="mt-8 sm:mt-9 lg:mt-11">
           <motion.div
             initial="hidden"
             animate={cardsControls}
@@ -507,10 +547,10 @@ export function PremiumFabricsSection() {
               <motion.div
                 key={card.id}
                 variants={cardItemVariants}
-                className="group relative flex items-stretch rounded-2xl overflow-hidden bg-[#FAF5EB] border border-[#DFD1BA] shadow-[0_2px_14px_rgba(40,30,18,0.04)] hover:border-[#C4A982] hover:shadow-[0_4px_18px_rgba(40,30,18,0.07)] transition-all duration-300 text-left select-none cursor-default min-h-[128px] sm:min-h-[136px] lg:min-h-[140px]"
+                className="group relative flex items-stretch rounded-[22px] sm:rounded-2xl overflow-hidden bg-[#FAF6F0] sm:bg-[#FAF5EB] border border-[#E9E0CE] sm:border-[#DFD1BA] shadow-[0_2px_12px_rgba(40,30,18,0.03)] sm:shadow-[0_2px_14px_rgba(40,30,18,0.04)] hover:border-[#C4A982] hover:shadow-[0_4px_18px_rgba(40,30,18,0.07)] transition-all duration-300 text-left select-none cursor-default h-[142px] sm:min-h-[136px] sm:h-auto lg:min-h-[140px]"
               >
                 {/* Left Swatch Preview: Flush to card top, bottom, and left edge */}
-                <div className="relative w-[38%] sm:w-[40%] shrink-0 overflow-hidden bg-[#ECE2D0] pointer-events-none select-none">
+                <div className="relative w-[40%] sm:w-[40%] shrink-0 overflow-hidden bg-[#ECE2D0] pointer-events-none select-none rounded-l-[21px] sm:rounded-none">
                   <img
                     src={card.image}
                     alt={`${card.title} texture`}
@@ -521,21 +561,41 @@ export function PremiumFabricsSection() {
                 </div>
 
                 {/* Right Content Area: Rich warm cream parchment */}
-                <div className="flex-1 min-w-0 p-3 sm:p-3.5 lg:p-3 xl:p-3.5 flex flex-col justify-center">
-                  {/* Circular Outline Icon Badge — Completely stationary with zero hover movement */}
-                  <div className="mb-1.5 sm:mb-2 shrink-0">
-                    {CARD_ICONS[card.id]}
+                <div className="flex-1 min-w-0 p-3.5 sm:p-3.5 lg:p-3 xl:p-3.5 flex flex-col justify-between relative overflow-hidden">
+                  {/* Top Row: Circular Icon Badge & Sleek Diagonal Arrow */}
+                  <div className="flex items-center justify-between relative z-1">
+                    <div className="w-8 h-8 rounded-full bg-[#EFE4D2] border border-[#E5D7C0]/80 flex items-center justify-center shrink-0">
+                      {CARD_ICONS[card.id]}
+                    </div>
+                    <div className="text-[#8D5A32] opacity-75 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 pr-0.5">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="w-4.5 h-4.5"
+                      >
+                        <line x1="7" y1="17" x2="17" y2="7" />
+                        <polyline points="7 7 17 7 17 17" />
+                      </svg>
+                    </div>
                   </div>
 
                   {/* Title in Editorial Serif */}
-                  <h3 className="font-editorial text-[16px] sm:text-[17px] font-bold text-[#142618] tracking-tight leading-tight mb-1 group-hover:text-[#8D4E13] transition-colors">
-                    {card.title}
-                  </h3>
+                  <div className="relative z-1 mt-1 mb-0.5">
+                    <h3 className="font-editorial text-[18px] sm:text-[17px] font-bold text-[#142618] tracking-tight leading-tight group-hover:text-[#8D4E13] transition-colors">
+                      {card.title}
+                    </h3>
+                  </div>
 
                   {/* Description: Clean, crisp, no truncation */}
-                  <p className="text-[11px] sm:text-[11.5px] lg:text-[11px] xl:text-[11.5px] text-[#4A4237]/90 leading-[1.4] font-sans font-normal">
-                    {card.desc}
-                  </p>
+                  <div className="relative z-1">
+                    <p className="text-[11.5px] sm:text-[11.5px] lg:text-[11px] xl:text-[11.5px] text-[#554A3E] leading-[1.4] font-sans font-normal max-w-[210px] sm:max-w-none">
+                      {card.desc}
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             ))}
