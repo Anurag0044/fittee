@@ -150,7 +150,7 @@ export function HeroSection() {
       {/* Main Hero Content Area */}
       <div className="relative z-20 w-full flex-1 flex items-center justify-between px-6 sm:px-10 lg:px-14 my-auto">
         {/* Left Typographic Showcase */}
-        <div className="max-w-md sm:max-w-xl lg:max-w-2xl text-left">
+        <div className="max-w-md sm:max-w-xl lg:max-w-2xl text-left -translate-y-16 sm:translate-y-0">
           {/* Eyebrow Tag */}
           <motion.div
             initial={{ opacity: 0, y: -16 }}
@@ -200,7 +200,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.72, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-3 sm:mt-5 text-[#F0EAE1] sm:text-[#DDD5C7] text-xs sm:text-base lg:text-[16px] max-w-[210px] sm:max-w-md font-normal leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
+            className="mt-3 sm:mt-5 text-[#F0EAE1] sm:text-[#DDD5C7] text-xs sm:text-base lg:text-[16px] max-w-[270px] sm:max-w-md font-normal leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]"
           >
             Contemporary apparel inspired by the tribal art and spirit of Jharkhand.
           </motion.p>
@@ -210,13 +210,13 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.82, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-4 sm:mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4"
+            className="mt-4 sm:mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-2.5 sm:gap-4"
           >
             {/* Primary Mustard Button */}
             <motion.div whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.96 }}>
               <Link
                 href="#shop"
-                className="inline-flex items-center justify-center gap-2 bg-[#E2A33C] hover:bg-[#D49533] text-[#1A1612] font-semibold text-xs sm:text-sm w-[150px] sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-full shadow-[0_4px_16px_rgba(226,163,60,0.3)] transition-colors duration-150"
+                className="inline-flex items-center justify-center gap-2 bg-[#E2A33C] hover:bg-[#D49533] text-[#1A1612] font-semibold text-xs sm:text-sm px-4.5 sm:px-7 py-2.5 sm:py-3 rounded-full shadow-[0_4px_16px_rgba(226,163,60,0.3)] transition-colors duration-150 whitespace-nowrap"
               >
                 <span>Shop Collection</span>
                 <span className="text-sm font-bold">→</span>
@@ -227,10 +227,10 @@ export function HeroSection() {
             <motion.div whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.96 }}>
               <Link
                 href="#customize"
-                className="inline-flex items-center justify-center gap-2 bg-black/60 sm:bg-black/35 hover:bg-white/10 text-white font-medium text-xs sm:text-sm w-[150px] sm:w-auto px-5 sm:px-7 py-2.5 sm:py-3 rounded-full border border-white/60 hover:border-white/80 backdrop-blur-md transition-colors duration-150 shadow-[0_4px_16px_rgba(0,0,0,0.4)]"
+                className="inline-flex items-center justify-center gap-2 bg-black/50 sm:bg-black/35 hover:bg-white/10 text-white font-medium text-xs sm:text-sm px-4.5 sm:px-7 py-2.5 sm:py-3 rounded-full border border-white/60 hover:border-white/80 backdrop-blur-md transition-colors duration-150 shadow-[0_4px_16px_rgba(0,0,0,0.4)] whitespace-nowrap"
               >
                 <span>Customize Now</span>
-                <span className="text-sm font-bold opacity-80 hidden sm:inline">→</span>
+                <span className="text-sm font-bold opacity-85 inline">→</span>
               </Link>
             </motion.div>
           </motion.div>
@@ -268,7 +268,7 @@ export function HeroSection() {
         initial={{ opacity: 0, y: 75, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 1.2, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
-        className="flex absolute right-[-5vw] sm:right-0 lg:right-4 xl:right-12 2xl:right-20 bottom-0 h-[52vh] max-h-[380px] sm:h-[60vh] sm:max-h-[480px] md:h-[76vh] md:max-h-[660px] lg:max-h-[720px] xl:max-h-[800px] 2xl:max-h-[880px] w-[75vw] max-w-[340px] sm:w-[60vw] md:w-[50vw] md:max-w-[720px] pointer-events-none select-none z-10 items-end justify-center"
+        className="flex absolute right-[-5vw] sm:right-0 lg:right-4 xl:right-12 2xl:right-20 bottom-8 sm:bottom-0 h-[52vh] max-h-[380px] sm:h-[60vh] sm:max-h-[480px] md:h-[76vh] md:max-h-[660px] lg:max-h-[720px] xl:max-h-[800px] 2xl:max-h-[880px] w-[75vw] max-w-[340px] sm:w-[60vw] md:w-[50vw] md:max-w-[720px] pointer-events-none select-none z-10 items-end justify-center"
       >
         {/* Inner Motion Rig */}
         <div
@@ -297,14 +297,69 @@ export function HeroSection() {
         initial={{ opacity: 0, y: 55 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.0, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-20 w-full h-[126px] sm:h-[132px] lg:h-[140px] xl:h-[148px] shrink-0 overflow-hidden select-none"
+        className="relative z-20 w-full h-[134px] sm:h-[132px] lg:h-[140px] xl:h-[148px] shrink-0 overflow-hidden select-none"
       >
         {/* Layer 1 & 2: SVG Double-Curved Wave Canvas */}
         <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
+          {/* Mobile Gentle Organic Wave (sm:hidden) */}
+          <svg
+            viewBox="0 0 400 136"
+            preserveAspectRatio="none"
+            className="w-full h-full block sm:hidden"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <defs>
+              <linearGradient id="waveGoldRimMob" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#B37E26" />
+                <stop offset="25%" stopColor="#E2B45A" />
+                <stop offset="50%" stopColor="#F8DE97" />
+                <stop offset="75%" stopColor="#D4A13E" />
+                <stop offset="100%" stopColor="#A67320" />
+              </linearGradient>
+              <linearGradient id="richGreenCardMob" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#102615" />
+                <stop offset="50%" stopColor="#17381F" />
+                <stop offset="100%" stopColor="#0F2414" />
+              </linearGradient>
+              <linearGradient id="ivoryLinenCanvasMob" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#F7F2E9" />
+                <stop offset="35%" stopColor="#EFE8DC" />
+                <stop offset="100%" stopColor="#E5DDCF" />
+              </linearGradient>
+            </defs>
+
+            {/* Layer 1: Green Card Under the Wave */}
+            <path
+              d="M 0 12 C 80 8, 180 5, 270 9 C 330 12, 370 15, 400 16 L 400 136 L 0 136 Z"
+              fill="url(#richGreenCardMob)"
+            />
+            <path
+              d="M 0 12 C 80 8, 180 5, 270 9 C 330 12, 370 15, 400 16"
+              fill="none"
+              stroke="url(#waveGoldRimMob)"
+              strokeWidth="1.2"
+              opacity="0.9"
+            />
+
+            {/* Layer 2: Front Ivory Parchment Wave Canvas */}
+            <path
+              d="M 0 22 C 90 17, 190 14, 280 18 C 340 21, 375 23, 400 24 L 400 136 L 0 136 Z"
+              fill="url(#ivoryLinenCanvasMob)"
+            />
+            <path
+              d="M 0 22 C 90 17, 190 14, 280 18 C 340 21, 375 23, 400 24"
+              fill="none"
+              stroke="url(#waveGoldRimMob)"
+              strokeWidth="1.8"
+            />
+          </svg>
+
+          {/* Desktop & Tablet Wave Canvas (hidden sm:block) */}
           <svg
             viewBox="0 0 1440 145"
             preserveAspectRatio="none"
-            className="w-full h-full block"
+            className="w-full h-full hidden sm:block"
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
           >
@@ -409,7 +464,7 @@ export function HeroSection() {
           animate={{ opacity: 1, scale: 1, x: 0, y: 0, rotate: 0 }}
           transition={{ duration: 1.1, delay: 0.72, ease: [0.16, 1, 0.3, 1] }}
           style={{ transformOrigin: "bottom left" }}
-          className="absolute -left-2 sm:left-0 bottom-0 pointer-events-none z-20 w-[124px] sm:w-[138px] lg:w-[155px] xl:w-[170px] h-auto select-none will-change-transform"
+          className="absolute -left-2 sm:left-0 bottom-0 pointer-events-none z-20 w-[62px] sm:w-[138px] lg:w-[155px] xl:w-[170px] h-auto select-none will-change-transform"
         >
           <svg viewBox="0 0 190 145" fill="none" className="w-full h-auto drop-shadow-[0_8px_22px_rgba(0,0,0,0.65)]">
             <defs>
@@ -574,7 +629,7 @@ export function HeroSection() {
           animate={{ opacity: 1, scale: 1, x: 0, y: 0, rotate: 0 }}
           transition={{ duration: 1.1, delay: 0.82, ease: [0.16, 1, 0.3, 1] }}
           style={{ transformOrigin: "bottom right" }}
-          className="absolute right-0 bottom-0 pointer-events-none z-20 w-[115px] sm:w-[130px] lg:w-[145px] xl:w-[160px] h-auto select-none will-change-transform"
+          className="absolute right-0 bottom-0 pointer-events-none z-20 w-[58px] sm:w-[130px] lg:w-[145px] xl:w-[160px] h-auto select-none will-change-transform"
         >
           <svg viewBox="0 0 180 145" fill="none" className="w-full h-auto drop-shadow-[0_8px_22px_rgba(0,0,0,0.65)]">
             <defs>
@@ -739,7 +794,7 @@ export function HeroSection() {
         </motion.div>
 
         {/* Content: 4 Columns & Controls inside Ivory Canvas Wave - Generous clearance & harmonious spacing */}
-        <div className="relative z-30 w-full h-full pl-8 pr-6 sm:pl-14 sm:pr-10 md:pl-18 md:pr-14 lg:pl-24 xl:pl-28 lg:pr-24 xl:pr-32 pt-[70px] sm:pt-[56px] lg:pt-[60px] xl:pt-[62px] pb-2 sm:pb-3.5 lg:pb-4 flex items-center">
+        <div className="relative z-30 w-full h-full px-3 sm:pl-14 sm:pr-10 md:pl-18 md:pr-14 lg:pl-24 xl:pl-28 lg:pr-24 xl:pr-32 pt-[34px] sm:pt-[56px] lg:pt-[60px] xl:pt-[62px] pb-2 sm:pb-3.5 lg:pb-4 flex items-center">
           {/* Desktop Single-Row Layout (lg and above) */}
           <div className="hidden lg:flex items-center justify-between w-full gap-2 xl:gap-4">
             {/* Col 1: Premium Fabrics */}
@@ -840,55 +895,55 @@ export function HeroSection() {
           </div>
 
           {/* Mobile & Tablet 2x2 Clean Responsive Grid (under lg) */}
-          <div className="flex lg:hidden flex-col gap-2.5 w-full">
-            <div className="grid grid-cols-2 gap-2 sm:gap-3 w-full">
+          <div className="flex lg:hidden flex-col gap-1.5 sm:gap-2.5 w-full">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-1 sm:gap-3 w-full">
               {/* Item 1 */}
-              <div className="flex items-center gap-1.5 sm:gap-2.5 pl-1.5 sm:pl-0">
+              <div className="flex items-center gap-1.5 sm:gap-2.5 pl-1 sm:pl-0">
                 <QuiltedFabricIcon className="w-5 h-5 sm:w-7 sm:h-7 text-[#543818] shrink-0" />
-                <div className="text-left">
-                  <div className="font-editorial text-[#1E1914] text-[11px] sm:text-[13px] font-medium leading-tight">
+                <div className="text-left min-w-0">
+                  <div className="font-editorial text-[#18130E] text-[11.5px] sm:text-[13px] font-semibold leading-tight">
                     Premium Fabrics
                   </div>
-                  <div className="text-[#736B5E] text-[7px] sm:text-[8.5px] tracking-wider uppercase font-sans font-medium leading-none mt-0.5">
+                  <div className="text-[#684C27] text-[7.5px] sm:text-[8.5px] tracking-wider uppercase font-sans font-semibold leading-none mt-0.5">
                     FOR EVERYDAY WEAR
                   </div>
                 </div>
               </div>
 
               {/* Item 2 */}
-              <div className="flex items-center gap-1.5 sm:gap-2.5 pl-2 sm:pl-3 border-l border-[#D3C7B5]/80">
+              <div className="flex items-center gap-1.5 sm:gap-2.5 pl-2 sm:pl-3 border-l border-[#D3C7B5]/85">
                 <ConcentricTribalSunIcon className="w-5 h-5 sm:w-7 sm:h-7 text-[#543818] shrink-0" />
-                <div className="text-left">
-                  <div className="font-editorial text-[#1E1914] text-[11px] sm:text-[13px] font-medium leading-tight">
+                <div className="text-left min-w-0">
+                  <div className="font-editorial text-[#18130E] text-[11.5px] sm:text-[13px] font-semibold leading-tight">
                     Authentic Tribal Designs
                   </div>
-                  <div className="text-[#736B5E] text-[7px] sm:text-[8.5px] tracking-wider uppercase font-sans font-medium leading-none mt-0.5">
+                  <div className="text-[#684C27] text-[7.5px] sm:text-[8.5px] tracking-wider uppercase font-sans font-semibold leading-none mt-0.5">
                     ROOTED IN CULTURE
                   </div>
                 </div>
               </div>
 
               {/* Item 3 */}
-              <div className="flex items-center gap-1.5 sm:gap-2.5 pl-1.5 sm:pl-0 pt-1.5 border-t border-[#D3C7B5]/80">
+              <div className="flex items-center gap-1.5 sm:gap-2.5 pl-1 sm:pl-0 pt-1 sm:pt-1.5 border-t border-[#D3C7B5]/85">
                 <TailorShirtIcon className="w-5 h-5 sm:w-7 sm:h-7 text-[#543818] shrink-0" />
-                <div className="text-left">
-                  <div className="font-editorial text-[#1E1914] text-[11px] sm:text-[13px] font-medium leading-tight">
+                <div className="text-left min-w-0">
+                  <div className="font-editorial text-[#18130E] text-[11.5px] sm:text-[13px] font-semibold leading-tight">
                     Custom & Bulk Orders
                   </div>
-                  <div className="text-[#736B5E] text-[7px] sm:text-[8.5px] tracking-wider uppercase font-sans font-medium leading-none mt-0.5">
+                  <div className="text-[#684C27] text-[7.5px] sm:text-[8.5px] tracking-wider uppercase font-sans font-semibold leading-none mt-0.5">
                     FOR TEAMS & BUSINESSES
                   </div>
                 </div>
               </div>
 
               {/* Item 4 */}
-              <div className="flex items-center gap-1.5 sm:gap-2.5 pl-2 sm:pl-3 pt-1.5 border-l border-t border-[#D3C7B5]/80">
+              <div className="flex items-center gap-1.5 sm:gap-2.5 pl-2 sm:pl-3 pt-1 sm:pt-1.5 border-l border-t border-[#D3C7B5]/85">
                 <JharkhandMapIcon className="w-5 h-5 sm:w-7 sm:h-7 text-[#543818] shrink-0" />
-                <div className="text-left">
-                  <div className="font-editorial text-[#1E1914] text-[11px] sm:text-[13px] font-medium leading-tight">
+                <div className="text-left min-w-0">
+                  <div className="font-editorial text-[#18130E] text-[11.5px] sm:text-[13px] font-semibold leading-tight">
                     Proudly from
                   </div>
-                  <div className="font-editorial text-[#1E1914] text-[11px] sm:text-[13px] font-medium leading-tight">
+                  <div className="font-editorial text-[#18130E] text-[11.5px] sm:text-[13px] font-semibold leading-tight">
                     Jharkhand, India
                   </div>
                 </div>

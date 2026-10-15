@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  allowedDevOrigins: [
+    "10.0.2.2",
+    "10.154.201.22",
+  ],
   poweredByHeader: false,
   cacheComponents: true,
   partialPrefetching: true,
