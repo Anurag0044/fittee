@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import {
@@ -13,6 +14,22 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { AnimatedLogo } from "./AnimatedLogo";
+
+const NAVBAR_OPTIONS = [
+  { label: "Shop", href: "#shop" },
+  { label: "Collections", href: "#collections" },
+  { label: "Customization", href: "#customization" },
+  { label: "Our Story", href: "#our-story" },
+  { label: "Journal", href: "#journal" },
+];
+
+const TARGET_MAP: Record<string, string> = {
+  "#shop": "#shop",
+  "#collections": "#shop",
+  "#customization": "#custom-design",
+  "#our-story": "#community",
+  "#journal": "#community",
+};
 
 const SEARCH_SUGGESTIONS = [
   "Search for designs, collections...",
@@ -27,9 +44,9 @@ const SEARCH_SUGGESTIONS = [
 const drawerMotionVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: -18,
+    y: -14,
     transition: {
-      duration: 0.22,
+      duration: 0.2,
       ease: [0.32, 0, 0.67, 0] as const,
     },
   },
@@ -37,7 +54,7 @@ const drawerMotionVariants: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.38,
+      duration: 0.35,
       ease: [0.16, 1, 0.3, 1] as const,
       when: "beforeChildren",
       staggerChildren: 0.05,
@@ -47,30 +64,68 @@ const drawerMotionVariants: Variants = {
 };
 
 const drawerItemVariants: Variants = {
-  hidden: { opacity: 0, y: 12 },
+  hidden: { opacity: 0, y: 10 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.32,
+      duration: 0.28,
       ease: [0.16, 1, 0.3, 1] as const,
     },
   },
 };
-
-const MOBILE_NAV_LINKS = [
-  { label: "Shop", href: "#shop" },
-  { label: "Collections", href: "#collections" },
-  { label: "Customization", href: "#customization" },
-  { label: "Our Story", href: "#our-story" },
-  { label: "Journal", href: "#journal" },
-];
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
   const [searchVal, setSearchVal] = useState("");
   const [searchSuggestionIdx, setSearchSuggestionIdx] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Smooth scroll handler for mobile drawer options
+  const handleNavClick = (href: string) => {
+    setMobileMenuOpen(false);
+    setTimeout(() => {
+      if (href.startsWith("#")) {
+        const el = document.querySelector(href);
+        if (el) {
+          const navHeight = 64;
+          const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
+          const offsetPosition = Math.max(0, elementPosition - navHeight);
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+        }
+      }
+    }, 120);
+  };
+
+  // Close menu on ESC key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [mobileMenuOpen]);
+
+  // Detect scroll on mobile/Android layout to add frosted background
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 15);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Continuously cycle through search suggestion texts every 3.2 seconds (pauses when hidden)
   useEffect(() => {
@@ -97,29 +152,34 @@ export function Navbar() {
   }, [mobileMenuOpen]);
 
   return (
-    <motion.header
-      initial={{ opacity: 0, y: -24 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      className="relative z-50 w-full select-none pt-2 sm:pt-0"
-    >
-      {/* Container across full width - perfectly centered horizontal axis */}
-      <div className="w-full flex items-center justify-between h-14 sm:h-16 lg:h-[62px]">
-        {/* Brand Logo - commanding presence, luxury proportions, animated on fresh */}
-        <motion.div
-          initial={{ opacity: 0, x: -16 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="h-full flex items-center pl-6 sm:pl-10 lg:pl-12 shrink-0 z-20"
-        >
-          <Link
-            href="/"
-            className="flex items-center focus:outline-none translate-y-[4px] lg:translate-y-[5px]"
-            aria-label="Fittee Home"
+    <>
+      <motion.header
+        initial={{ opacity: 0, y: -24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        className={`fixed top-0 inset-x-0 z-40 w-full select-none pt-2 sm:pt-0 transition-all duration-300 ${
+          isScrolled
+            ? "bg-[#0D130E] border-b border-[#C89B4C]/25 shadow-[0_4px_24px_rgba(0,0,0,0.35)]"
+            : "bg-transparent border-b border-transparent shadow-none"
+        }`}
+      >
+        {/* Container across full width - perfectly centered horizontal axis */}
+        <div className="w-full flex items-center justify-between h-14 sm:h-16 lg:h-[62px]">
+          {/* Brand Logo - lifted up cleanly for refined poise */}
+          <motion.div
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="h-full flex items-center pl-6 sm:pl-10 lg:pl-12 shrink-0 z-20"
           >
-            <AnimatedLogo className="h-11 sm:h-12 lg:h-[48px] xl:h-[52px] w-auto" />
-          </Link>
-        </motion.div>
+            <Link
+              href="/"
+              className="flex items-center focus:outline-none -translate-y-2 sm:-translate-y-1.5 lg:-translate-y-0.5"
+              aria-label="Fittee Home"
+            >
+              <AnimatedLogo className="h-11 sm:h-12 lg:h-[48px] xl:h-[52px] w-auto" />
+            </Link>
+          </motion.div>
 
         {/* Desktop Asymmetric Scooped Ivory Header Bar */}
         <motion.div
@@ -324,90 +384,79 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Drawer with unique & premium orchestrated entrance animation */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            variants={drawerMotionVariants}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            className="fixed inset-0 z-50 lg:hidden bg-black/85 backdrop-blur-md flex flex-col justify-between p-6 overflow-y-auto overscroll-contain"
-          >
-            <motion.div variants={drawerItemVariants} className="flex items-center justify-between border-b border-white/15 pb-4 shrink-0">
-              <AnimatedLogo className="h-9 w-auto" />
-              <button
-                type="button"
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2 text-white/80 hover:text-white rounded-full bg-white/10 active:scale-95 transition-transform"
-                aria-label="Close"
+      </motion.header>
+
+      {/* Mobile Drawer portaled directly to body to bypass any parent transforms or clipping - solid background, zero glass */}
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {mobileMenuOpen && (
+              <motion.div
+                variants={drawerMotionVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                className="fixed inset-0 z-[9999] lg:hidden bg-[#0D120C] flex flex-col justify-between p-6 sm:p-8 select-none font-sans"
               >
-                <X className="w-5 h-5" />
-              </button>
-            </motion.div>
+                {/* 1. Header with Lifted Logo and Close Button */}
+                <motion.div
+                  variants={drawerItemVariants}
+                  className="flex items-center justify-between border-b border-white/10 pb-5 shrink-0"
+                >
+                  <Link
+                    href="/"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center focus:outline-none -translate-y-1.5"
+                    aria-label="Fittee Home"
+                  >
+                    <AnimatedLogo className="h-10 sm:h-11 w-auto" />
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-2.5 text-[#FAF7F2]/80 hover:text-white rounded-full bg-white/5 hover:bg-white/10 active:scale-95 transition-all cursor-pointer"
+                    aria-label="Close menu"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </motion.div>
 
-            <div className="flex-1 flex flex-col pt-5 pb-6 min-h-0">
-              {/* Mobile Search Input positioned cleanly below header */}
-              <motion.div variants={drawerItemVariants} className="relative mb-8 flex items-center shrink-0">
-                <input
-                  type="text"
-                  value={searchVal}
-                  onChange={(e) => setSearchVal(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-full bg-white/10 border border-white/20 text-white text-sm focus:outline-none focus:border-[#E5A93C]"
-                  aria-label="Search designs and collections"
-                />
-                {!searchVal && (
-                  <div className="absolute left-4 right-10 pointer-events-none overflow-hidden h-[20px] flex items-center">
-                    <AnimatePresence mode="wait">
-                      <motion.span
-                        key={searchSuggestionIdx}
-                        initial={{ y: 8, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: -8, opacity: 0 }}
-                        transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] as const }}
-                        className="text-white/60 text-sm truncate block select-none"
-                      >
-                        {SEARCH_SUGGESTIONS[searchSuggestionIdx]}
-                      </motion.span>
-                    </AnimatePresence>
-                  </div>
-                )}
-                <Search className="w-4 h-4 text-white/60 absolute right-4 pointer-events-none" />
+                {/* 2. Pure Editorial Text Navbar Options */}
+                <div className="flex-1 flex flex-col justify-center py-6 px-2">
+                  <nav className="flex flex-col space-y-6 sm:space-y-7">
+                    {NAVBAR_OPTIONS.map((item, idx) => (
+                      <motion.div key={item.label} variants={drawerItemVariants}>
+                        <button
+                          type="button"
+                          onClick={() => handleNavClick(item.href)}
+                          className="group flex items-center justify-between w-full text-left py-2 cursor-pointer focus:outline-none"
+                        >
+                          <span className="font-editorial text-[26px] sm:text-[30px] font-medium text-[#FAF7F2] group-hover:text-[#C89B4C] group-active:text-[#E5A93C] transition-colors tracking-wide">
+                            {item.label}
+                          </span>
+                          <span className="text-[12px] font-mono text-[#FAF7F2]/30 group-hover:text-[#C89B4C]/70 transition-colors">
+                            0{idx + 1}
+                          </span>
+                        </button>
+                      </motion.div>
+                    ))}
+                  </nav>
+                </div>
+
+                {/* 3. Minimal Clean Footer */}
+                <motion.div
+                  variants={drawerItemVariants}
+                  className="border-t border-white/10 pt-4 text-center shrink-0"
+                >
+                  <p className="text-[11px] text-[#FAF7F2]/40 tracking-widest uppercase font-sans">
+                    Tribal Roots • Modern Wear
+                  </p>
+                </motion.div>
               </motion.div>
-
-              {/* Navigation Links positioned in the center with balanced spacing */}
-              <ul className="space-y-6 text-lg font-medium text-white/90 my-auto">
-                {MOBILE_NAV_LINKS.map((item) => (
-                  <motion.li key={item.label} variants={drawerItemVariants}>
-                    <Link
-                      href={item.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block hover:text-[#E5A93C] transition-colors"
-                    >
-                      {item.label}
-                    </Link>
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
-
-            <motion.div variants={drawerItemVariants} className="border-t border-white/15 pt-4 flex items-center justify-around text-white/80 shrink-0">
-              <div className="flex flex-col items-center text-xs gap-1">
-                <User className="w-5 h-5" />
-                <span>Account</span>
-              </div>
-              <div className="flex flex-col items-center text-xs gap-1">
-                <Heart className="w-5 h-5" />
-                <span>Wishlist</span>
-              </div>
-              <div className="flex flex-col items-center text-xs gap-1">
-                <ShoppingCart className="w-5 h-5" />
-                <span>Cart (0)</span>
-              </div>
-            </motion.div>
-          </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
-    </motion.header>
+    </>
   );
 }

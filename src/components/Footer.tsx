@@ -233,7 +233,7 @@ export function Footer() {
           {/* ── Column 1: Brand Anchor & Socials (Lg: 4 cols) ── */}
           <motion.div
             variants={columnVariants}
-            className="lg:col-span-4 flex flex-col justify-between pr-0 lg:pr-4 pl-16 sm:pl-28 lg:pl-40 xl:pl-48"
+            className="lg:col-span-4 flex flex-col justify-between pr-0 lg:pr-4 pl-0 sm:pl-28 lg:pl-40 xl:pl-48"
           >
             <div className="flex flex-col items-start text-left">
               {/* Authentic Cursive Logomark with Fluid Hover */}

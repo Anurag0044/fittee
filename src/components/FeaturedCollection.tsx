@@ -980,11 +980,13 @@ export function FeaturedCollection() {
                       animate={{ y: 0, opacity: 1 }}
                       exit={{ y: -16, opacity: 0 }}
                       transition={{ duration: 0.42, ease: luxuryEase }}
-                      className="italic font-bold sm:font-normal text-[#B85D1B] sm:text-[#B87A22] inline-flex items-baseline gap-2"
+                      className="italic font-bold sm:font-bold text-[#B85D1B] sm:text-[#B87A22] inline-flex items-baseline"
                     >
                       <span className="sm:hidden">{CAROUSEL_WORDS[carouselWordIndex]}.</span>
-                      <span className="hidden sm:inline">{CAROUSEL_WORDS[carouselWordIndex]}</span>
-                      <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-[#B87A22]/75 translate-y-[-2px]" />
+                      <span className="hidden sm:inline">
+                        {CAROUSEL_WORDS[carouselWordIndex]}
+                        <span className="not-italic text-[#1C1610]">.</span>
+                      </span>
                     </motion.span>
                   </AnimatePresence>
                 </span>

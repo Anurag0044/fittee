@@ -175,7 +175,8 @@ export function FollowSection() {
       const squirrelEl = squirrelRef.current;
 
       if (squirrelEl) {
-        gsap.set(squirrelEl, { opacity: 0.35, x: -12 });
+        const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+        gsap.set(squirrelEl, { opacity: 0.35, x: isMobile ? 12 : -12 });
       }
 
       const triggerFramerAnimations = () => {
@@ -242,12 +243,13 @@ export function FollowSection() {
       <div className="relative z-10 max-w-[1420px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-8 lg:gap-8 xl:gap-10">
 
-          {/* ── Left Column: Squirrel Artwork + Editorial Typography & CTA ── */}
-          <div className="relative z-10 w-full lg:w-[42%] xl:w-[39%] shrink-0 flex flex-col sm:flex-row items-start sm:items-start gap-4 sm:gap-5 lg:gap-5 xl:gap-6">
-            
+          {/* ── Left Column: Text & CTA on Left + Squirrel on Right for Android; Original Layout for Desktop ── */}
+          <div className="relative z-10 w-full lg:w-[42%] xl:w-[39%] shrink-0 flex flex-row items-center sm:items-start justify-between sm:justify-start gap-3 sm:gap-5 lg:gap-5 xl:gap-6">
+
             {/* 
               ── The Sohrai Folk Squirrel on Blooming Branch ──
-              Organic mineral-pigment folk art integrated into the parchment canvas
+              On Android view: sits on the right (order-2)
+              On Desktop view: sits on the left (sm:order-1)
             */}
             <motion.div
               ref={squirrelRef}
@@ -260,7 +262,7 @@ export function FollowSection() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="w-[130px] sm:w-[150px] md:w-[165px] lg:w-[180px] xl:w-[200px] shrink-0 sm:pt-0.5 pointer-events-none select-none mix-blend-multiply opacity-85 sm:opacity-90 will-change-transform"
+              className="order-2 sm:order-1 w-[125px] sm:w-[150px] md:w-[165px] lg:w-[180px] xl:w-[200px] shrink-0 self-center sm:self-start sm:pt-0.5 pointer-events-none select-none mix-blend-multiply opacity-85 sm:opacity-90 will-change-transform"
               style={{ aspectRatio: "885 / 604" }}
             >
               <img
@@ -269,18 +271,18 @@ export function FollowSection() {
                 width={885}
                 height={604}
                 draggable={false}
-                className="w-full h-auto object-contain object-left pointer-events-none select-none"
+                className="w-full h-auto object-contain object-right sm:object-left pointer-events-none select-none -scale-x-100 sm:scale-x-100"
               />
             </motion.div>
 
-            {/* Editorial Typography Stack & Follow CTA */}
+            {/* Editorial Typography Stack & Follow CTA (order-1 on Android, sm:order-2 on Desktop) */}
             <motion.div
               initial="hidden"
               animate={textControls}
               whileInView="visible"
               viewport={{ once: true, amount: 0.1 }}
               variants={textBlockVariants}
-              className="flex-1 min-w-0"
+              className="order-1 sm:order-2 flex-1 min-w-0"
             >
               {/* Eyebrow: OUR COMMUNITY — */}
               <motion.div
@@ -307,20 +309,20 @@ export function FollowSection() {
               {/* Supporting Description */}
               <motion.p
                 variants={textItemVariants}
-                className="mt-2.5 sm:mt-3 text-[#213326]/85 text-[12px] sm:text-[13px] lg:text-[13.5px] font-normal leading-[1.6] max-w-xs font-sans"
+                className="mt-2.5 sm:mt-3 text-[#213326]/85 text-[12px] sm:text-[13px] lg:text-[13.5px] font-normal leading-[1.5] sm:leading-[1.6] max-w-[210px] sm:max-w-xs font-sans"
               >
                 A growing community of people who wear their roots with pride. Tag us on
                 Instagram and be a part of the story.
               </motion.p>
 
               {/* Warm Golden-Amber Pill CTA Button */}
-              <motion.div variants={textItemVariants} className="mt-4 sm:mt-5">
+              <motion.div variants={textItemVariants} className="mt-3.5 sm:mt-5">
                 <a
                   href="https://instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Follow Fittee on Instagram"
-                  className="group relative inline-flex items-center gap-2 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#E2A44B] hover:bg-[#D49339] text-[#142618] font-sans font-semibold text-[12.5px] sm:text-[13px] shadow-[0_4px_14px_rgba(226,164,75,0.28)] hover:shadow-[0_6px_20px_rgba(226,164,75,0.38)] transition-all duration-300 hover:-translate-y-0.5 cursor-pointer active:translate-y-0"
+                  className="group relative inline-flex items-center gap-2 px-4.5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#E2A44B] hover:bg-[#D49339] text-[#142618] font-sans font-semibold text-[12px] sm:text-[13px] shadow-[0_4px_14px_rgba(226,164,75,0.28)] hover:shadow-[0_6px_20px_rgba(226,164,75,0.38)] transition-all duration-300 hover:-translate-y-0.5 cursor-pointer active:translate-y-0"
                 >
                   <InstagramIcon className="w-3.5 h-3.5 stroke-[2.2] transition-transform duration-300 group-hover:scale-110" />
                   <span>Follow @fittee</span>

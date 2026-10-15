@@ -1,3 +1,4 @@
+import { Navbar } from "@/components/Navbar";
 import { HeroSection } from "@/components/HeroSection";
 import { FeaturedCollection } from "@/components/FeaturedCollection";
 import { CustomDesignSection } from "@/components/CustomDesignSection";
@@ -7,7 +8,8 @@ import { Footer } from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen w-full bg-[#0D120C]">
+    <main className="relative min-h-screen w-full bg-[#0D120C]">
+      <Navbar />
       <HeroSection />
       <FeaturedCollection />
       <CustomDesignSection />

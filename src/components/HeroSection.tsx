@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
-import { Navbar } from "./Navbar";
 import {
   QuiltedFabricIcon,
   ConcentricTribalSunIcon,
@@ -144,8 +143,8 @@ export function HeroSection() {
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent pointer-events-none" />
       </motion.div>
 
-      {/* Top Floating Organic Navigation */}
-      <Navbar />
+      {/* Top spacer to preserve layout flow and prevent content shifts on desktop & mobile */}
+      <div className="h-14 sm:h-16 lg:h-[62px] pt-2 sm:pt-0 w-full shrink-0 select-none pointer-events-none" aria-hidden="true" />
 
       {/* Main Hero Content Area */}
       <div className="relative z-20 w-full flex-1 flex items-center justify-between px-6 sm:px-10 lg:px-14 my-auto">
