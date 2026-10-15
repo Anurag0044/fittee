@@ -265,9 +265,10 @@ export function CustomDesignSection() {
 
       {/* 
         ─── 4. Authentic Sohrai Tree of Life & Sacred 360° Rotating Sun Linework ───
-        Anchored cleanly to the top-left with organic ink absorption into parchment
+        On mobile: Anchored cleanly to the top-right behind text
+        On desktop: Anchored to the top-left
       */}
-      <div className="absolute left-0 sm:left-2 lg:left-4 xl:left-8 top-0 bottom-16 sm:bottom-20 lg:bottom-24 w-[240px] sm:w-[300px] lg:w-[370px] xl:w-[410px] pointer-events-none select-none z-1 opacity-25 sm:opacity-90 transition-opacity flex items-start justify-start">
+      <div className="absolute right-[-115px] sm:right-auto sm:left-2 lg:left-4 xl:left-8 top-1 sm:top-0 h-[380px] sm:h-auto sm:bottom-16 lg:bottom-24 w-[255px] sm:w-[300px] lg:w-[370px] xl:w-[410px] pointer-events-none select-none z-1 opacity-75 sm:opacity-90 transition-opacity flex items-start justify-start">
         <div
           className="relative h-full max-w-full"
           style={{ aspectRatio: "364 / 840" }}
@@ -310,11 +311,10 @@ export function CustomDesignSection() {
 
       {/* 
         ─── 5. Authentic Artisan Studio & Hand-Painted Craft Flat Lay (Full HD 1024x1024) ───
-        Crisp, fully visible HD showcase cleanly inset from the top hairline and bottom chevron border.
-        Reveals as natural gradient noise dissolves smoothly away without any moving lines or seams.
+        Desktop: Crisp, stationary photo inset with natural gradient noise veil
       */}
       <div
-        className="absolute right-0 top-5 sm:top-6 lg:top-7 bottom-12 sm:bottom-14 lg:bottom-16 w-full sm:w-[62%] md:w-[56%] lg:w-[54%] xl:w-[52%] pointer-events-none select-none z-2 overflow-hidden"
+        className="hidden sm:block absolute right-0 top-5 sm:top-6 lg:top-7 bottom-12 sm:bottom-14 lg:bottom-16 w-full sm:w-[62%] md:w-[56%] lg:w-[54%] xl:w-[52%] pointer-events-none select-none z-2 overflow-hidden"
         style={{
           maskImage:
             "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.12) 3%, rgba(0,0,0,0.8) 14%, black 22%, black 100%)",
@@ -359,7 +359,7 @@ export function CustomDesignSection() {
       </div>
 
       {/* ─── 6. Main Editorial Typography & Action Area ─── */}
-      <div className="relative z-10 w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 my-auto flex items-center">
+      <div className="relative z-10 w-full max-w-[1360px] mx-auto px-5 sm:px-6 lg:px-8 pt-10 sm:py-16 lg:py-20 pb-0 sm:pb-16 flex flex-col sm:flex-row items-start sm:items-center">
         <motion.div
           initial="hidden"
           animate={textControls}
@@ -369,45 +369,87 @@ export function CustomDesignSection() {
           className="w-full pl-0 sm:pl-[70px] md:pl-[100px] lg:pl-[130px] xl:pl-[160px] max-w-[540px] lg:max-w-[580px]"
         >
           {/* Eyebrow: MADE FOR YOU — */}
-          <motion.div variants={textItemVariants} className="flex items-center gap-2.5 sm:gap-3 mb-2.5 sm:mb-3">
-            <span className="font-sans text-[10.5px] sm:text-[11.5px] font-semibold tracking-[0.24em] text-[#8D4E13] uppercase">
+          <motion.div variants={textItemVariants} className="flex items-center gap-2.5 sm:gap-3 mb-3 sm:mb-3">
+            <span className="font-sans text-[10.5px] sm:text-[11.5px] font-semibold tracking-[0.22em] text-[#8D4E13] uppercase">
               MADE FOR YOU
             </span>
-            <span className="inline-block w-8 sm:w-12 h-[1.5px] bg-[#8D4E13]/70" />
+            <span className="inline-block w-8 sm:w-12 h-[1.5px] bg-[#B8682A] sm:bg-[#8D4E13]/70 rounded-full" />
           </motion.div>
 
           {/* Main Headline Stack: Custom / Handmade / Designs */}
-          <motion.h2 variants={textItemVariants} className="font-editorial text-4xl sm:text-5xl lg:text-[56px] xl:text-[60px] font-bold text-[#081A0B] tracking-[-0.02em] leading-[1.02]">
+          <motion.h2 variants={textItemVariants} className="font-editorial text-[42px] sm:text-5xl lg:text-[56px] xl:text-[60px] font-bold text-[#0D1F12] sm:text-[#081A0B] tracking-tight leading-[0.98] sm:leading-[1.02]">
             <span className="block">Custom</span>
-            <span className="block font-normal italic text-[#B87A38] my-0.5 sm:my-1 pr-2">
+            <span className="block font-bold sm:font-normal italic text-[#B85D1B] sm:text-[#B87A38] my-0.5 sm:my-1 pr-2">
               Handmade
             </span>
             <span className="block">Designs</span>
           </motion.h2>
 
           {/* Subtitle Description */}
-          <motion.p variants={textItemVariants} className="mt-4 sm:mt-5 text-[#213326]/85 text-[13.5px] sm:text-[14.5px] lg:text-[15.5px] font-normal leading-[1.65] max-w-sm sm:max-w-md">
-            Your idea, brought to life through art inspired by the people, patterns and
-            spirit of Jharkhand.
+          <motion.p variants={textItemVariants} className="mt-3.5 sm:mt-5 text-[#56493A] sm:text-[#213326]/85 text-[12.5px] sm:text-[14.5px] lg:text-[15.5px] font-normal leading-[1.42] sm:leading-[1.65] max-w-[270px] sm:max-w-md">
+            <span className="block sm:inline">Your idea, brought to life through </span>
+            <span className="block sm:inline">art inspired by the people, patterns </span>
+            <span className="block sm:inline">and spirit of Jharkhand.</span>
           </motion.p>
 
           {/* CTA Action Button */}
-          <motion.div variants={textItemVariants} className="mt-6 sm:mt-8">
+          <motion.div variants={textItemVariants} className="mt-4 sm:mt-8">
             <button
               type="button"
               onClick={() => setIsModalOpen(true)}
               aria-label="Open custom handmade design studio modal"
-              className="group relative inline-flex items-center gap-2.5 px-7 sm:px-8 py-3 sm:py-3.5 rounded-full bg-[#192917] hover:bg-[#0E1D0C] text-[#FAF7F2] text-[13px] sm:text-[14px] font-medium tracking-wide transition-all duration-300 shadow-[0_8px_22px_rgba(25,41,23,0.22)] hover:shadow-[0_12px_28px_rgba(25,41,23,0.32)] hover:-translate-y-0.5 cursor-pointer active:translate-y-0"
+              className="group relative inline-flex items-center gap-1.5 sm:gap-2.5 px-4 sm:px-8 py-2 sm:py-3.5 rounded-full bg-[#122416] hover:bg-[#0A180E] border border-[#263D2B]/70 sm:border-0 text-[#FAF7F2] text-[11px] sm:text-[14px] font-medium tracking-wide transition-all duration-300 shadow-[0_4px_14px_rgba(18,36,22,0.2)] sm:shadow-[0_8px_20px_rgba(18,36,22,0.25)] hover:shadow-[0_12px_28px_rgba(18,36,22,0.35)] hover:-translate-y-0.5 cursor-pointer active:scale-95"
             >
               <span>Create Your Design</span>
-              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-1" />
             </button>
           </motion.div>
         </motion.div>
       </div>
 
+      {/* Mobile Artisan Showcase: Zero Hard Lines, 100% Organic Gradient Dissolution into Parchment */}
+      <div
+        className="block sm:hidden relative w-full h-[470px] pointer-events-none select-none z-10 overflow-hidden shrink-0 mt-5"
+        style={{
+          maskImage:
+            "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.18) 8%, rgba(0,0,0,0.85) 24%, black 42%, black 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.18) 8%, rgba(0,0,0,0.85) 24%, black 42%, black 100%)",
+        }}
+      >
+        <picture>
+          <source srcSet="/images/artisan-clean-hd.webp" type="image/webp" />
+          <img
+            src="/images/artisan-clean-hd.jpg"
+            alt="Indigenous Jharkhand artisan hand-painting tribal Sohrai motifs on canvas tote and apparel"
+            className="w-full h-full object-cover object-[35%_25%]"
+            loading="eager"
+          />
+        </picture>
+
+        {/* 1. Organic Parchment-to-Photo Soft Dissolution Veil */}
+        <div
+          className="absolute inset-0 pointer-events-none z-10"
+          style={{
+            background:
+              "linear-gradient(to bottom, #EAE0CA 0%, rgba(234, 224, 202, 0.65) 12%, rgba(234, 224, 202, 0.18) 28%, transparent 45%)",
+          }}
+        />
+
+        {/* 2. Microscopic Natural Dust & Paper Grain Texture */}
+        <div
+          className="absolute inset-0 pointer-events-none z-10 opacity-25 mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E\")",
+            backgroundSize: "140px 140px",
+          }}
+        />
+      </div>
+
+
       {/* ─── 7. Authentic Jharkhand Tribal Geometric Bottom Border (Edge-to-Edge) ─── */}
-      <div className="relative w-full overflow-hidden pointer-events-none select-none z-10 shrink-0 mt-6 sm:mt-8 pb-1 sm:pb-2">
+      <div className="relative w-full overflow-hidden pointer-events-none select-none z-10 shrink-0 mt-4 sm:mt-8 pb-1 sm:pb-2">
         <svg
           className="w-full h-5 sm:h-5.5 opacity-85 mix-blend-multiply"
           aria-hidden="true"

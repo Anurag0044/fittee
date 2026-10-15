@@ -968,11 +968,11 @@ export function FeaturedCollection() {
           className="mt-14 sm:mt-18 lg:mt-20 pt-10 sm:pt-14 border-t border-[#D9CEBC]"
         >
           {/* Section Header: Minimal, Tasteful Editorial Header with Continuous Premium Motion & Durga Puja Sale */}
-          <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+          <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between sm:gap-4">
             <div>
-              <h3 className="font-editorial text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#1C1610] tracking-tight leading-none flex items-center gap-2 whitespace-nowrap">
+              <h3 className="font-editorial text-[32px] sm:text-3xl lg:text-[34px] font-bold text-[#14110C] sm:text-[#1C1610] tracking-tight leading-none flex items-center gap-2 whitespace-nowrap">
                 <span>New</span>
-                <span className="relative h-9 sm:h-11 lg:h-12 overflow-hidden inline-flex items-center py-1 pr-2">
+                <span className="relative h-10 sm:h-11 lg:h-12 overflow-hidden inline-flex items-center py-1 pr-1.5">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={carouselWordIndex}
@@ -980,29 +980,46 @@ export function FeaturedCollection() {
                       animate={{ y: 0, opacity: 1 }}
                       exit={{ y: -16, opacity: 0 }}
                       transition={{ duration: 0.42, ease: luxuryEase }}
-                      className="italic font-normal text-[#B87A22] inline-flex items-baseline gap-2"
+                      className="italic font-bold sm:font-normal text-[#B85D1B] sm:text-[#B87A22] inline-flex items-baseline gap-2"
                     >
-                      <span>{CAROUSEL_WORDS[carouselWordIndex]}</span>
-                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#B87A22]/75 translate-y-[-2px]" />
+                      <span className="sm:hidden">{CAROUSEL_WORDS[carouselWordIndex]}.</span>
+                      <span className="hidden sm:inline">{CAROUSEL_WORDS[carouselWordIndex]}</span>
+                      <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-[#B87A22]/75 translate-y-[-2px]" />
                     </motion.span>
                   </AnimatePresence>
                 </span>
               </h3>
 
-              <p className="mt-1 text-[#6B5E4C] text-[12.5px] sm:text-[13px] font-normal leading-relaxed">
-                Curated silhouettes inspired by regional tribal folklore.
+              <p className="mt-1.5 sm:mt-1 text-[#56493A] sm:text-[#6B5E4C] text-[13px] font-normal leading-normal">
+                <span className="sm:hidden">Modern silhouettes, rooted in regional folklore.</span>
+                <span className="hidden sm:inline">Curated silhouettes inspired by regional tribal folklore.</span>
               </p>
             </div>
 
-            {/* Right End Side: Lifted up to the exact level of New Arrivals with Shiny Effect */}
-            <div className="flex items-center sm:items-start justify-start sm:justify-end shrink-0 sm:pt-0.5 pt-2 sm:pt-0 border-t border-[#D9CEBC]/60 sm:border-0">
-              <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start w-full sm:w-auto gap-2 sm:gap-0 text-left sm:text-right">
-                <h4 className="font-editorial text-[18px] sm:text-3xl lg:text-[34px] font-bold text-[#1C1610] tracking-tight leading-[1.25] pb-0 sm:pb-1 whitespace-nowrap select-none flex items-baseline sm:justify-end gap-1.5 sm:gap-2">
-                  <span className="animate-durga-shine pr-0.5 sm:pr-1 sm:pb-1">Durga Puja</span>
+            {/* Mobile Divider & Bottom Row: Durga Puja Sale • & FESTIVE EDITION */}
+            <div className="w-full h-px bg-[#C4B29A] my-3.5 sm:hidden" />
+
+            <div className="flex sm:hidden items-center justify-between w-full">
+              <h4 className="font-editorial text-[21px] font-bold text-[#14110C] tracking-tight leading-none select-none flex items-center gap-1.5">
+                <span className="animate-durga-shine pr-0.5">Durga Puja</span>
+                <span className="italic font-normal text-[#B85D1B]">Sale</span>
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#B85D1B] translate-y-[1px]" />
+              </h4>
+
+              <span className="text-[11px] font-semibold tracking-[0.16em] text-[#786957] uppercase select-none">
+                FESTIVE EDITION
+              </span>
+            </div>
+
+            {/* Desktop Right End Side: Original 2-Line Stack */}
+            <div className="hidden sm:flex sm:items-start sm:justify-end shrink-0 sm:pt-0.5">
+              <div className="text-right">
+                <h4 className="font-editorial sm:text-3xl lg:text-[34px] font-bold text-[#1C1610] tracking-tight leading-[1.25] pb-1 whitespace-nowrap select-none flex items-baseline sm:justify-end gap-2">
+                  <span className="animate-durga-shine pr-1 pb-1">Durga Puja</span>
                   <span className="italic font-normal text-[#B87A22]">Sale</span>
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#B87A22]/75 translate-y-[-2px]" />
                 </h4>
-                <p className="text-[#8C765E] text-[10.5px] sm:text-[12px] font-medium tracking-wide uppercase sm:text-right sm:mt-1 shrink-0">
+                <p className="text-[#8C765E] sm:text-[12px] font-medium tracking-wide uppercase sm:text-right mt-1 shrink-0">
                   Festive Special Edition
                 </p>
               </div>
