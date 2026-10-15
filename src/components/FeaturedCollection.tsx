@@ -252,7 +252,6 @@ const CAROUSEL_PRODUCTS = [...NEW_ARRIVALS, ...NEW_ARRIVALS, ...NEW_ARRIVALS];
 export function FeaturedCollection() {
   const [selectedColor, setSelectedColor] = useState<Record<number, number>>({});
   const [cartItems, setCartItems] = useState<Record<number, boolean>>({});
-  const [buyNowId, setBuyNowId] = useState<number | null>(null);
   const [favorites, setFavorites] = useState<Record<number, boolean>>({});
   const [favToast, setFavToast] = useState<{ id: number; text: string; isAdding: boolean } | null>(null);
   const favToastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -260,7 +259,6 @@ export function FeaturedCollection() {
   const cartToastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const normalizeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const normalizeSubTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const buyNowTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [carouselWordIndex, setCarouselWordIndex] = useState(0);
 
@@ -321,9 +319,6 @@ export function FeaturedCollection() {
       }
       if (normalizeSubTimeoutRef.current) {
         clearTimeout(normalizeSubTimeoutRef.current);
-      }
-      if (buyNowTimeoutRef.current) {
-        clearTimeout(buyNowTimeoutRef.current);
       }
     };
   }, []);
@@ -444,7 +439,6 @@ export function FeaturedCollection() {
 
   const handleBuyNow = (e: React.MouseEvent, id: number) => {
     e.stopPropagation();
-    setBuyNowId(id);
     setCartItems((prev) => ({ ...prev, [id]: true }));
 
     if (cartToastTimeoutRef.current) {
@@ -460,11 +454,6 @@ export function FeaturedCollection() {
     cartToastTimeoutRef.current = setTimeout(() => {
       setCartToast(null);
     }, 2200);
-
-    if (buyNowTimeoutRef.current) {
-      clearTimeout(buyNowTimeoutRef.current);
-    }
-    buyNowTimeoutRef.current = setTimeout(() => setBuyNowId(null), 1600);
   };
 
   return (
@@ -652,7 +641,7 @@ export function FeaturedCollection() {
 
 
       {/* ─── 7. Central Background Sacred Kalpavriksha (Tree of Life) & Karam Dancers Watermark ── */}
-      <TribalTreeWatermark className="absolute top-2 sm:top-4 lg:top-5 left-1/2 -translate-x-1/2 w-[520px] sm:w-[680px] lg:w-[840px] xl:w-[940px] h-[220px] sm:h-[270px] lg:h-[320px] z-[0]" opacity={0.34} />
+      <TribalTreeWatermark className="absolute top-2 sm:top-4 lg:top-5 left-[95%] sm:left-1/2 -translate-x-1/2 w-[520px] sm:w-[680px] lg:w-[840px] xl:w-[940px] h-[220px] sm:h-[270px] lg:h-[320px] z-[0]" opacity={0.36} />
 
       {/* ─── 8. Left Editorial Tagline & Lower Watermark Dancers ────────── */}
       <div className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 pointer-events-none z-[3] hidden lg:flex flex-col gap-0.5">
@@ -688,43 +677,44 @@ export function FeaturedCollection() {
         >
           {/* Typographic Title Block */}
           <motion.div variants={headerItemVariants}>
-            <div className="flex items-center gap-2.5 mb-1.5">
-              <span className="text-[10.5px] font-semibold tracking-[0.22em] text-[#786957] uppercase">
+            <div className="flex items-center gap-2.5 sm:gap-2.5 mb-2.5 sm:mb-2.5">
+              <span className="text-[10.5px] sm:text-[10.5px] font-semibold tracking-[0.2em] sm:tracking-[0.22em] text-[#786957] uppercase">
                 FEATURED COLLECTION
               </span>
-              <span className="w-7 h-[1px] bg-[#B37E26] inline-block opacity-75" />
-              <span className="text-[10.5px] font-semibold tracking-[0.22em] text-[#B37E26] uppercase">
+              <span className="w-6 sm:w-7 h-[1.5px] sm:h-[1px] bg-[#B85D1B] sm:bg-[#B37E26] inline-block opacity-90 rounded-full" />
+              <span className="hidden sm:inline text-[10.5px] font-semibold tracking-[0.22em] text-[#B37E26] uppercase">
                 HANDPICKED
               </span>
             </div>
 
-            <h2 className="font-editorial text-3xl sm:text-4xl lg:text-[40px] font-bold text-[#1C1610] tracking-tight leading-[1.08]">
-              Wear Your{" "}
-              <span className="italic font-normal text-[#B87A22]">
-                Heritage.
+            <h2 className="font-editorial text-[38px] sm:text-4xl lg:text-[40px] font-bold text-[#14110C] tracking-tight leading-[1.03] sm:leading-[1.08]">
+              <span className="block sm:inline text-[#14110C]">Wear Your </span>
+              <span className="block sm:inline italic font-bold text-[#B85D1B] sm:text-[#B87A22]">
+                Heritage<span className="not-italic text-[#14110C]">.</span>
               </span>
             </h2>
 
-            <p className="mt-1.5 text-[#635543] text-[13px] sm:text-sm font-normal max-w-md leading-relaxed">
-              Contemporary silhouettes inspired by the tribal art and spirit of Jharkhand.
+            <p className="mt-2.5 sm:mt-2 text-[#56493A] text-[13.5px] sm:text-sm font-normal max-w-[310px] sm:max-w-md leading-[1.4] sm:leading-relaxed">
+              Contemporary silhouettes inspired by{" "}
+              <span className="block sm:inline">the tribal art and spirit of Jharkhand.</span>
             </p>
           </motion.div>
 
-          {/* Right Side: Premium Animated Classy Editorial Text */}
-          <motion.div variants={headerItemVariants} className="flex items-center sm:items-end justify-start sm:justify-end gap-3.5 self-start sm:self-end">
+          {/* Right Side: Desktop Animated Classy Editorial Text */}
+          <motion.div variants={headerItemVariants} className="hidden sm:flex sm:items-end justify-end gap-3.5 self-end">
             {/* Subtle Vertical Gold Divider */}
-            <div className="hidden sm:block w-[1px] h-20 bg-gradient-to-b from-transparent via-[#B37E26]/50 to-transparent" />
+            <div className="w-[1px] h-20 bg-gradient-to-b from-transparent via-[#B37E26]/50 to-transparent" />
 
-            <div className="text-left sm:text-right">
+            <div className="text-right">
               {/* Great Offers with Durga Puja Shine Animation */}
-              <div className="flex items-center sm:justify-end mb-0.5 px-2">
-                <span className="font-editorial text-xl sm:text-2xl font-bold tracking-tight select-none">
+              <div className="flex items-center justify-end mb-0.5 px-2">
+                <span className="font-editorial text-2xl font-bold tracking-tight select-none">
                   <span className="animate-durga-shine pr-1 pb-0.5">Great Offers</span>
                 </span>
               </div>
 
               {/* Classy Animated Rotating Text - Expanded width & right padding to prevent italic clipping */}
-              <div className="h-10 sm:h-11 relative overflow-hidden flex items-center sm:justify-end min-w-[220px] sm:min-w-[260px] px-2 py-0.5">
+              <div className="h-11 relative overflow-hidden flex items-center justify-end min-w-[260px] px-2 py-0.5">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={phraseIndex}
@@ -732,7 +722,7 @@ export function FeaturedCollection() {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -14, opacity: 0 }}
                     transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-                    className="font-editorial italic text-xl sm:text-2xl font-normal text-[#B87A22] tracking-tight whitespace-nowrap leading-normal py-0.5 pr-4 pl-1"
+                    className="font-editorial italic text-2xl font-normal text-[#B87A22] tracking-tight whitespace-nowrap leading-normal py-0.5 pr-4 pl-1"
                   >
                     {ANIMATED_PHRASES[phraseIndex]}
                   </motion.div>
@@ -740,21 +730,20 @@ export function FeaturedCollection() {
               </div>
 
               {/* 4 Minimal Indicator Bars */}
-              <div className="flex items-center sm:justify-end gap-1.5 mt-1.5 pr-3">
+              <div className="flex items-center justify-end gap-1.5 mt-1.5 pr-3">
                 {ANIMATED_PHRASES.map((_, i) => (
                   <span
                     key={i}
-                    className={`h-0.5 rounded-full transition-all duration-300 ${
-                      i === phraseIndex
+                    className={`h-0.5 rounded-full transition-all duration-300 ${i === phraseIndex
                         ? "w-4 bg-[#B87A22]"
                         : "w-1.5 bg-[#C7BBA8]/70"
-                    }`}
+                      }`}
                   />
                 ))}
               </div>
 
               {/* Show All Option */}
-              <div className="flex items-center sm:justify-end mt-2.5 px-2">
+              <div className="flex items-center justify-end mt-2.5 px-2">
                 <button
                   type="button"
                   onClick={() => {
@@ -763,13 +752,54 @@ export function FeaturedCollection() {
                       shopGrid.scrollIntoView({ behavior: "smooth", block: "start" });
                     }
                   }}
-                  className="group/showall inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#D9CEBC] hover:border-[#B87A22] bg-[#FAF7F2]/85 hover:bg-[#FAF7F2] text-[#5C4832] hover:text-[#1C1610] text-[10.5px] sm:text-[11px] font-sans font-semibold tracking-[0.14em] uppercase transition-all duration-200 shadow-2xs hover:shadow-xs cursor-pointer active:scale-95"
+                  className="group/showall inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#D9CEBC] hover:border-[#B87A22] bg-[#FAF7F2]/85 hover:bg-[#FAF7F2] text-[#5C4832] hover:text-[#1C1610] text-[11px] font-sans font-semibold tracking-[0.14em] uppercase transition-all duration-200 shadow-2xs hover:shadow-xs cursor-pointer active:scale-95"
                 >
                   <span>Show All</span>
                   <ArrowRight className="w-3 h-3 text-[#B87A22] transition-transform duration-200 group-hover/showall:translate-x-0.5" />
                 </button>
               </div>
             </div>
+          </motion.div>
+
+          {/* Mobile Clean Integrated Action Bar */}
+          <motion.div variants={headerItemVariants} className="flex sm:hidden items-center justify-between w-full pt-3.5 mt-2.5 border-t border-[#D9CEBC]/75">
+            {/* Left: Great Offers with Animated Phrase Directly Below */}
+            <div className="flex flex-col min-w-0">
+              <span className="font-editorial text-[18px] font-bold text-[#1C1610] tracking-tight leading-tight select-none">
+                <span className="animate-durga-shine pr-0.5">Great Offers</span>
+              </span>
+
+              {/* Cycling phrase directly below */}
+              <div className="h-7 relative overflow-hidden flex items-center min-w-0 mt-0.5">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={phraseIndex}
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -10, opacity: 0 }}
+                    transition={{ duration: 0.38, ease: luxuryEase }}
+                    className="font-editorial italic text-[17px] font-normal text-[#B87A22] tracking-tight whitespace-nowrap"
+                  >
+                    {ANIMATED_PHRASES[phraseIndex]}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+
+            {/* Right: Show All Button */}
+            <button
+              type="button"
+              onClick={() => {
+                const shopGrid = document.querySelector("#shop .grid");
+                if (shopGrid) {
+                  shopGrid.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+              }}
+              className="group/showall inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#D9CEBC] hover:border-[#B87A22] bg-[#FAF7F2] text-[#5C4832] hover:text-[#1C1610] text-[11px] font-sans font-semibold tracking-[0.14em] uppercase shrink-0 shadow-2xs active:scale-95 transition-all duration-200"
+            >
+              <span>Show All</span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#B87A22]" />
+            </button>
           </motion.div>
         </motion.div>
 
@@ -818,8 +848,8 @@ export function FeaturedCollection() {
                 >
                   <Heart
                     className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all duration-200 ${favorites[product.id]
-                        ? "fill-[#D9383A] text-[#D9383A] scale-110"
-                        : "text-[#5C4D3C] group-hover/fav:text-[#D9383A]"
+                      ? "fill-[#D9383A] text-[#D9383A] scale-110"
+                      : "text-[#5C4D3C] group-hover/fav:text-[#D9383A]"
                       }`}
                   />
                 </button>
@@ -829,19 +859,19 @@ export function FeaturedCollection() {
               <div className="relative p-2.5 sm:p-3 flex flex-col justify-between flex-1 bg-[#F7F3EB]">
                 <div className="relative z-10">
                   {/* Fit Taxonomy & Star Rating Row - Minimal, clean, high-visibility */}
-                  <div className="flex items-center justify-between gap-1.5 min-w-0">
-                    <p className="font-sans text-[8.5px] sm:text-[9.5px] uppercase tracking-[0.12em] text-[#857461] font-semibold leading-none truncate min-w-0 flex-1">
+                  <div className="flex items-center justify-between gap-1 sm:gap-1.5 min-w-0">
+                    <p className="font-sans text-[8px] sm:text-[9.5px] uppercase tracking-[0.08em] sm:tracking-[0.12em] text-[#857461] font-semibold leading-none truncate min-w-0 flex-1">
                       {product.fit}
                     </p>
-                    <div className="flex items-center gap-1 font-sans leading-none shrink-0 whitespace-nowrap ml-auto">
-                      <Star className="w-3 h-3 fill-[#B87A22] text-[#B87A22] shrink-0" />
-                      <span className="font-bold text-[11px] text-[#1C1610]">{product.rating.toFixed(1)}</span>
-                      <span className="text-[#4E3F2F] font-semibold text-[10px] sm:text-[10.5px]">({product.reviewsCount})</span>
+                    <div className="flex items-center gap-0.5 sm:gap-1 font-sans leading-none shrink-0 whitespace-nowrap ml-auto">
+                      <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-[#B87A22] text-[#B87A22] shrink-0" />
+                      <span className="font-bold text-[10.5px] sm:text-[11px] text-[#1C1610]">{product.rating.toFixed(1)}</span>
+                      <span className="text-[#4E3F2F] font-semibold text-[9.5px] sm:text-[10.5px]">({product.reviewsCount})</span>
                     </div>
                   </div>
 
                   {/* Product Name */}
-                  <h3 className="font-editorial text-[13.5px] sm:text-[14px] font-semibold text-[#1C1610] group-hover:text-[#9E6C21] transition-colors duration-200 mt-1 leading-snug truncate">
+                  <h3 className="font-editorial text-[13px] sm:text-[14px] font-semibold text-[#1C1610] group-hover:text-[#9E6C21] transition-colors duration-200 mt-1 leading-snug truncate">
                     {product.name}
                   </h3>
                 </div>
@@ -849,16 +879,16 @@ export function FeaturedCollection() {
                 {/* Price, Colorways & Actions Panel */}
                 <div className="relative z-10 flex flex-col mt-2.5 pt-2 border-t border-[#E6DDD0]/80">
                   {/* Price Row: Discounted Price, Strikethrough M.R.P., and High-Visibility Animated Discount Tag */}
-                  <div className="flex items-center justify-between gap-2 py-0.5">
+                  <div className="flex items-center justify-between gap-1 sm:gap-2 py-0.5">
                     <div className="flex items-baseline flex-nowrap min-w-0">
-                      <span className="font-sans text-[15px] sm:text-[15.5px] font-bold text-[#1C1610] tracking-tight leading-none">
+                      <span className="font-sans text-[14px] sm:text-[15.5px] font-bold text-[#1C1610] tracking-tight leading-none">
                         ₹{product.price}
                       </span>
-                      <span className="font-sans text-[11.5px] sm:text-[12px] text-[#8C7E6D] line-through font-normal leading-none ml-2 tracking-normal shrink-0">
+                      <span className="font-sans text-[11px] sm:text-[12px] text-[#8C7E6D] line-through font-normal leading-none ml-1.5 sm:ml-2 tracking-normal shrink-0">
                         ₹{product.originalPrice}
                       </span>
                     </div>
-                    <span className="relative overflow-hidden inline-flex items-center shrink-0 whitespace-nowrap font-sans text-[9.5px] sm:text-[10px] font-extrabold tracking-wide px-2 py-0.5 rounded-md border animate-discount-highlight select-none shadow-xs">
+                    <span className="relative overflow-hidden inline-flex items-center shrink-0 whitespace-nowrap font-sans text-[8.5px] sm:text-[10px] font-extrabold tracking-tight sm:tracking-wide px-1.5 sm:px-2 py-0.5 rounded-md border animate-discount-highlight select-none shadow-xs">
                       <span
                         aria-hidden="true"
                         className="absolute inset-0 pointer-events-none -translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent animate-discount-sweep"
@@ -899,11 +929,10 @@ export function FeaturedCollection() {
                       type="button"
                       onClick={(e) => handleAddToCart(e, product.id)}
                       aria-label={cartItems[product.id] ? `Remove ${product.name} from cart` : `Add ${product.name} to cart`}
-                      className={`w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs shrink-0 group/cart ${
-                        cartItems[product.id]
+                      className={`w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs shrink-0 group/cart ${cartItems[product.id]
                           ? "bg-emerald-600 border border-emerald-600 text-white shadow-xs"
                           : "bg-[#EDE5D6] hover:bg-[#1C1610] text-[#3D3122] hover:text-[#FAF7F2] border border-[#DDD3C2]"
-                      }`}
+                        }`}
                       title={cartItems[product.id] ? "In Cart (Click to uncheck)" : "Add to Cart"}
                     >
                       {cartItems[product.id] ? (
@@ -919,21 +948,9 @@ export function FeaturedCollection() {
                     type="button"
                     onClick={(e) => handleBuyNow(e, product.id)}
                     aria-label={`Buy ${product.name} now`}
-                    className={`w-full mt-2 py-1.5 sm:py-2 px-3 rounded-lg font-sans text-[10px] sm:text-[10.5px] font-semibold tracking-[0.18em] uppercase transition-colors duration-200 cursor-pointer active:scale-[0.98] ${buyNowId === product.id
-                        ? "bg-[#E2DBCF] text-[#143D1F] border border-emerald-600/50 shadow-xs"
-                        : "bg-gradient-to-r from-[#F4EEE2] via-[#ECE2D0] to-[#F4EEE2] text-[#221810] border border-[#D6C7B2] hover:border-[#B87A22] hover:text-[#8D4E13] shadow-[0_2px_6px_rgba(40,28,14,0.05),inset_0_1px_0_rgba(255,255,255,0.8)]"
-                      }`}
+                    className="w-full mt-2 py-1.5 sm:py-2 px-2.5 sm:px-3 rounded-lg font-sans text-[9.5px] sm:text-[10.5px] font-semibold tracking-[0.14em] sm:tracking-[0.18em] uppercase transition-colors duration-200 cursor-pointer active:scale-[0.98] bg-gradient-to-r from-[#F4EEE2] via-[#ECE2D0] to-[#F4EEE2] text-[#221810] border border-[#D6C7B2] hover:border-[#B87A22] hover:text-[#8D4E13] shadow-[0_2px_6px_rgba(40,28,14,0.05),inset_0_1px_0_rgba(255,255,255,0.8)]"
                   >
-                    <span className="flex items-center justify-center">
-                      {buyNowId === product.id ? (
-                        <span className="flex items-center gap-1.5 text-emerald-800">
-                          <Check className="w-3.5 h-3.5 stroke-[2.5] text-emerald-700" />
-                          <span className="tracking-[0.16em] text-[10px]">Proceeding</span>
-                        </span>
-                      ) : (
-                        <span>Buy Now</span>
-                      )}
-                    </span>
+                    <span>Buy Now</span>
                   </button>
                 </div>
               </div>
@@ -978,14 +995,14 @@ export function FeaturedCollection() {
             </div>
 
             {/* Right End Side: Lifted up to the exact level of New Arrivals with Shiny Effect */}
-            <div className="flex items-center sm:items-start justify-start sm:justify-end shrink-0 sm:pt-0.5">
-              <div className="text-left sm:text-right">
-                <h4 className="font-editorial text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#1C1610] tracking-tight leading-[1.25] pb-1 whitespace-nowrap select-none flex items-baseline sm:justify-end gap-2">
-                  <span className="animate-durga-shine pr-1 pb-1">Durga Puja</span>
+            <div className="flex items-center sm:items-start justify-start sm:justify-end shrink-0 sm:pt-0.5 pt-2 sm:pt-0 border-t border-[#D9CEBC]/60 sm:border-0">
+              <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start w-full sm:w-auto gap-2 sm:gap-0 text-left sm:text-right">
+                <h4 className="font-editorial text-[18px] sm:text-3xl lg:text-[34px] font-bold text-[#1C1610] tracking-tight leading-[1.25] pb-0 sm:pb-1 whitespace-nowrap select-none flex items-baseline sm:justify-end gap-1.5 sm:gap-2">
+                  <span className="animate-durga-shine pr-0.5 sm:pr-1 sm:pb-1">Durga Puja</span>
                   <span className="italic font-normal text-[#B87A22]">Sale</span>
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#B87A22]/75 translate-y-[-2px]" />
                 </h4>
-                <p className="mt-1 text-[#8C765E] text-[11px] sm:text-[12px] font-medium tracking-wide uppercase sm:text-right">
+                <p className="text-[#8C765E] text-[10.5px] sm:text-[12px] font-medium tracking-wide uppercase sm:text-right sm:mt-1 shrink-0">
                   Festive Special Edition
                 </p>
               </div>
@@ -1035,11 +1052,10 @@ export function FeaturedCollection() {
                           }
                         }}
                         style={{ width: `${cardDim.width}px` }}
-                        className={`shrink-0 ${
-                          isLayoutReady
+                        className={`shrink-0 ${isLayoutReady
                             ? "transition-[transform,opacity,border-color,box-shadow] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
                             : ""
-                        } cursor-pointer rounded-2xl overflow-hidden bg-[#F7F3EB] border ${isActive
+                          } cursor-pointer rounded-2xl overflow-hidden bg-[#F7F3EB] border ${isActive
                             ? "scale-[1.06] z-20 border-[#B8853B]/70"
                             : isDirectNeighbor
                               ? "scale-[0.91] z-10 opacity-90 hover:opacity-100 border-[#DDD3C2]"
@@ -1077,8 +1093,8 @@ export function FeaturedCollection() {
                           >
                             <Heart
                               className={`w-4 h-4 transition-all duration-200 ${favorites[product.id]
-                                  ? "fill-[#D9383A] text-[#D9383A] scale-110"
-                                  : "text-[#5C4D3C] group-hover/fav:text-[#D9383A]"
+                                ? "fill-[#D9383A] text-[#D9383A] scale-110"
+                                : "text-[#5C4D3C] group-hover/fav:text-[#D9383A]"
                                 }`}
                             />
                           </button>
@@ -1144,8 +1160,8 @@ export function FeaturedCollection() {
                                       }}
                                       style={{ backgroundColor: color }}
                                       className={`w-2 h-2 rounded-full transition-all cursor-pointer ${isSelected
-                                          ? "ring-1.5 ring-[#1C1610] scale-110 shadow-2xs"
-                                          : "border border-black/15 opacity-80 hover:opacity-100"
+                                        ? "ring-1.5 ring-[#1C1610] scale-110 shadow-2xs"
+                                        : "border border-black/15 opacity-80 hover:opacity-100"
                                         }`}
                                       title={`Colorway ${colorIdx + 1}`}
                                     />
@@ -1158,11 +1174,10 @@ export function FeaturedCollection() {
                                 type="button"
                                 onClick={(e) => handleAddToCart(e, product.id)}
                                 aria-label={cartItems[product.id] ? `Remove ${product.name} from cart` : `Add ${product.name} to cart`}
-                                className={`w-7.5 h-7.5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs shrink-0 group/cart ${
-                                  cartItems[product.id]
+                                className={`w-7.5 h-7.5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer shadow-xs shrink-0 group/cart ${cartItems[product.id]
                                     ? "bg-emerald-600 border border-emerald-600 text-white shadow-xs"
                                     : "bg-[#EAE2D5] hover:bg-[#1C1610] text-[#3D3122] hover:text-[#FAF7F2] border border-[#DDD3C2]"
-                                }`}
+                                  }`}
                                 title={cartItems[product.id] ? "In Cart (Click to uncheck)" : "Add to Cart"}
                               >
                                 {cartItems[product.id] ? (
@@ -1178,21 +1193,9 @@ export function FeaturedCollection() {
                               type="button"
                               onClick={(e) => handleBuyNow(e, product.id)}
                               aria-label={`Buy ${product.name} now`}
-                              className={`w-full mt-2.5 py-2 sm:py-2.5 px-3.5 rounded-lg font-sans text-[10.5px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase transition-colors duration-200 cursor-pointer active:scale-[0.98] ${buyNowId === product.id
-                                  ? "bg-[#E2DBCF] text-[#143D1F] border border-emerald-600/50 shadow-xs"
-                                  : "bg-gradient-to-r from-[#F4EEE2] via-[#ECE2D0] to-[#F4EEE2] text-[#221810] border border-[#D6C7B2] hover:border-[#B87A22] hover:text-[#8D4E13] shadow-[0_2px_6px_rgba(40,28,14,0.05),inset_0_1px_0_rgba(255,255,255,0.8)]"
-                                }`}
+                              className="w-full mt-2.5 py-2 sm:py-2.5 px-3.5 rounded-lg font-sans text-[10.5px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase transition-colors duration-200 cursor-pointer active:scale-[0.98] bg-gradient-to-r from-[#F4EEE2] via-[#ECE2D0] to-[#F4EEE2] text-[#221810] border border-[#D6C7B2] hover:border-[#B87A22] hover:text-[#8D4E13] shadow-[0_2px_6px_rgba(40,28,14,0.05),inset_0_1px_0_rgba(255,255,255,0.8)]"
                             >
-                              <span className="flex items-center justify-center">
-                                {buyNowId === product.id ? (
-                                  <span className="flex items-center gap-1.5 text-emerald-800">
-                                    <Check className="w-3.5 h-3.5 stroke-[2.5] text-emerald-700" />
-                                    <span className="tracking-[0.16em] text-[10.5px]">Proceeding</span>
-                                  </span>
-                                ) : (
-                                  <span>Buy Now</span>
-                                )}
-                              </span>
+                              <span>Buy Now</span>
                             </button>
                           </div>
                         </div>
@@ -1231,8 +1234,8 @@ export function FeaturedCollection() {
                       }}
                       aria-label={`Go to slide ${i + 1}`}
                       className={`h-1 rounded-full transition-all duration-500 cursor-pointer ${i === (activeIndex % NEW_ARRIVALS.length)
-                          ? "w-8 bg-[#B87A22]"
-                          : "w-3.5 bg-[#CBBFB0]/70 hover:bg-[#A89882]"
+                        ? "w-8 bg-[#B87A22]"
+                        : "w-3.5 bg-[#CBBFB0]/70 hover:bg-[#A89882]"
                         }`}
                     />
                   ))}
@@ -1255,11 +1258,10 @@ export function FeaturedCollection() {
             className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-[#1C1610] text-[#FAF7F2] border border-[#3A2F22] shadow-[0_12px_32px_rgba(0,0,0,0.35)] flex items-center gap-2.5 pointer-events-none select-none max-w-[90vw]"
           >
             <span
-              className={`w-6 h-6 rounded-full bg-[#2C2218] flex items-center justify-center shrink-0 border ${
-                cartToast.isAdding !== false
+              className={`w-6 h-6 rounded-full bg-[#2C2218] flex items-center justify-center shrink-0 border ${cartToast.isAdding !== false
                   ? "border-emerald-500/30 text-emerald-400"
                   : "border-[#FAF7F2]/20 text-[#FAF7F2]/70"
-              }`}
+                }`}
             >
               {cartToast.isAdding !== false ? (
                 <Check className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -1284,8 +1286,8 @@ export function FeaturedCollection() {
             <span className="w-6 h-6 rounded-full bg-[#2C2218] flex items-center justify-center shrink-0">
               <Heart
                 className={`w-3.5 h-3.5 ${favorites[favToast.id]
-                    ? "fill-[#D9383A] text-[#D9383A]"
-                    : "text-[#FAF7F2]/60"
+                  ? "fill-[#D9383A] text-[#D9383A]"
+                  : "text-[#FAF7F2]/60"
                   }`}
               />
             </span>
