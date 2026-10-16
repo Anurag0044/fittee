@@ -1,0 +1,472 @@
+// FITTEE Production PostgreSQL Prisma Schema
+// Compatible with Neon Serverless PostgreSQL & PgBouncer
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// -----------------------------------------------------------------------------
+// 1. Core User & Customer Models
+// -----------------------------------------------------------------------------
+
+enum AdminRole {
+  SUPER_ADMIN
+  CATALOG_MGR
+  LOGISTICS_MGR
+}
+
+model AdminUser {
+  id               String    @id @default(uuid())
+  name             String
+  email            String    @unique
+  passwordHash     String
+  role             AdminRole @default(CATALOG_MGR)
+  avatarUrl        String?
+  twoFactorEnabled Boolean   @default(false)
+  lastLoginAt      DateTime?
+  permissions      String[]  @default([])
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  auditLogs        AuditLog[]
+
+  @@map("admin_users")
+}
+
+model Customer {
+  id           String    @id @default(uuid())
+  customerCode String    @unique // e.g. "FIT-CUST-1049"
+  fullName     String
+  email        String    @unique
+  phone        String
+  firebaseUid  String?   @unique
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  addresses    Address[]
+  orders       Order[]
+
+  @@map("customers")
+}
+
+model Address {
+  id           String   @id @default(uuid())
+  customerId   String
+  fullName     String
+  phone        String
+  addressLine1 String
+  addressLine2 String?
+  landmark     String?
+  city         String
+  state        String
+  pincode      String   // 6 digits
+  isDefault    Boolean  @default(false)
+  isServiceable Boolean @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  customer     Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([customerId])
+  @@map("addresses")
+}
+
+// -----------------------------------------------------------------------------
+// 2. Catalog & Apparel Models
+// -----------------------------------------------------------------------------
+
+enum FitType {
+  REGULAR_FIT
+  OVERSIZED_FIT
+}
+
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum ProductBadge {
+  NEW
+  BESTSELLER
+  FESTIVE_SPECIAL
+}
+
+model Category {
+  id           String    @id @default(uuid())
+  name         String
+  slug         String    @unique
+  subtitle     String?
+  storyExcerpt String?
+  bannerImage  String?
+  iconMotif    String?
+  displayOrder Int       @default(0)
+  isActive     Boolean   @default(true)
+  metaTitle    String?
+  metaDescription String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  products     Product[]
+
+  @@index([displayOrder])
+  @@map("categories")
+}
+
+model Product {
+  id              String        @id @default(uuid())
+  displayId       Int           @default(autoincrement()) // Compatibility with frontend numeric IDs (1, 2, 3...)
+  title           String
+  slug            String        @unique
+  categoryId      String
+  fitType         FitType       @default(REGULAR_FIT)
+  badge           ProductBadge?
+  sellingPrice    Float
+  originalMrp     Float
+  discountPercent Int           @default(0)
+  status          ProductStatus @default(ACTIVE)
+  artworkStory    String        @db.Text
+  fabricDetails   String        @db.Text
+  hsnCode         String        @default("61091000") // Cotton T-Shirts
+  gstRate         Float         @default(5.0)       // 5% standard apparel GST
+  rating          Float         @default(4.8)
+  reviewsCount    Int           @default(0)
+  metaTitle       String?
+  metaDescription String?
+  targetKeywords  String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  category        Category      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  variants        ProductVariant[]
+  images          ProductImage[]
+  taggedInJournals JournalProductTag[]
+
+  @@index([categoryId])
+  @@index([status])
+  @@index([fitType])
+  @@map("products")
+}
+
+model ProductVariant {
+  id                String   @id @default(uuid())
+  productId         String
+  sku               String   @unique
+  colorName         String
+  colorHex          String   // e.g. "#E8DFC8"
+  size              String   // S, M, L, XL, XXL, 3XL
+  stock             Int      @default(0)
+  lowStockThreshold Int      @default(5)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  product           Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([sku])
+  @@map("product_variants")
+}
+
+model ProductImage {
+  id            String   @id @default(uuid())
+  productId     String
+  url           String
+  altText       String   @default("FITTEE Tribal T-Shirt")
+  isHero        Boolean  @default(false)
+  colorwayName  String?  // Links to specific variant colorway or "all"
+  displayOrder  Int      @default(0)
+  createdAt     DateTime @default(now())
+
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("product_images")
+}
+
+// -----------------------------------------------------------------------------
+// 3. Orders, Logistics & Payments
+// -----------------------------------------------------------------------------
+
+enum OrderStatus {
+  PLACED
+  CONFIRMED
+  PACKED
+  SHIPPED
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+  RTO
+}
+
+enum PaymentMethod {
+  RAZORPAY
+  COD
+}
+
+enum PaymentStatus {
+  PAID
+  PENDING
+  REFUNDED
+  FAILED
+}
+
+enum DispatchState {
+  NOT_BOOKED
+  QUEUED
+  BOOKED
+  FAILED
+}
+
+model Order {
+  id                   String        @id @default(uuid())
+  orderNumber          String        @unique // e.g. "FIT-2026-8942"
+  customerId           String
+  customerCode         String        // e.g. "FIT-CUST-1049"
+  customerName         String
+  customerEmail        String
+  customerPhone        String
+  shippingAddress      Json          // Snapshot: fullName, phone, addressLine1, addressLine2, city, state, pincode
+  subtotal             Float
+  discountAmount       Float         @default(0)
+  couponCode           String?
+  shippingFee          Float         @default(0)
+  totalAmount          Float
+  paymentMethod        PaymentMethod @default(RAZORPAY)
+  paymentStatus        PaymentStatus @default(PENDING)
+  transactionId        String?
+  status               OrderStatus   @default(PLACED)
+  dispatchState        DispatchState @default(NOT_BOOKED)
+  awbNumber            String?
+  manifestId           String?
+  courierName          String?       @default("Ekart Logistics")
+  internalNotes        String[]      @default([])
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  customer             Customer      @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  items                OrderItem[]
+  timeline             OrderStatusTimeline[]
+
+  @@index([customerId])
+  @@index([orderNumber])
+  @@index([status])
+  @@index([paymentStatus])
+  @@index([dispatchState])
+  @@map("orders")
+}
+
+model OrderItem {
+  id           String   @id @default(uuid())
+  orderId      String
+  productId    String
+  variantId    String?
+  productTitle String
+  fitType      FitType  @default(REGULAR_FIT)
+  colorName    String
+  colorHex     String
+  size         String
+  sku          String
+  quantity     Int      @default(1)
+  unitPrice    Float
+  totalPrice   Float
+  thumbnail    String
+
+  order        Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@map("order_items")
+}
+
+model OrderStatusTimeline {
+  id        String      @id @default(uuid())
+  orderId   String
+  status    OrderStatus
+  actor     String      @default("SYSTEM") // Operator name or "SYSTEM" or "EKART_WEBHOOK"
+  note      String
+  timestamp DateTime    @default(now())
+
+  order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@map("order_status_timeline")
+}
+
+// -----------------------------------------------------------------------------
+// 4. Marketing, Festive & CMS
+// -----------------------------------------------------------------------------
+
+enum BannerSlot {
+  HERO_BANNER
+  ANNOUNCEMENT_BAR
+  CAROUSEL_CARD
+  MID_PAGE_STRIP
+}
+
+model FestiveBanner {
+  id               String     @id @default(uuid())
+  campaignName     String
+  slot             BannerSlot @default(HERO_BANNER)
+  headline         String
+  subheadline      String?
+  ctaText          String?    @default("Explore Collection")
+  redirectUrl      String     @default("/#featured")
+  linkedCouponCode String?
+  priority         Int        @default(1)
+  desktopImageUrl  String?
+  mobileImageUrl   String?
+  startDateTime    DateTime
+  endDateTime      DateTime
+  isActive         Boolean    @default(true)
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  @@index([slot, isActive])
+  @@map("festive_banners")
+}
+
+enum JournalStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  ARCHIVED
+}
+
+model JournalPost {
+  id                 String        @id @default(uuid())
+  title              String
+  slug               String        @unique
+  excerpt            String        @db.Text
+  body               String        @db.Text
+  coverImage         String
+  authorName         String        @default("FITTEE Cultural Collective")
+  readingTimeMinutes Int           @default(4)
+  categoryTags       String[]      @default([])
+  status             JournalStatus @default(PUBLISHED)
+  publishedAt        DateTime?
+  metaTitle          String?
+  metaDescription    String?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  taggedProducts     JournalProductTag[]
+
+  @@index([status])
+  @@map("journal_posts")
+}
+
+model JournalProductTag {
+  id          String      @id @default(uuid())
+  journalId   String
+  productId   String
+
+  journal     JournalPost @relation(fields: [journalId], references: [id], onDelete: Cascade)
+  product     Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([journalId, productId])
+  @@map("journal_product_tags")
+}
+
+// -----------------------------------------------------------------------------
+// 5. Operations, Security, Metrics & Custom Forms
+// -----------------------------------------------------------------------------
+
+enum PageLockMode {
+  COMING_SOON
+  MAINTENANCE
+}
+
+model PageLockSetting {
+  id                  String       @id @default(uuid())
+  routePath           String       @unique // e.g. "/*", "/custom-design", "/checkout"
+  mode                PageLockMode @default(MAINTENANCE)
+  isLocked            Boolean      @default(false)
+  title               String       @default("Scheduled Upgrades in Progress")
+  message             String       @db.Text
+  contactEmail        String       @default("contact@fittee.in")
+  backgroundImageUrl  String?
+  estimatedEndTime    DateTime?
+  lastChangedBy       String       @default("Admin")
+  lastChangedAt       DateTime     @default(now())
+  bypassSecretHash    String?
+  activePreviewTokens String[]     @default([])
+
+  @@map("page_lock_settings")
+}
+
+model DailySiteMetric {
+  id                       String   @id @default(uuid())
+  date                     DateTime @unique @db.Date
+  totalVisitors            Int      @default(0)
+  uniqueSessions           Int      @default(0)
+  rollingMau               Int      @default(0)
+  dau                      Int      @default(0)
+  stickinessRatio          Float    @default(0) // DAU / MAU %
+  grossRevenue             Float    @default(0)
+  netRevenue               Float    @default(0)
+  ordersCount              Int      @default(0)
+  unitsSold                Int      @default(0)
+  averageOrderValue        Float    @default(0)
+  regionalData             Json?    // e.g. [{ region: "Ranchi, Jharkhand", orders: 42, revenue: 37758 }]
+  createdAt                DateTime @default(now())
+
+  @@index([date])
+  @@map("daily_site_metrics")
+}
+
+enum InquiryStatus {
+  NEW
+  IN_REVIEW
+  CONTACTED
+  ARCHIVED
+}
+
+model CustomInquiry {
+  id              String        @id @default(uuid())
+  customerEmail   String
+  styleChoice     String        // sohrai, khovar, karam, dokra
+  garmentChoice   String        // oversized, regular, hoodie, tote
+  placementChoice String        // back, chest, pocket
+  customPrompt    String        @db.Text
+  status          InquiryStatus @default(NEW)
+  internalNotes   String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([status])
+  @@map("custom_inquiries")
+}
+
+model NewsletterSubscriber {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  isActive     Boolean  @default(true)
+  subscribedAt DateTime @default(now())
+
+  @@map("newsletter_subscribers")
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  adminUserId String?
+  actorName   String
+  actorEmail  String
+  actorRole   AdminRole
+  action      String   // e.g. "PRODUCT_CREATE", "BANNER_TOGGLE", "ORDER_DISPATCH"
+  entity      String   // e.g. "Product", "FestiveBanner", "Order"
+  entityId    String
+  diffSummary String   @db.Text
+  ipAddress   String   @default("127.0.0.1")
+  timestamp   DateTime @default(now())
+
+  adminUser   AdminUser? @relation(fields: [adminUserId], references: [id], onDelete: SetNull)
+
+  @@index([entity, entityId])
+  @@index([timestamp])
+  @@map("audit_logs")
+}
